@@ -1,6 +1,7 @@
 <?php
 
     # DATABASE VALUES.
+    $DB_NAME = 'heroku_9a70b6832dee0c8';
     $DB_HOST = 'us-cdbr-iron-east-01.cleardb.net';
     $DB_USR = 'badb5626072670';
     $DB_PWD = '978e7637';
@@ -11,6 +12,5 @@
         die("Connection failed: " . $conn->connect_error);
     }
     echo "<h1>Connected successfully</h1>";
-
 
 ?>
