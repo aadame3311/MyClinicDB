@@ -8,7 +8,7 @@
     # DATABASE CONNECTION.
     $conn = new mysqli($DB_HOST, $DB_USR, $DB_PWD);
     if ($conn->connect_error) {
-        die("Connection gailed: " . $conn->connect_error);
+        die("Connection failed: " . $conn->connect_error);
     }
     echo "<h1>Connected successfully</h1>";
 
