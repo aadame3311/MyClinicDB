@@ -60,8 +60,4 @@ $employees = EmployeeQuery::create()->find();
 foreach($employees as $employee) {
     echo $employee->getLastName() . ", " . $employee->getFirstName() . "<br>";
 }
-
-//testing some stuff... 
-//testing some more stuff...
-
 ?>
