@@ -53,6 +53,12 @@ foreach ($res as $names) {
     }
 }
 
-echo "a";
+
+
+# QUERYING THROUGH PROPEL
+$employees = EmployeeQuery::create()->find();
+foreach($employees as $employee) {
+    echo $employee->getLastName() . ", " . $employee->getFirstName() . "<br>";
+}
 
 ?>

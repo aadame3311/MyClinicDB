@@ -1,13 +1,13 @@
 {
     "require": {
-      "silex/silex": "~1.1",
+      "symfony/flex": "~1.1",
       "propel/propel": "~2.0@dev"
     },
+
     "autoload": {
       "classmap": [
         "models/"
       ]
     }
-
     
 }
