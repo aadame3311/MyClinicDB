@@ -11,21 +11,27 @@ $DB_USR = 'badb5626072670';
 $DB_PWD = '978e7637';
 
 # DATABASE CONNECTION.
-$conn = new mysqli($DB_HOST, $DB_USR, $DB_PWD);
+$conn = new mysqli($DB_HOST, $DB_USR, $DB_PWD, $DB_NAME);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 echo "<h1>Connected successfully</h1>";
 
+# QUERYING SQL THROUGH BASIC PHP.
+# select all first names of all employees.
+$res = $conn->query("select first_name from employee");
+if (!$res) {
+    die("SQL Error" . $conn->error);
+}
+foreach ($res as $names) {
+    foreach ($names as $n) {
+        echo $n . "<br>";
+    }
+}
 
-# propel stuff. 
-$department = new Department();
-$department->setID(1);
-$department->setDepartmentName('test');
-$department->setSection('123A');
-$department->save();
 
-echo $department->getID();
-
+#QUERYING SQL THROUGH PROPEL(PHP).
+$res = EmployeeQuery::create()->findPK(11);
+echo $res->getFirstName();
 
 ?>
