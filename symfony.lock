@@ -1,7 +1,4 @@
 {
-    "heroku/heroku-buildpack-php": {
-        "version": "dev-master"
-    },
     "symfony/flex": {
         "version": "1.0",
         "recipe": {
