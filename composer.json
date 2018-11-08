@@ -1,17 +1,13 @@
 {
     "require": {
       "symfony/flex": "~1.1",
-      "propel/propel": "~2.0@dev",
-      "php": "^7"
+      "propel/propel": "~2.0@dev"
     },
 
     "autoload": {
       "classmap": [
         "models/"
       ]
-    },
-    "require-dev": {
-      "heroku/heroku-buildpack-php" : "dev-master"
     }
     
 }
