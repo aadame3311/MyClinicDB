@@ -1,7 +1,7 @@
 {
     "require": {
       "symfony/flex": "~1.1",
-      "propel/propel": "~2.0@dev",
+      "propel/propel": "~2.0@dev"
     },
 
     "autoload": {
