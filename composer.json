@@ -1,13 +1,8 @@
 {
     "require": {
-      "symfony/flex": "~1.1",
-      "propel/propel": "~2.0@dev"
-    },
 
-    "autoload": {
-      "classmap": [
-        "models/"
-      ]
-    }
-    
+        "slim/slim": "^3.0",
+        "propel/propel": "~2.0@dev"
+    },
+    "minimum-stability": "dev"
 }
