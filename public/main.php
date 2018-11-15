@@ -18,3 +18,11 @@ $container['view'] = function($container) {
 	
 	return $view;
 };
+
+
+$app->get('/', function($request, $response, $args) {
+    return $this->view->render($response, 'main.html');
+});
+
+
+$app->run();
