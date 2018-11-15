@@ -4,5 +4,8 @@
         "slim/slim": "^3.0",
         "propel/propel": "~2.0@dev"
     },
+    "autoload": {
+        "classmap": ["models/"]
+    },
     "minimum-stability": "dev"
 }
