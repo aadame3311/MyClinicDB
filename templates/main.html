@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/tingle.css">
+    
+    <!--Vex CSS-->
+    <link rel="stylesheet" href="../css/Vex/vex.css" />
+    <link rel="stylesheet" href="../css/Vex/vex-theme-os.css" />  
 
     <title>{% block title %}{% endblock %}</title>
 </head>
@@ -45,12 +50,26 @@
 
 
 
+
 <script
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
   crossorigin="anonymous"></script>
+        
+
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+<script src="../js/Vex/vex.combined.min.js"></script>
+<script>vex.defaultOptions.className = 'vex-theme-os'</script>
+
+
+
 <script src="../js/tingle.js"></script>         
 <script src="../js/source.js"></script> 
+
+
+
+
+
 </html>
