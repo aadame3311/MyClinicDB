@@ -7,13 +7,16 @@
 
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="../public/style.css">
 
     <title>{% block title %}{% endblock %}</title>
 </head>
-<body>  
+<body> 
+
     <!--NAVBAR-->
     <nav>
+        <div class="container">
         <div class="nav-wrapper">
             <a href="#!" class="brand-logo">MyClinic</a>
             <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
@@ -21,6 +24,7 @@
             {% block navTabs %}
             {% endblock %}
             </ul>
+        </div>
         </div>
     </nav>
     <ul class="sidenav" id="mobile-demo">
