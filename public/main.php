@@ -21,7 +21,7 @@ $container['view'] = function($container) {
 
 
 $app->get('/', function($request, $response, $args) {
-    return $this->view->render($response, 'test.html');
+    return $this->view->render($response, 'landing.html');
 });
 
 
