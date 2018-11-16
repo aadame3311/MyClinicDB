@@ -26,7 +26,6 @@ $app->get('/', function($request, $response, $args) {
     return $this->view->render($response, 'landing.html');
 });
 $app->post('/login', function($request, $response, $args) {
-
 });
 $app->post('/signup', function($request, $response, $args) {
 
