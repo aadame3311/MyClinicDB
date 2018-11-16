@@ -1,31 +1,84 @@
 
-// instanciate new modal
-var modal = new tingle.modal({
+// instanciate new loginModal
+var loginModal = new tingle.modal({
     footer: true,
     stickyFooter: false,
     closeMethods: ['overlay', 'button', 'escape'],
     closeLabel: "Close",
-    cssClass: ['custom-class-1', 'custom-class-2'],
-    onOpen: function() {
-        console.log('modal open');
-    },
-    onClose: function() {
-        console.log('modal closed');
-    },
-    beforeClose: function() {
-        // here's goes some logic
-        // e.g. save content before closing the modal
-        return true; // close the modal
-        return false; // nothing happens
-    }
+    cssClass: ['custom-class-1', 'custom-class-2']
 });
-// set content
-modal.setContent('<h1>Login</h1> <form action=""> Username: <input type="text">Password<input type="text"></form>');
+// instanciate new signupModal
+var signupModal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'button', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2']
+});
 
-// add a button
-modal.addFooterBtn('Submit', 'tingle-btn tingle-btn--primary', function() {
-    // here goes some logic
-    modal.close();
+
+
+// set login form content
+loginModal.setContent('<h1>Login</h1> <form class="login-form" action="./main.php/login"> <input id="username" type="text" placeholder="Username"><input id="password" type="password" placeholder="Password"></form>');
+loginModal.addFooterBtn('Submit', 'tingle-btn tingle-btn--primary', function() {
+    // send user data to server for authentication.
+    var _url = $('form.login-form').attr('action');
+    var _username = $('#username').val();
+    var _password = $('#password').val();
+
+    console.log("username: "+_username);
+    console.log("password: "+_password);
+    console.log(_url);
+
+    // send post request to url to be handled by main.php.
+    $.ajax({
+        url: _url,
+        data: {
+            'username':_username,
+            'password': _password
+        },
+        method: "POST",
+        dataType: "JSON"
+    }).done(function() {
+
+    });
+});
+
+// set sign up form content
+var form = 
+    '<h1>Sign Up</h1>'+
+    '<form class ="signup-form" action="./main.php/signup">'+
+    '<input id="username" type="text" placeholder="Username">'+
+    '<input id="firstname" type="text" placeholder="First Name">' +
+    '<input id="lastname" type="text" placeholder="Last Name">' +
+    '<input id="dob" type="text" placeholder="mm/dd/yyyy">' +
+    '<input id="address" type="text" placeholder="Address">' +
+    '<input id="phone" type="text" placeholder="Phone Number">';
+
+
+signupModal.setContent(form);
+signupModal.addFooterBtn('Submit', 'tingle-btn tingle-btn--primary', function() {
+    // send user data to server for authentication.
+    var _url = $('form.signup-form').attr('action');
+    var _firstname = $('#username').val();
+    var _lastname = $('#password').val();
+
+    console.log("username: "+_username);
+    console.log("password: "+_password);
+    console.log(_url);
+
+    // send post request to url to be handled by main.php.
+    $.ajax({
+        url: _url,
+        data: {
+            'username':_username,
+            'password': _password
+        },
+        method: "POST",
+        dataType: "JSON"
+    }).done(function() {
+
+    });
 });
 
 
@@ -40,9 +93,12 @@ $(document).ready(function() {
     $('.collapsible').collapsible();
 });
 
-// open modal to allow user to login.
+// open loginModal to allow user to login.
 $('.login').on('click', function() {
-    modal.open();
+    loginModal.open();
+});
+$('.signup').on('click', function() {
+    signupModal.open();
 });
 
 

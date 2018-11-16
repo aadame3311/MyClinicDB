@@ -6,6 +6,7 @@ $settings = ['displayErrorDetails' => true];
 
 $app = new \Slim\App(['settings' => $settings]);
 
+// twig template setup.
 $container = $app->getContainer();
 $container['view'] = function($container) {
 	$view = new \Slim\Views\Twig('../templates');
@@ -20,9 +21,15 @@ $container['view'] = function($container) {
 };
 
 
+// main landing 
 $app->get('/', function($request, $response, $args) {
     return $this->view->render($response, 'landing.html');
 });
+$app->post('/login', function($request, $response, $args) {
 
+});
+$app->post('/signup', function($request, $response, $args) {
+
+});
 
 $app->run();

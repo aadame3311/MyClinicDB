@@ -14,5 +14,8 @@ use Base\Patient as BasePatient;
  */
 class Patient extends BasePatient
 {
-
+    public function setPassword($password) {
+        $this->setPasswordHash(password_hash($password, PASSWORD_DEFAULT));
+        $this->save();
+    } 
 }
