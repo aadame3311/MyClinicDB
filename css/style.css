@@ -1,0 +1,39 @@
+body {
+    background-color: black;
+}
+
+h1 {
+    color: black;
+}
+
+nav {
+    background-color: slategray;
+    margin: 0;
+    position: fixed;
+    top: 1;
+}
+
+/* main content of landing page */
+.title-page h1 {
+    margin: 0;
+    color: black;
+}
+.title-page {
+    background-image: url('../images/landing.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-blend-mode: color;
+    
+    height: 100vh;
+
+    text-align: center;
+}
+.cont1 {
+    height: 50vh;
+    background-color: slategray;
+}
+.cont2 {
+    height: 50vh;
+    background-color: lightslategray;
+}
+
