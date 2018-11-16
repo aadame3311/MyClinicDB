@@ -23,15 +23,11 @@ var modal = new tingle.modal({
 modal.setContent('<h1>Login</h1> <form action=""> Username: <input type="text">Password<input type="text"></form>');
 
 // add a button
-modal.addFooterBtn('Button label', 'tingle-btn tingle-btn--primary', function() {
+modal.addFooterBtn('Submit', 'tingle-btn tingle-btn--primary', function() {
     // here goes some logic
     modal.close();
 });
-// add another button
-modal.addFooterBtn('Dangerous action !', 'tingle-btn tingle-btn--danger', function() {
-    // here goes some logic
-    modal.close();
-});
+
 
 
 
