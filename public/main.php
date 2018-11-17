@@ -67,17 +67,8 @@ $app->post('/signup', function($request, $response, $args) {
     if (!PatientQuery::create()->filterByUsername($username)->findOne()) {
         $patient = new Patient();
         $patient_phones = array($phone, $secondphone);
+        echo "a";
 
-        // set the patients' phone numbers. 
-        // foreach ($patient_phones as $_phone) {
-        //     if ($_phone != null || $_phone != "") {
-        //         $patient_phone = new Patientphone();
-        //         $patient_phone->setPhoneNumber($_phone);
-        //         $patient_phone->setPatientId($patient->getID());
-
-        //         $patient_phone->save();
-        //     }
-        // }
 
         // set patient entries.
         $patient->setFirstName($firstname);
@@ -89,6 +80,17 @@ $app->post('/signup', function($request, $response, $args) {
         $patient->setPasswordHash(password_hash($password, PASSWORD_DEFAULT));
         $patient->setEmail($email);
         $patient->save();
+
+        // set the patients' phone numbers. 
+        foreach ($patient_phones as $_phone) {
+    
+            if ($_phone != null || $_phone != "") {
+                $patient_phone = new Patientphone();
+                $patient_phone->setPhoneNumber($_phone);
+                $patient_phone->setPatientId($patient->getID());
+                $patient_phone->save();
+            }
+        }
     }
     else {
         return $response->withStatus(400);
