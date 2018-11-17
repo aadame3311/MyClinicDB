@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
   <table name="appointment" idMethod="native" phpName="Appointment">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>

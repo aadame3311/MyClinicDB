@@ -1,6 +1,6 @@
 // global variables that store user information. 
 // these are global because they are used by multiple methods. 
-var _firstnmae, _lastname, _address, _dob, _phone, _username, _password;
+var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
 
 
 // instanciate new loginModal
@@ -43,6 +43,7 @@ var personalinfo_form =
         '<input id="dob" type="text" placeholder="mm/dd/yyyy">' +
         '<input id="address" type="text" placeholder="Address">' +
         '<input id="phone" type="text" placeholder="Phone Number">'+
+        '<input id="second-phone" type="text" placeholder="Secondary Phone Number">'+
         '<select id="insurance-list">'+
             '<option value="" disabled selected>Select Insurance Provider</option>'+
             '<option value="Company 1">Insurance Company 1</option>'+
@@ -55,12 +56,13 @@ var personalinfo_form =
 var signupinfo_form = 
     '<h1>Sign Up</h1>'+
     '<form class="signup-form" action="./main.php/signup">'+
+        '<input id="signup-email" type="text" placeholder="Email">' +
         '<input id="signup-username" type="text" placeholder="Username">' +
         '<input id="signup-password" type="password" placeholder="Password">' +
         '<input id="signup-cPassword" type="password" placeholder="Confirm Password">' +
     '</form>';
 
-// set login form content
+// LOGIN FORM //
 loginModal.setContent(logininfo_form);
 loginModal.addFooterBtn('Exit', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
     loginModal.close();
@@ -79,7 +81,7 @@ loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn w
     $.ajax({
         url: _url,
         data: {
-            'username':_username,
+            'username': _username,
             'password': _password
         },
         method: "POST",
@@ -103,6 +105,7 @@ personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn-
     _address = $('#address').val();
     _phone = $('#phone').val();
     _insurance = $("#insurance-list").val();
+    _secondphone = $("#second-phone").val();
     console.log(_insurance);
 
     // switch modals.
@@ -117,26 +120,32 @@ signupModal.addFooterBtn('Back', 'btn waves-effect waves-light tingle-btn--pull-
     personalinfoModal.open();
 });
 signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
+    // get username, password and email values.
+    var _email = $("#signup-email").val();
     var _username = $("#signup-username").val();
     if ($("#signup-password").val() == $("#signup-cPassword").val()) {
         var _password = $("#signup-password").val();
     } else {
         return;
     }
+
+
     if (_firstname !="" && _lastname != "" ) {
         //ajax call. 
         console.log($(".signup-form").attr('action'))
         $.ajax({
             url:$(".signup-form").attr('action'),
             data: {
-                'firstname' :   _firstname, 
-                'lastname'  :   _lastname, 
-                'dob'       :   _dob,
-                'address'   :   _address,
-                'phone'     :   _phone, 
-                'username'  :   _username,
-                'password'  :   _password,
-                'insurance' :   _insurance
+                'firstname'     :   _firstname, 
+                'lastname'      :   _lastname, 
+                'dob'           :   _dob,
+                'address'       :   _address,
+                'phone'         :   _phone, 
+                'second_phone'  :   _secondphone,
+                'email'         :   _email,
+                'username'      :   _username,
+                'password'      :   _password,
+                'insurance'     :   _insurance
             },
             method : "POST",
             dataType : "JSON"

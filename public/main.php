@@ -1,6 +1,8 @@
 <?php
 
 require "../vendor/autoload.php";
+require_once '../generated-conf/config.php';
+
 
 $settings = ['displayErrorDetails' => true];
 
@@ -27,28 +29,70 @@ $app->get('/', function($request, $response, $args) {
     return $this->view->render($response, 'landing.html');
 });
 $app->post('/login', function($request, $response, $args) {
+    $username = $request->getParam('username');
+    $password = $request->getParam('password');
+
+    // verify username. 
+    if ($usr = PatientQuery::create()->filterBy($username)) {
+        // verify password. 
+        if ( $pwd = password_verify($password, $usr->getPasswordHash()) ) {
+            // Succesful Login!
+        }
+        else {
+            // Wrong password.
+        }
+    }
+    else {
+        // Wrong username.
+    }
+
+
 });
 $app->post('/signup', function($request, $response, $args) {
-    // get user data from request.
 
+    // get user data from request.
+    // we assume that this data is alreay formatted by the client.
     $firstname = $request->getParam('firstname');
     $lastname = $request->getParam('lastname');
     $address = $request->getParam('address');
     $dob = $request->getParam('dob');
     $phone = $request->getParam('phone');
+    $secondphone = $request->getParam('second_phone');
     $username = $request->getParam('username');
     $password = $request->getParam('password');
     $insurance_prov = $request->getParam('insurance');
+    $email = $request->getParam('email');
 
-    $patient = new Patient();
-    $patient->setFirstName($firstname);
-    $patient->setLastName($lastname);
-    $patient->setAddress($address);
-    $patient->setDateOfBirth($dob);
-    $patient->setInsurance($phone);
-    $patient->setUsername($username);
-    $patient->setPassword($password);
-    $patient->save();
+    // make sure this username has not been created before.
+    if (!PatientQuery::create()->filterByUsername($username)->findOne()) {
+        $patient = new Patient();
+        $patient_phones = array($phone, $secondphone);
+
+        // set the patients' phone numbers. 
+        // foreach ($patient_phones as $_phone) {
+        //     if ($_phone != null || $_phone != "") {
+        //         $patient_phone = new Patientphone();
+        //         $patient_phone->setPhoneNumber($_phone);
+        //         $patient_phone->setPatientId($patient->getID());
+
+        //         $patient_phone->save();
+        //     }
+        // }
+
+        // set patient entries.
+        $patient->setFirstName($firstname);
+        $patient->setLastName($lastname);
+        $patient->setAddress($address);
+        $patient->setDateOfBirth($dob);
+        $patient->setInsurance($insurance_prov);
+        $patient->setUsername($username);
+        $patient->setPasswordHash(password_hash($password, PASSWORD_DEFAULT));
+        $patient->setEmail($email);
+        $patient->save();
+    }
+    else {
+        return $response->withStatus(400);
+    }
 
 
 });
