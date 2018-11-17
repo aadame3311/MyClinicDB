@@ -37,17 +37,24 @@ var logininfo_form =
 // set sign up form content
 var personalinfo_form = 
     '<h1>Sign Up</h1>'+
-    '<form class ="personal-form" action="./main.php/signup">'+
+    '<form class ="personal-form">'+
         '<input id="firstname" type="text" placeholder="First Name">' +
         '<input id="lastname" type="text" placeholder="Last Name">' +
         '<input id="dob" type="text" placeholder="mm/dd/yyyy">' +
         '<input id="address" type="text" placeholder="Address">' +
         '<input id="phone" type="text" placeholder="Phone Number">'+
+        '<select id="insurance-list">'+
+            '<option value="" disabled selected>Select Insurance Provider</option>'+
+            '<option value="Company 1">Insurance Company 1</option>'+
+            '<option value="Company 2">Insurance Company 2</option>'+
+            '<option value="Company 3">Insurance Company 3</option>'+
+            '<option value="N/A">None</option>'+
+        '</select>'+
     '</form>';
 // set sign up form content.
 var signupinfo_form = 
     '<h1>Sign Up</h1>'+
-    '<form class ="signup-form" action="./main.php/signup">'+
+    '<form class="signup-form" action="./main.php/signup">'+
         '<input id="signup-username" type="text" placeholder="Username">' +
         '<input id="signup-password" type="password" placeholder="Password">' +
         '<input id="signup-cPassword" type="password" placeholder="Confirm Password">' +
@@ -95,6 +102,8 @@ personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn-
     _dob = $('#dob').val();
     _address = $('#address').val();
     _phone = $('#phone').val();
+    _insurance = $("#insurance-list").val();
+    console.log(_insurance);
 
     // switch modals.
     personalinfoModal.close()
@@ -114,6 +123,31 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
     } else {
         return;
     }
+    if (_firstname !="" && _lastname != "" ) {
+        //ajax call. 
+        console.log($(".signup-form").attr('action'))
+        $.ajax({
+            url:$(".signup-form").attr('action'),
+            data: {
+                'firstname' :   _firstname, 
+                'lastname'  :   _lastname, 
+                'dob'       :   _dob,
+                'address'   :   _address,
+                'phone'     :   _phone, 
+                'username'  :   _username,
+                'password'  :   _password,
+                'insurance' :   _insurance
+            },
+            method : "POST",
+            dataType : "JSON"
+        }).done(function(data) {
+        });
+
+    }
+    else {
+        console.log('fill em out!')
+    }
+
 
     console.log("firstname:: " + _firstname);
     console.log("lastname:: " + _lastname);
@@ -144,6 +178,8 @@ $(document).ready(function() {
 $('.login').on('click', function() {
     loginModal.open();
 });
+// open personalinfoModal on navbar signup click. 
+// the personalinfoModal carries over to the signupModal.
 $('.signup').on('click', function() {
     personalinfoModal.open();
 });

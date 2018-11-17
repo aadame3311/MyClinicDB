@@ -18,6 +18,9 @@ nav {
     margin: 0;
     color: black;
 }
+select {
+    display: inline;
+}
 .title-page {
     background-image: url('../images/landing.jpg');
     background-repeat: no-repeat;

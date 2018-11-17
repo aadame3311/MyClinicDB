@@ -26,6 +26,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPatientQuery orderByAddress($order = Criteria::ASC) Order by the address column
  * @method     ChildPatientQuery orderByDateOfBirth($order = Criteria::ASC) Order by the date_of_birth column
  * @method     ChildPatientQuery orderByInsurance($order = Criteria::ASC) Order by the insurance column
+ * @method     ChildPatientQuery orderByUsername($order = Criteria::ASC) Order by the username column
+ * @method     ChildPatientQuery orderByPasswordHash($order = Criteria::ASC) Order by the password_hash column
+ * @method     ChildPatientQuery orderByEmail($order = Criteria::ASC) Order by the email column
  *
  * @method     ChildPatientQuery groupById() Group by the ID column
  * @method     ChildPatientQuery groupByFirstName() Group by the first_name column
@@ -33,6 +36,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPatientQuery groupByAddress() Group by the address column
  * @method     ChildPatientQuery groupByDateOfBirth() Group by the date_of_birth column
  * @method     ChildPatientQuery groupByInsurance() Group by the insurance column
+ * @method     ChildPatientQuery groupByUsername() Group by the username column
+ * @method     ChildPatientQuery groupByPasswordHash() Group by the password_hash column
+ * @method     ChildPatientQuery groupByEmail() Group by the email column
  *
  * @method     ChildPatientQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPatientQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -102,7 +108,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPatient findOneByLastName(string $last_name) Return the first ChildPatient filtered by the last_name column
  * @method     ChildPatient findOneByAddress(string $address) Return the first ChildPatient filtered by the address column
  * @method     ChildPatient findOneByDateOfBirth(string $date_of_birth) Return the first ChildPatient filtered by the date_of_birth column
- * @method     ChildPatient findOneByInsurance(string $insurance) Return the first ChildPatient filtered by the insurance column *
+ * @method     ChildPatient findOneByInsurance(string $insurance) Return the first ChildPatient filtered by the insurance column
+ * @method     ChildPatient findOneByUsername(string $username) Return the first ChildPatient filtered by the username column
+ * @method     ChildPatient findOneByPasswordHash(string $password_hash) Return the first ChildPatient filtered by the password_hash column
+ * @method     ChildPatient findOneByEmail(string $email) Return the first ChildPatient filtered by the email column *
 
  * @method     ChildPatient requirePk($key, ConnectionInterface $con = null) Return the ChildPatient by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPatient requireOne(ConnectionInterface $con = null) Return the first ChildPatient matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -113,6 +122,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPatient requireOneByAddress(string $address) Return the first ChildPatient filtered by the address column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPatient requireOneByDateOfBirth(string $date_of_birth) Return the first ChildPatient filtered by the date_of_birth column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPatient requireOneByInsurance(string $insurance) Return the first ChildPatient filtered by the insurance column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPatient requireOneByUsername(string $username) Return the first ChildPatient filtered by the username column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPatient requireOneByPasswordHash(string $password_hash) Return the first ChildPatient filtered by the password_hash column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPatient requireOneByEmail(string $email) Return the first ChildPatient filtered by the email column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPatient[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPatient objects based on current ModelCriteria
  * @method     ChildPatient[]|ObjectCollection findById(int $ID) Return ChildPatient objects filtered by the ID column
@@ -121,6 +133,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPatient[]|ObjectCollection findByAddress(string $address) Return ChildPatient objects filtered by the address column
  * @method     ChildPatient[]|ObjectCollection findByDateOfBirth(string $date_of_birth) Return ChildPatient objects filtered by the date_of_birth column
  * @method     ChildPatient[]|ObjectCollection findByInsurance(string $insurance) Return ChildPatient objects filtered by the insurance column
+ * @method     ChildPatient[]|ObjectCollection findByUsername(string $username) Return ChildPatient objects filtered by the username column
+ * @method     ChildPatient[]|ObjectCollection findByPasswordHash(string $password_hash) Return ChildPatient objects filtered by the password_hash column
+ * @method     ChildPatient[]|ObjectCollection findByEmail(string $email) Return ChildPatient objects filtered by the email column
  * @method     ChildPatient[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -219,7 +234,7 @@ abstract class PatientQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, first_name, last_name, address, date_of_birth, insurance FROM patient WHERE ID = :p0';
+        $sql = 'SELECT ID, first_name, last_name, address, date_of_birth, insurance, username, password_hash, email FROM patient WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -473,6 +488,81 @@ abstract class PatientQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PatientTableMap::COL_INSURANCE, $insurance, $comparison);
+    }
+
+    /**
+     * Filter the query on the username column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByUsername('fooValue');   // WHERE username = 'fooValue'
+     * $query->filterByUsername('%fooValue%', Criteria::LIKE); // WHERE username LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $username The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPatientQuery The current query, for fluid interface
+     */
+    public function filterByUsername($username = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($username)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PatientTableMap::COL_USERNAME, $username, $comparison);
+    }
+
+    /**
+     * Filter the query on the password_hash column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByPasswordHash('fooValue');   // WHERE password_hash = 'fooValue'
+     * $query->filterByPasswordHash('%fooValue%', Criteria::LIKE); // WHERE password_hash LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $passwordHash The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPatientQuery The current query, for fluid interface
+     */
+    public function filterByPasswordHash($passwordHash = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($passwordHash)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PatientTableMap::COL_PASSWORD_HASH, $passwordHash, $comparison);
+    }
+
+    /**
+     * Filter the query on the email column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByEmail('fooValue');   // WHERE email = 'fooValue'
+     * $query->filterByEmail('%fooValue%', Criteria::LIKE); // WHERE email LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $email The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildPatientQuery The current query, for fluid interface
+     */
+    public function filterByEmail($email = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($email)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(PatientTableMap::COL_EMAIL, $email, $comparison);
     }
 
     /**

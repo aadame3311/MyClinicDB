@@ -119,6 +119,27 @@ abstract class Patient implements ActiveRecordInterface
     protected $insurance;
 
     /**
+     * The value for the username field.
+     *
+     * @var        string
+     */
+    protected $username;
+
+    /**
+     * The value for the password_hash field.
+     *
+     * @var        string
+     */
+    protected $password_hash;
+
+    /**
+     * The value for the email field.
+     *
+     * @var        string
+     */
+    protected $email;
+
+    /**
      * @var        ObjectCollection|ChildAppointment[] Collection to store aggregation of ChildAppointment objects.
      */
     protected $collAppointments;
@@ -472,6 +493,36 @@ abstract class Patient implements ActiveRecordInterface
     }
 
     /**
+     * Get the [username] column value.
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Get the [password_hash] column value.
+     *
+     * @return string
+     */
+    public function getPasswordHash()
+    {
+        return $this->password_hash;
+    }
+
+    /**
+     * Get the [email] column value.
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -592,6 +643,66 @@ abstract class Patient implements ActiveRecordInterface
     } // setInsurance()
 
     /**
+     * Set the value of [username] column.
+     *
+     * @param string $v new value
+     * @return $this|\Patient The current object (for fluent API support)
+     */
+    public function setUsername($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->username !== $v) {
+            $this->username = $v;
+            $this->modifiedColumns[PatientTableMap::COL_USERNAME] = true;
+        }
+
+        return $this;
+    } // setUsername()
+
+    /**
+     * Set the value of [password_hash] column.
+     *
+     * @param string $v new value
+     * @return $this|\Patient The current object (for fluent API support)
+     */
+    public function setPasswordHash($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->password_hash !== $v) {
+            $this->password_hash = $v;
+            $this->modifiedColumns[PatientTableMap::COL_PASSWORD_HASH] = true;
+        }
+
+        return $this;
+    } // setPasswordHash()
+
+    /**
+     * Set the value of [email] column.
+     *
+     * @param string $v new value
+     * @return $this|\Patient The current object (for fluent API support)
+     */
+    public function setEmail($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->email !== $v) {
+            $this->email = $v;
+            $this->modifiedColumns[PatientTableMap::COL_EMAIL] = true;
+        }
+
+        return $this;
+    } // setEmail()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -644,6 +755,15 @@ abstract class Patient implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : PatientTableMap::translateFieldName('Insurance', TableMap::TYPE_PHPNAME, $indexType)];
             $this->insurance = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : PatientTableMap::translateFieldName('Username', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->username = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : PatientTableMap::translateFieldName('PasswordHash', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->password_hash = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : PatientTableMap::translateFieldName('Email', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->email = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -652,7 +772,7 @@ abstract class Patient implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 6; // 6 = PatientTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 9; // 9 = PatientTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Patient'), 0, $e);
@@ -966,6 +1086,15 @@ abstract class Patient implements ActiveRecordInterface
         if ($this->isColumnModified(PatientTableMap::COL_INSURANCE)) {
             $modifiedColumns[':p' . $index++]  = 'insurance';
         }
+        if ($this->isColumnModified(PatientTableMap::COL_USERNAME)) {
+            $modifiedColumns[':p' . $index++]  = 'username';
+        }
+        if ($this->isColumnModified(PatientTableMap::COL_PASSWORD_HASH)) {
+            $modifiedColumns[':p' . $index++]  = 'password_hash';
+        }
+        if ($this->isColumnModified(PatientTableMap::COL_EMAIL)) {
+            $modifiedColumns[':p' . $index++]  = 'email';
+        }
 
         $sql = sprintf(
             'INSERT INTO patient (%s) VALUES (%s)',
@@ -994,6 +1123,15 @@ abstract class Patient implements ActiveRecordInterface
                         break;
                     case 'insurance':
                         $stmt->bindValue($identifier, $this->insurance, PDO::PARAM_STR);
+                        break;
+                    case 'username':
+                        $stmt->bindValue($identifier, $this->username, PDO::PARAM_STR);
+                        break;
+                    case 'password_hash':
+                        $stmt->bindValue($identifier, $this->password_hash, PDO::PARAM_STR);
+                        break;
+                    case 'email':
+                        $stmt->bindValue($identifier, $this->email, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1075,6 +1213,15 @@ abstract class Patient implements ActiveRecordInterface
             case 5:
                 return $this->getInsurance();
                 break;
+            case 6:
+                return $this->getUsername();
+                break;
+            case 7:
+                return $this->getPasswordHash();
+                break;
+            case 8:
+                return $this->getEmail();
+                break;
             default:
                 return null;
                 break;
@@ -1111,6 +1258,9 @@ abstract class Patient implements ActiveRecordInterface
             $keys[3] => $this->getAddress(),
             $keys[4] => $this->getDateOfBirth(),
             $keys[5] => $this->getInsurance(),
+            $keys[6] => $this->getUsername(),
+            $keys[7] => $this->getPasswordHash(),
+            $keys[8] => $this->getEmail(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1245,6 +1395,15 @@ abstract class Patient implements ActiveRecordInterface
             case 5:
                 $this->setInsurance($value);
                 break;
+            case 6:
+                $this->setUsername($value);
+                break;
+            case 7:
+                $this->setPasswordHash($value);
+                break;
+            case 8:
+                $this->setEmail($value);
+                break;
         } // switch()
 
         return $this;
@@ -1288,6 +1447,15 @@ abstract class Patient implements ActiveRecordInterface
         }
         if (array_key_exists($keys[5], $arr)) {
             $this->setInsurance($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setUsername($arr[$keys[6]]);
+        }
+        if (array_key_exists($keys[7], $arr)) {
+            $this->setPasswordHash($arr[$keys[7]]);
+        }
+        if (array_key_exists($keys[8], $arr)) {
+            $this->setEmail($arr[$keys[8]]);
         }
     }
 
@@ -1347,6 +1515,15 @@ abstract class Patient implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PatientTableMap::COL_INSURANCE)) {
             $criteria->add(PatientTableMap::COL_INSURANCE, $this->insurance);
+        }
+        if ($this->isColumnModified(PatientTableMap::COL_USERNAME)) {
+            $criteria->add(PatientTableMap::COL_USERNAME, $this->username);
+        }
+        if ($this->isColumnModified(PatientTableMap::COL_PASSWORD_HASH)) {
+            $criteria->add(PatientTableMap::COL_PASSWORD_HASH, $this->password_hash);
+        }
+        if ($this->isColumnModified(PatientTableMap::COL_EMAIL)) {
+            $criteria->add(PatientTableMap::COL_EMAIL, $this->email);
         }
 
         return $criteria;
@@ -1439,6 +1616,9 @@ abstract class Patient implements ActiveRecordInterface
         $copyObj->setAddress($this->getAddress());
         $copyObj->setDateOfBirth($this->getDateOfBirth());
         $copyObj->setInsurance($this->getInsurance());
+        $copyObj->setUsername($this->getUsername());
+        $copyObj->setPasswordHash($this->getPasswordHash());
+        $copyObj->setEmail($this->getEmail());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -2776,6 +2956,9 @@ abstract class Patient implements ActiveRecordInterface
         $this->address = null;
         $this->date_of_birth = null;
         $this->insurance = null;
+        $this->username = null;
+        $this->password_hash = null;
+        $this->email = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

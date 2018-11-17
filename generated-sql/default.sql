@@ -161,7 +161,11 @@ CREATE TABLE `patient`
     `address` VARCHAR(255) NOT NULL,
     `date_of_birth` VARCHAR(255) NOT NULL,
     `insurance` VARCHAR(255),
-    PRIMARY KEY (`ID`)
+    `username` VARCHAR(255),
+    `password_hash` VARCHAR(255),
+    `email` VARCHAR(255),
+    PRIMARY KEY (`ID`),
+    UNIQUE INDEX `u_username` (`username`)
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

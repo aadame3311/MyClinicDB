@@ -59,7 +59,7 @@ class PatientTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PatientTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the ID field
@@ -102,6 +102,21 @@ class PatientTableMap extends TableMap
     const COL_INSURANCE = 'patient.insurance';
 
     /**
+     * the column name for the username field
+     */
+    const COL_USERNAME = 'patient.username';
+
+    /**
+     * the column name for the password_hash field
+     */
+    const COL_PASSWORD_HASH = 'patient.password_hash';
+
+    /**
+     * the column name for the email field
+     */
+    const COL_EMAIL = 'patient.email';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -113,11 +128,11 @@ class PatientTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'FirstName', 'LastName', 'Address', 'DateOfBirth', 'Insurance', ),
-        self::TYPE_CAMELNAME     => array('id', 'firstName', 'lastName', 'address', 'dateOfBirth', 'insurance', ),
-        self::TYPE_COLNAME       => array(PatientTableMap::COL_ID, PatientTableMap::COL_FIRST_NAME, PatientTableMap::COL_LAST_NAME, PatientTableMap::COL_ADDRESS, PatientTableMap::COL_DATE_OF_BIRTH, PatientTableMap::COL_INSURANCE, ),
-        self::TYPE_FIELDNAME     => array('ID', 'first_name', 'last_name', 'address', 'date_of_birth', 'insurance', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'FirstName', 'LastName', 'Address', 'DateOfBirth', 'Insurance', 'Username', 'PasswordHash', 'Email', ),
+        self::TYPE_CAMELNAME     => array('id', 'firstName', 'lastName', 'address', 'dateOfBirth', 'insurance', 'username', 'passwordHash', 'email', ),
+        self::TYPE_COLNAME       => array(PatientTableMap::COL_ID, PatientTableMap::COL_FIRST_NAME, PatientTableMap::COL_LAST_NAME, PatientTableMap::COL_ADDRESS, PatientTableMap::COL_DATE_OF_BIRTH, PatientTableMap::COL_INSURANCE, PatientTableMap::COL_USERNAME, PatientTableMap::COL_PASSWORD_HASH, PatientTableMap::COL_EMAIL, ),
+        self::TYPE_FIELDNAME     => array('ID', 'first_name', 'last_name', 'address', 'date_of_birth', 'insurance', 'username', 'password_hash', 'email', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -127,11 +142,11 @@ class PatientTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'FirstName' => 1, 'LastName' => 2, 'Address' => 3, 'DateOfBirth' => 4, 'Insurance' => 5, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'firstName' => 1, 'lastName' => 2, 'address' => 3, 'dateOfBirth' => 4, 'insurance' => 5, ),
-        self::TYPE_COLNAME       => array(PatientTableMap::COL_ID => 0, PatientTableMap::COL_FIRST_NAME => 1, PatientTableMap::COL_LAST_NAME => 2, PatientTableMap::COL_ADDRESS => 3, PatientTableMap::COL_DATE_OF_BIRTH => 4, PatientTableMap::COL_INSURANCE => 5, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'first_name' => 1, 'last_name' => 2, 'address' => 3, 'date_of_birth' => 4, 'insurance' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'FirstName' => 1, 'LastName' => 2, 'Address' => 3, 'DateOfBirth' => 4, 'Insurance' => 5, 'Username' => 6, 'PasswordHash' => 7, 'Email' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'firstName' => 1, 'lastName' => 2, 'address' => 3, 'dateOfBirth' => 4, 'insurance' => 5, 'username' => 6, 'passwordHash' => 7, 'email' => 8, ),
+        self::TYPE_COLNAME       => array(PatientTableMap::COL_ID => 0, PatientTableMap::COL_FIRST_NAME => 1, PatientTableMap::COL_LAST_NAME => 2, PatientTableMap::COL_ADDRESS => 3, PatientTableMap::COL_DATE_OF_BIRTH => 4, PatientTableMap::COL_INSURANCE => 5, PatientTableMap::COL_USERNAME => 6, PatientTableMap::COL_PASSWORD_HASH => 7, PatientTableMap::COL_EMAIL => 8, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'first_name' => 1, 'last_name' => 2, 'address' => 3, 'date_of_birth' => 4, 'insurance' => 5, 'username' => 6, 'password_hash' => 7, 'email' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -157,6 +172,9 @@ class PatientTableMap extends TableMap
         $this->addColumn('address', 'Address', 'VARCHAR', true, 255, null);
         $this->addColumn('date_of_birth', 'DateOfBirth', 'VARCHAR', true, 255, null);
         $this->addColumn('insurance', 'Insurance', 'VARCHAR', false, 255, null);
+        $this->addColumn('username', 'Username', 'VARCHAR', false, 255, null);
+        $this->addColumn('password_hash', 'PasswordHash', 'VARCHAR', false, 255, null);
+        $this->addColumn('email', 'Email', 'VARCHAR', false, 255, null);
     } // initialize()
 
     /**
@@ -348,6 +366,9 @@ class PatientTableMap extends TableMap
             $criteria->addSelectColumn(PatientTableMap::COL_ADDRESS);
             $criteria->addSelectColumn(PatientTableMap::COL_DATE_OF_BIRTH);
             $criteria->addSelectColumn(PatientTableMap::COL_INSURANCE);
+            $criteria->addSelectColumn(PatientTableMap::COL_USERNAME);
+            $criteria->addSelectColumn(PatientTableMap::COL_PASSWORD_HASH);
+            $criteria->addSelectColumn(PatientTableMap::COL_EMAIL);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.first_name');
@@ -355,6 +376,9 @@ class PatientTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.address');
             $criteria->addSelectColumn($alias . '.date_of_birth');
             $criteria->addSelectColumn($alias . '.insurance');
+            $criteria->addSelectColumn($alias . '.username');
+            $criteria->addSelectColumn($alias . '.password_hash');
+            $criteria->addSelectColumn($alias . '.email');
         }
     }
 

@@ -127,6 +127,12 @@
     <column name="address" phpName="Address" type="VARCHAR" size="255" required="true"/>
     <column name="date_of_birth" phpName="DateOfBirth" type="VARCHAR" size="255" required="true"/>
     <column name="insurance" phpName="Insurance" type="VARCHAR" size="255"/>
+    <column name="username" phpName="Username" type="VARCHAR" size="255"/>
+    <column name="password_hash" phpName="PasswordHash" type="VARCHAR" size="255"/>
+    <column name="email" phpName="Email" type="VARCHAR" size="255"/>
+    <unique name="u_username">
+      <unique-column name="username"/>
+    </unique>
     <vendor type="mysql">
       <parameter name="Engine" value="InnoDB"/>
     </vendor>
