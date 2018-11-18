@@ -38,12 +38,12 @@ var logininfo_form =
 var personalinfo_form = 
     '<h1>Sign Up</h1>'+
     '<form class ="personal-form">'+
-        '<input id="firstname" type="text" placeholder="First Name">' +
-        '<input id="lastname" type="text" placeholder="Last Name">' +
-        '<input id="dob" type="text" placeholder="mm/dd/yyyy">' +
-        '<input id="address" type="text" placeholder="Address">' +
-        '<input id="phone" type="text" placeholder="Phone Number">'+
-        '<input id="second-phone" type="text" placeholder="Secondary Phone Number">'+
+        '<div class="input-field"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
+        '<div class="input-field"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
+        '<div class="input-field"><input id="dob" type="text"><label for="dob">Date of Birth</label></div>' +
+        '<div class="input-field"><input id="address" type="text"><label for="address">Address</label></div>' +
+        '<div class="input-field"><input id="phone" type="text"><label for="phone">Phone Number</label></div>'+
+        '<div class="input-field"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div>'+
         '<select id="insurance-list">'+
             '<option value="" disabled selected>Select Insurance Provider</option>'+
             '<option value="Company 1">Insurance Company 1</option>'+
@@ -56,10 +56,22 @@ var personalinfo_form =
 var signupinfo_form = 
     '<h1>Sign Up</h1>'+
     '<form class="signup-form" action="./main.php/signup">'+
-        '<input id="signup-email" type="text" placeholder="Email">' +
-        '<input id="signup-username" type="text" placeholder="Username">' +
-        '<input id="signup-password" type="password" placeholder="Password">' +
-        '<input id="signup-cPassword" type="password" placeholder="Confirm Password">' +
+        '<div class="input-field">'+
+            '<input id="signup-email" type="email">' +
+            '<label for="signup-email">Email</label>'+
+        '</div>'+
+        '<div class="input-field">'+
+            '<input id="signup-username" type="text">' +
+            '<label for="signup-username">Username</label>'+
+        '</div>'+
+        '<div class="input-field">'+
+            '<input id="signup-password" type="text">' +
+            '<label for="signup-password">Password</label>'+
+        '</div>'+
+        '<div class="input-field">'+
+            '<input id="signup-cPassword" type="text">' +
+            '<label for="signup-cPassword">Confirm Password</label>'+
+        '</div>'+
     '</form>';
 
 // LOGIN FORM //
@@ -94,7 +106,6 @@ loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn w
 // PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
 personalinfoModal.setContent(personalinfo_form);
 personalinfoModal.addFooterBtn('Exit', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
-    signupModal.close();
     personalinfoModal.close();
 });
 personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
