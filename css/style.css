@@ -7,13 +7,21 @@ h1 {
 }
 
 nav {
-    background-color: slategray;
+    background-color: #C9B377;
     margin: 0;
     position: fixed;
     top: 1;
 }
 
 /* main content of landing page */
+.main-content {
+    padding-top: 55px;
+}
+@media (max-width: 979px) {
+    .main-content {
+      padding-top: 55px;
+    }
+}
 .title-page h1 {
     margin: 0;
     color: black;
@@ -30,7 +38,7 @@ select {
 }
 .section {
     height: 60vh;
-    background-color: slategray;
+    background-color: #A2AACA;
 }
 .cont2 {
     background-image: url('../images/landing2.jpg');

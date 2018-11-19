@@ -188,9 +188,10 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
 
 
 $(document).ready(function() {
+    $('.parallax').parallax();
+
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
-    $('.parallax').parallax();
 });
 
 // open loginModal to allow user to login.
