@@ -38,7 +38,7 @@ $app->post('/login', function($request, $response, $args) {
         if ( $pwd = password_verify($password, $usr->getPasswordHash()) ) {
             // Succesful Login!
             $login_info = [
-                'code'=>'logged in'
+                'code' => 1
             ];
             return $response->withJson($login_info);
 
@@ -46,7 +46,7 @@ $app->post('/login', function($request, $response, $args) {
         else {
             // Wrong password.
             $login_info = [
-                'code'=>'wrong password'
+                'code' => 0
             ];
             return $response->withJson($login_info);
         }
@@ -54,7 +54,7 @@ $app->post('/login', function($request, $response, $args) {
     else {
         // Wrong username.
         $login_info = [
-            'code'=>'wrong username'
+            'code' => 0
         ];
         return $response->withJson($login_info);
     }

@@ -33,7 +33,8 @@ var logininfo_form =
     '<form class ="login-form" action="./main.php/login">'+
         '<input id="login-username" type="text" placeholder="Username">' +
         '<input id="login-password" type="password" placeholder="Password">' +
-    '</form>';
+    '</form>'+
+    '<p hidden class="warning" style="color: red">wrong username or password</p>';
 // set sign up form content
 var personalinfo_form = 
     '<h1>Sign Up</h1>'+
@@ -87,10 +88,6 @@ loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn w
     var _username = $('#login-username').val();
     var _password = $('#login-password').val();
 
-    console.log("username: "+_username);
-    console.log("password: "+_password);
-    console.log(_url);
-
     // send post request to url to be handled by main.php.
     $.ajax({
         url: _url,
@@ -101,8 +98,17 @@ loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn w
         method: "POST",
         dataType: "JSON"
     }).done(function(data) {
-        console.log(data['code']);
+        console.log(data['code'])
+        if (data['code'] == 1) {
+            // user is logged in, go to user dashboard.
+            $("p.warning").prop('hidden', true);
 
+        }
+        else if (data['code'] == 0) {
+            // wrong username or password. 
+            console.log('a')
+            $("p.warning").prop('hidden', false);
+        }
     });
 });
 
@@ -171,19 +177,8 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
         console.log('fill em out!')
     }
 
-
-    console.log("firstname:: " + _firstname);
-    console.log("lastname:: " + _lastname);
-    console.log("dob:: " + _dob);
-    console.log("address:: " + _address);
-    console.log("phone:: " + _phone);
-    console.log("username:: " + _username);
-    console.log("password:: " + _password);
-
     // do ajax call to back end close modals. 
     signupModal.close();
-    console.log('a');
-
 
 
 });
