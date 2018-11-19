@@ -33,17 +33,30 @@ $app->post('/login', function($request, $response, $args) {
     $password = $request->getParam('password');
 
     // verify username. 
-    if ($usr = PatientQuery::create()->filterBy($username)) {
+    if ($usr = PatientQuery::create()->filterByUsername($username)->findOne()) {
         // verify password. 
         if ( $pwd = password_verify($password, $usr->getPasswordHash()) ) {
             // Succesful Login!
+            $login_info = [
+                'code'=>'logged in'
+            ];
+            return $response->withJson($login_info);
+
         }
         else {
             // Wrong password.
+            $login_info = [
+                'code'=>'wrong password'
+            ];
+            return $response->withJson($login_info);
         }
     }
     else {
         // Wrong username.
+        $login_info = [
+            'code'=>'wrong username'
+        ];
+        return $response->withJson($login_info);
     }
 
 

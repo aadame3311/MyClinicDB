@@ -30,7 +30,7 @@ var signupModal = new tingle.modal({
 
 var logininfo_form = 
     '<h1>Login</h1>' +
-    '<form class ="login-form" action="./main.php/signup">'+
+    '<form class ="login-form" action="./main.php/login">'+
         '<input id="login-username" type="text" placeholder="Username">' +
         '<input id="login-password" type="password" placeholder="Password">' +
     '</form>';
@@ -38,12 +38,14 @@ var logininfo_form =
 var personalinfo_form = 
     '<h1>Sign Up</h1>'+
     '<form class ="personal-form">'+
-        '<div class="input-field"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
-        '<div class="input-field"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
-        '<div class="input-field"><input id="dob" type="text"><label for="dob">Date of Birth</label></div>' +
-        '<div class="input-field"><input id="address" type="text"><label for="address">Address</label></div>' +
-        '<div class="input-field"><input id="phone" type="text"><label for="phone">Phone Number</label></div>'+
-        '<div class="input-field"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div>'+
+        '<div class="row">'+
+            '<div class="input-field col s6"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
+            '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
+        '</div>'+
+        '<div class="row"><div class="input-field col s12"><input id="dob" type="text"><label for="dob">Date of Birth</label></div></div>' +
+        '<div class="row"><div class="input-field col s12"><input id="address" type="text"><label for="address">Address</label></div></div>' +
+        '<div class="row"><div class="input-field col s12"><input id="phone" type="text"><label for="phone">Phone Number</label></div></div>'+
+        '<div class="row"><div class="input-field col s12"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div></div>'+
         '<select id="insurance-list">'+
             '<option value="" disabled selected>Select Insurance Provider</option>'+
             '<option value="Company 1">Insurance Company 1</option>'+
@@ -82,8 +84,8 @@ loginModal.addFooterBtn('Exit', 'btn waves-effect waves-light tingle-btn--pull-l
 loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
     // send user data to server for authentication.
     var _url = $('form.login-form').attr('action');
-    var _username = $('#username').val();
-    var _password = $('#password').val();
+    var _username = $('#login-username').val();
+    var _password = $('#login-password').val();
 
     console.log("username: "+_username);
     console.log("password: "+_password);
@@ -98,7 +100,8 @@ loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn w
         },
         method: "POST",
         dataType: "JSON"
-    }).done(function() {
+    }).done(function(data) {
+        console.log(data['code']);
 
     });
 });
