@@ -31,10 +31,9 @@ select {
 }
 
 
-.title-page {
+.parallax-container {
     height: 80vh;
 
-    text-align: center;
 }
 .section {
     height: 60vh;
