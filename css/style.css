@@ -24,21 +24,21 @@ select {
 
 
 .title-page {
-    background-image: url('../images/landing.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-blend-mode: color;
-    
-    height: 100vh;
+    height: 80vh;
 
     text-align: center;
 }
-.cont1 {
-    height: 50vh;
+.section {
+    height: 60vh;
     background-color: slategray;
 }
 .cont2 {
-    height: 50vh;
-    background-color: lightslategray;
+    background-image: url('../images/landing2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    height: 60vh;
+
+    text-align: center;
 }
 
