@@ -15,7 +15,7 @@ $container['view'] = function($container) {
 	
 	$basePath = rtrim(str_ireplace('index.php', '', 
 	$container->get('request')->getUri()->getBasePath()), '/');
-
+//jjj
 	$view->addExtension(
 	new Slim\Views\TwigExtension($container->get('router'), $basePath));
 	
