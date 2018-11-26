@@ -43,7 +43,7 @@ var personalinfo_form =
             '<div class="input-field col s6"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
             '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
         '</div>'+
-        '<div class="row"><div class="input-field col s12"><input id="dob" type="text"><label for="dob">Date of Birth</label></div></div>' +
+        '<div class="row"><div class="input-field col s12"><input id="dob" type="text"><label for="dob">Date of Birth (MM/DD/YYYY)</label></div></div>' +
         '<div class="row"><div class="input-field col s12"><input id="address" type="text"><label for="address">Address</label></div></div>' +
         '<div class="row"><div class="input-field col s12"><input id="phone" type="text"><label for="phone">Phone Number</label></div></div>'+
         '<div class="row"><div class="input-field col s12"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div></div>'+
@@ -68,49 +68,15 @@ var signupinfo_form =
             '<label for="signup-username">Username</label>'+
         '</div>'+
         '<div class="input-field">'+
-            '<input id="signup-password" type="text">' +
+            '<input id="signup-password" type="password">' +
             '<label for="signup-password">Password</label>'+
         '</div>'+
         '<div class="input-field">'+
-            '<input id="signup-cPassword" type="text">' +
+            '<input id="signup-cPassword" type="password">' +
             '<label for="signup-cPassword">Confirm Password</label>'+
         '</div>'+
     '</form>';
 
-// LOGIN FORM //
-loginModal.setContent(logininfo_form);
-loginModal.addFooterBtn('Exit', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
-    loginModal.close();
-});
-loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
-    // send user data to server for authentication.
-    var _url = $('form.login-form').attr('action');
-    var _username = $('#login-username').val();
-    var _password = $('#login-password').val();
-
-    // send post request to url to be handled by main.php.
-    $.ajax({
-        url: _url,
-        data: {
-            'username': _username,
-            'password': _password
-        },
-        method: "POST",
-        dataType: "JSON"
-    }).done(function(data) {
-        console.log(data['code'])
-        if (data['code'] == 1) {
-            // user is logged in, go to user dashboard.
-            $("p.warning").prop('hidden', true);
-
-        }
-        else if (data['code'] == 0) {
-            // wrong username or password. 
-            console.log('a')
-            $("p.warning").prop('hidden', false);
-        }
-    });
-});
 
 // PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
 personalinfoModal.setContent(personalinfo_form);

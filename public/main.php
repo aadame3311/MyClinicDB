@@ -35,7 +35,7 @@ $app->post('/login', function($request, $response, $args) {
     // verify username. 
     if ($usr = PatientQuery::create()->filterByUsername($username)->findOne()) {
         // verify password. 
-        if ( $pwd = password_verify($password, $usr->getPasswordHash()) ) {
+        if ( password_verify($password, $usr->getPasswordHash()) ) {
             // Succesful Login!
             $login_info = [
                 'code' => 1
@@ -110,6 +110,21 @@ $app->post('/signup', function($request, $response, $args) {
     }
 
 
+});
+
+
+// USER DASHBOARD//
+$app->post('/dashboard', function($request, $response, $args) {
+    if ($request->getParam('code') == 1) {
+        // allow access. 
+        
+        return $this->view->render($response, 'patient.html',[
+            'username'=>$request->getParam('username')
+        ]);
+    }
+    else {
+        echo "ACCESS DENIED";
+    }
 });
 
 $app->run();
