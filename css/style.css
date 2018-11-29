@@ -8,6 +8,16 @@
 select#insurance-list {
     background-color: #475C58;
 }
+.input-field label {
+    color: #475C58;
+}
+/* Change the white to any color ;) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px #A8DCD1 inset;
+}
 
 /* overall adjustments*/
 body {
