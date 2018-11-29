@@ -23,7 +23,7 @@ function AccessDashboard(user, code, user_code) {
 
 // create login modal.
 loginModal.setContent(logininfo_form);
-loginModal.addFooterBtn('Exit', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
+loginModal.addFooterBtn('Exit', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
     loginModal.close();
 });
 // on submit button press.

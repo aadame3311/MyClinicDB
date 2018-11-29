@@ -1,14 +1,24 @@
+/* adjust defaults*/
+.btn-danger {
+    background-color: #E57248;
+}
+.btn-danger:hover {
+    background-color: #FF7F50;
+}
+select#insurance-list {
+    background-color: #475C58;
+}
+
+/* overall adjustments*/
 body {
     background-color: black;
     font-family: 'Montserrat', sans-serif;
     overflow-x:hidden;
-
 }
 
 h1 {
     color: black;
 }
-
 nav {
     background-color: #DCE2C8;
     margin: 0;
