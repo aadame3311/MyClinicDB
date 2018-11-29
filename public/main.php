@@ -37,11 +37,17 @@ $app->post('/login', function($request, $response, $args) {
         // verify password. 
         if ( password_verify($password, $usr->getPasswordHash()) ) {
             // Succesful Login!
+            $username_hash = hash('ripemd160', $username);
             $login_info = [
-                'code' => 1
+                'code' => 1,
+                'user_code'=> $username_hash
             ];
-            return $response->withJson($login_info);
+            session_id("s-".$username_hash);
+            session_start();
+            $_SESSION['username'] = $username;
+            setcookie("user", $username_hash);
 
+            return $response->withJson($login_info);
         }
         else {
             // Wrong password.
@@ -61,6 +67,18 @@ $app->post('/login', function($request, $response, $args) {
 
 
 });
+$app->post('/logout', function($request, $response, $args) {
+    session_id('s-'.$request->getParam('user_code'));
+    session_start();
+    session_destroy();
+    unset($_COOKIE["user"]);
+    setcookie("user", "", time()-1800);
+
+    // redirect to main page.
+    header("Location: ../main.php");
+    exit();
+
+});
 $app->post('/signup', function($request, $response, $args) {
 
     // get user data from request.
@@ -76,11 +94,12 @@ $app->post('/signup', function($request, $response, $args) {
     $insurance_prov = $request->getParam('insurance');
     $email = $request->getParam('email');
 
+
     // make sure this username has not been created before.
     if (!PatientQuery::create()->filterByUsername($username)->findOne()) {
         $patient = new Patient();
         $patient_phones = array($phone, $secondphone);
-        echo "a";
+
 
 
         // set patient entries.
@@ -97,7 +116,7 @@ $app->post('/signup', function($request, $response, $args) {
         // set the patients' phone numbers. 
         foreach ($patient_phones as $_phone) {
     
-            if ($_phone != null || $_phone != "") {
+            if ($_phone != null && $_phone != "") {
                 $patient_phone = new Patientphone();
                 $patient_phone->setPhoneNumber($_phone);
                 $patient_phone->setPatientId($patient->getID());
@@ -114,17 +133,20 @@ $app->post('/signup', function($request, $response, $args) {
 
 
 // USER DASHBOARD//
-$app->post('/dashboard', function($request, $response, $args) {
-    if ($request->getParam('code') == 1) {
-        // allow access. 
-        
-        return $this->view->render($response, 'patient.html',[
-            'username'=>$request->getParam('username')
+$app->get('/dashboard/{user_code}', function($request, $response, $args) {
+    if (isset($_COOKIE["user"]) && $_COOKIE["user"] == $args['user_code']) {
+        session_id("s-".$_COOKIE["user"]);
+        session_start();
+        return $this->view->render($response, 'patient.html', [
+            'username'=>$_SESSION['username']
         ]);
     }
     else {
-        echo "ACCESS DENIED";
+        echo "redirecting...";
+        header("Location: ../../main.php");
+        exit();
     }
+
 });
 
 $app->run();

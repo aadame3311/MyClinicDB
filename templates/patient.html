@@ -6,17 +6,20 @@ MyClinic
 
 
 {% block pageTitle %}
+<link rel="stylesheet" href="../../../css/style.css">
+<link rel="stylesheet" href="../../../css/tingle.css">
 
+<title>MyClinic Dashboard</title>
 {% endblock %}
 
 
 {% block navTabs %}
-<li><a class="login" href="#">Log out</a></li>
+<li><a class="logout" href="#">Log out</a></li>
 {% endblock %}
 {% block navTabsMobile %}
 <li><a class="login" href="#">Overview</a></li>
 <li><a class="login" href="#">Bills</a></li>
-<li><a class="login" href="#">Log out</a></li>
+<li><a class="logout" href="#">Log out</a></li>
 {% endblock %}
 
 {% block content %} 
@@ -29,4 +32,15 @@ MyClinic
 <div class="cont2">
     
 </div>
+
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>        
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../../../js/tingle.js"></script>         
+<script src="../../../js/source.js"></script> 
+<script src="../../../js/loginHandler.js"></script>
 {% endblock %}
