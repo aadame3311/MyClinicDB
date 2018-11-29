@@ -1,5 +1,8 @@
 body {
     background-color: black;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x:hidden;
+
 }
 
 h1 {
@@ -7,10 +10,12 @@ h1 {
 }
 
 nav {
-    background-color: #C9B377;
+    background-color: #DCE2C8;
     margin: 0;
     position: fixed;
     top: 1;
+    color: black;
+    z-index: 10;
 }
 
 /* main content of landing page */
@@ -32,12 +37,33 @@ select {
 
 
 .parallax-container {
-    height: 80vh;
+    height: 300px;
 
 }
+
 .section {
-    height: 60vh;
-    background-color: #A2AACA;
+    height: 500px;
+    background-color: #A8DCD1;
+}
+.footer {
+    height: auto;
+    background-color: #475C58;
+    color: white;
+}
+.footer .name1 {
+    position: relative;
+    text-align: left;
+}
+.footer .name2 {
+    position: relative;
+    text-align: right;
+}
+.footer .course-name {
+    position: relative;
+    text-align: center;
+}
+.section h2 {
+    text-align: center;
 }
 .cont2 {
     background-image: url('../images/landing2.jpg');
