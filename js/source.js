@@ -35,15 +35,43 @@ var logininfo_form =
         '<input id="login-password" type="password" placeholder="Password">' +
     '</form>'+
     '<p hidden class="warning" style="color: red">wrong username or password</p>';
-// set sign up form content
+
 var personalinfo_form = 
     '<h1>Sign Up</h1>'+
     '<form class ="personal-form">'+
         '<div class="row">'+
             '<div class="input-field col s6"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
             '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
+        '<div class="control-group">' +
+            '<label class = "control-label>'
+            '<div class="controls">' +
+                // month selection
+                '<select id="Month">' +
+                    '<option value="" disabled selected>Select Month</option>'+
+                    '<option value ="January">Jan.</option>'+
+                    '<option value ="February">Febr.</option>'+
+                    '<option value ="March">Mar.</option>'+ 
+                    '<option value ="April">Apr.</option>'+
+                    '<option value ="May">May</option>'+
+                    '<option value ="June">June</option>'+
+                    '<option value ="July">July</option>'+
+                    '<option value ="August">Aug.</option>'+
+                    '<option value ="September">Sept.</option>'+
+                    '<option value ="October">Oct.</option>'+
+                    '<option value ="November">Nov.</option>'+
+                    '<option value ="December">Dec.</option>'+
+                '</select>' +
+            //year selection
+                '<select id="Year">' +
+                    '<option value="" disabled selected>Select Year</option>' +
+                    '<option value ="2015">2015</option>' +
+                    '<option value ="2016">2016</option>' +
+                    '<option value ="2017">2017</option>' +
+                    '<option value ="2018">2018</option>' +
+                '</select>' +
+            '</div>'+
+            '</div>' +
         '</div>'+
-        '<div class="row"><div class="input-field col s12"><input id="dob" type="text"><label for="dob">Date of Birth (MM/DD/YYYY)</label></div></div>' +
         '<div class="row"><div class="input-field col s12"><input id="address" type="text"><label for="address">Address</label></div></div>' +
         '<div class="row"><div class="input-field col s12"><input id="phone" type="text"><label for="phone">Phone Number</label></div></div>'+
         '<div class="row"><div class="input-field col s12"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div></div>'+
@@ -55,6 +83,25 @@ var personalinfo_form =
             '<option value="N/A">None</option>'+
         '</select>'+
     '</form>';
+
+
+            // month selection
+           /* '<select id="Month">' +
+                '<option value="" disabled selected>Select Month</option>'+
+                '<option value ="January">Jan.</option>'+
+                '<option value ="February">Febr.</option>'+
+                '<option value ="March">Mar.</option>'+ 
+                '<option value ="April">Apr.</option>'+
+                '<option value ="May">May</option>'+
+                '<option value ="June">June</option>'+
+                '<option value ="July">July</option>'+
+                '<option value ="August">Aug.</option>'+
+                '<option value ="September">Sept.</option>'+
+                '<option value ="October">Oct.</option>'+
+                '<option value ="November">Nov.</option>'+
+                '<option value ="December">Dec.</option>'+
+            '</select>'+*/
+ 
 // set sign up form content.
 var signupinfo_form = 
     '<h1>Sign Up</h1>'+
@@ -148,10 +195,6 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
 
 
 });
-
-
-
-
 
 $(document).ready(function() {
     $('.parallax').parallax();
