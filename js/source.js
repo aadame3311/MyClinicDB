@@ -5,6 +5,7 @@ var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _pass
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 var logininfo_form = 
 <<<<<<< HEAD
@@ -239,6 +240,11 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
 //FUNCTIONS//
 >>>>>>> made signupHandler.js file. used to be under source.js now its own file.
 =======
+=======
+
+
+
+>>>>>>> added overview module
 //event listeners///////////////////////////////////////////////
 >>>>>>> code restructuring
 $(document).ready(function() {

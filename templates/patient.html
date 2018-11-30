@@ -1,8 +1,6 @@
 {% extends 'main.html' %}
 
-<!--HEADER-->
 {% block title %}MyClinic{% endblock %}
-{% block currentSelect %}<span class="current-select">Overview</span>{% endblock %}
 
 {% block header %}
 <link rel="stylesheet" href="../../../css/dashboard.css">
@@ -13,7 +11,7 @@
 
 
 
-<!--BODY-->
+{% block currentSelect %}<span class="current-select"><h2>Overview</h2></span>{% endblock %}
 {% block content %} 
 <ul id="slide-out" class="sidenav">
     <li><div class="user-view">
@@ -23,20 +21,43 @@
       <a href="#name"><span class="white-text name">{{first_name}} {{last_name}}</span></a>
       <a href="#email"><span class="white-text email">{{email}}</span></a>
     </div></li>
-    <li><a class="waves-effect" href="#">Overview</a></li>
+    <li><a class="sidenav-elem waves-effect" href="#">Overview</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect">Bills</a></li>
+    <li><a class="sidenav-elem waves-effect">Bills</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="waves-effect" href="#!">Appointments</a></li>
+    <li><a class="sidenav-elem waves-effect" href="#!">Appointments</a></li>
     <li><div class="divider"></div></li>
     <li><a class="logout waves-effect" href="#!">Log Out</a></li>
 </ul>
 <a href="#" data-target="slide-out" class="dashboard-side-trigger sidenav-trigger"><i class="material-icons">chevron_right</i></a>
+
+<!--MODULE-->
+<div class="container">
+  <div class="Overview-module module">
+      <div class="row info-module">
+          <div class="col s12 ">
+              <div class="card-panel">
+              <h4 class="info-title">My Info</h4>
+              <div class="divider"></div>
+              <div class="row">
+                  <p class="info col s3">First Name: <span style="color: coral;">{{first_name}}</span></p>
+                  <p class="info col s3">Last Name: <span style="color: coral;">{{last_name}}</span></p>    
+                  <p class="info col s3">Email: <span style="color: coral;">{{email}}</span></p>    
+                  <p class="info col s3">Address: <span style="color: coral;">{{address}}</span></p>    
+              </div>
+  
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>
+
 {% endblock %}
 
 
 
-<!--SCRIPTS-->
+
 {% block scripts %}
 <script
   src="https://code.jquery.com/jquery-3.3.1.js"
@@ -46,4 +67,5 @@
 <script src="../../../js/tingle.js"></script>         
 <script src="../../../js/source.js"></script> 
 <script src="../../../js/loginHandler.js"></script> 
+<script src="../../../js/dashboardController.js"></script> 
 {% endblock %}
