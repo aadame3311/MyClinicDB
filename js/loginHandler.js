@@ -1,5 +1,17 @@
+
+//GLOBALS/////////////////////////////////////////////////////////////////////////////////////////////
 var _USER_CODE = "";
 var _LOGIN_CODE = "";
+
+// instantiate new loginModal
+var loginModal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2']
+});
+
 
 var logininfo_form = 
     '<div class="container">'+
@@ -16,8 +28,7 @@ var logininfo_form =
         '</form>'+
         '<p hidden class="warning" style="color: red">wrong username or password</p>'+
     '</div>';
-    
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
 
 // requests access to user dashboard to the server.

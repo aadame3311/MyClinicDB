@@ -1,3 +1,20 @@
+//GLOBALS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// instantiate new signupModals
+var personalinfoModal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2']
+});
+var signupModal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2']
+});
+
 // set sign up form content
 var personalinfo_form = 
     
@@ -44,8 +61,13 @@ var signupinfo_form =
             '</div>'+
         '</form>'+
     '</div>';
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+// more modal setters and event listeners for modals////////////////////////////////////////////////////////////////////////////
 // PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
 personalinfoModal.setContent(personalinfo_form);
 personalinfoModal.addFooterBtn('Exit', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
@@ -116,4 +138,5 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
 
 
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
