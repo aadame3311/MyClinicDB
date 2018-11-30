@@ -1,4 +1,3 @@
-
 //GLOBALS/////////////////////////////////////////////////////////////////////////////////////////////
 var _USER_CODE = "";
 var _LOGIN_CODE = "";
@@ -30,25 +29,7 @@ var logininfo_form =
     '</div>';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
-
-// requests access to user dashboard to the server.
-function AccessDashboard(user, code, user_code) {
-    // valid code is 1. otherwise, 0 means invalid login.
-    if (code == 1) {
-        // send ajax call to server for dashboard access. 
-        $.ajax({
-            url: './main.php/dashboard/'+user_code,
-            method: "GET",
-        }).done(function(data) {
-            console.log('dashboard loaded!');
-            // load url to dashboard.
-            var target_url = window.location.pathname+"/dashboard/"+user_code;
-            window.location.href = target_url;
-
-        });
-    }
-}
-
+//more login initializers and event listeners for modals./////////////////////////////////////////////////////
 // create login modal.
 loginModal.setContent(logininfo_form);
 loginModal.addFooterBtn('Exit', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
@@ -102,4 +83,25 @@ $(".logout").on('click', function() {
         var target_url = "../../main.php";
         window.location.href = target_url;
     })
-})
+});
+/////////////////////////////////////////////////////////////////////////////////
+
+//functions//////////////////////////////////////////////////////////////////////
+// requests access to user dashboard to the server.
+function AccessDashboard(user, code, user_code) {
+    // valid code is 1. otherwise, 0 means invalid login.
+    if (code == 1) {
+        // send ajax call to server for dashboard access. 
+        $.ajax({
+            url: './main.php/dashboard/'+user_code,
+            method: "GET",
+        }).done(function(data) {
+            console.log('dashboard loaded!');
+            // load url to dashboard.
+            var target_url = window.location.pathname+"/dashboard/"+user_code;
+            window.location.href = target_url;
+
+        });
+    }
+}
+//////////////////////////////////////////////////////////////////////////////

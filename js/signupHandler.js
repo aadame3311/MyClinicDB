@@ -104,8 +104,7 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
     } else {
         return;
     }
-
-
+    
     if (_firstname !="" && _lastname != "" ) {
         //ajax call. 
         console.log($(".signup-form").attr('action'))

@@ -5,8 +5,8 @@ var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _pass
 
 //event listeners///////////////////////////////////////////////
 $(document).ready(function() {
+    // materialize js initializers.
     $('.parallax').parallax();
-
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
 });
