@@ -137,8 +137,20 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
     if (isset($_COOKIE["user"]) && $_COOKIE["user"] == $args['user_code']) {
         session_id("s-".$_COOKIE["user"]);
         session_start();
+
+        // retrieve patient info from db.
+        $patient_username = (string)$_SESSION['username'];
+        echo $patient_username;
+        $patient = PatientQuery::create()->filterByUsername($patient_username)->findOne();
+        $first_name = $patient->getFirstName();
+        $last_name = $patient->getLastName();
+        $email = $patient->getEmail();
+
         return $this->view->render($response, 'patient.html', [
-            'username'=>$_SESSION['username']
+            'username'=>$patient_username,
+            'first_name'=>$first_name, 
+            'last_name'=>$last_name,
+            'email'=>$email
         ]);
     }
     else {

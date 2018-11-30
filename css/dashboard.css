@@ -29,12 +29,10 @@ select#insurance-list {
 .input-field label {
     color: #475C58;
 }
-/* Change the white to any color ;) */
-input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
-input:-webkit-autofill:active  {
-    -webkit-box-shadow: 0 0 0 30px #A8DCD1 inset;
+ul.sidenav li a.logout:hover {
+    background-color: darkred;
+    color: white;
+
 }
 
 /* overall adjustments*/
@@ -58,9 +56,9 @@ nav {
 /****************************************************************/
 /*material-icons*/
 .material-icons {
-    color: #DCE2C8;
+    color: #A8DCD1;
 }
-.sidenav-trigger {
+.dashboard-side-trigger {
     position: absolute;
     top: 50%;
     background: #475C58;

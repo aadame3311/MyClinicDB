@@ -1,9 +1,8 @@
-// global variables that store user information. 
-// these are global because they are used by multiple methods. 
+//GLOBALS//
+// user information.
 var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
 
-
-// instanciate new loginModal
+// instantiate new loginModal
 var loginModal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -11,7 +10,7 @@ var loginModal = new tingle.modal({
     closeLabel: "Close",
     cssClass: ['custom-class-1', 'custom-class-2']
 });
-// instanciate new signupModal
+// instantiate new signupModals
 var personalinfoModal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -26,147 +25,9 @@ var signupModal = new tingle.modal({
     closeLabel: "Close",
     cssClass: ['custom-class-1', 'custom-class-2']
 });
+////////////////////////////////////////////////////////////////
 
-
-var logininfo_form = 
-    '<div class="container">'+
-        '<h3 style="text-align: center;">Login</h3>' +
-        '<form class ="login-form" action="./main.php/login">'+
-            '<div class="input-field">'+
-                '<input id="login-username" type="text" autocomplete="off" autocorrect="off"/>' +
-                '<label for="login-username">Username</label>'+
-            '</div>'+
-            '<div class="input-field">'+
-                '<input id="login-password" type="password" autocomplete="off" autocorrect="off"/>' +
-                '<label for="login-password">Password</label>'+
-            '</div>'+
-        '</form>'+
-        '<p hidden class="warning" style="color: red">wrong username or password</p>'+
-    '</div>';
-    
-// set sign up form content
-var personalinfo_form = 
-    
-    '<div class="container">'+
-        '<h3 style="text-align: center;">Sign Up</h3>'+
-        '<form class ="personal-form">'+
-            '<div class="row">'+
-                '<div class="input-field col s6"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
-                '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
-            '</div>'+
-            '<div class="row"><div class="input-field col s12"><input id="dob" type="text"><label for="dob">Date of Birth (MM/DD/YYYY)</label></div></div>' +
-            '<div class="row"><div class="input-field col s12"><input id="address" type="text"><label for="address">Address</label></div></div>' +
-            '<div class="row"><div class="input-field col s12"><input id="phone" type="text"><label for="phone">Phone Number</label></div></div>'+
-            '<div class="row"><div class="input-field col s12"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div></div>'+
-            '<select id="insurance-list">'+
-                '<option value="" disabled selected>Select Insurance Provider</option>'+
-                '<option value="Company 1">Insurance Company 1</option>'+
-                '<option value="Company 2">Insurance Company 2</option>'+
-                '<option value="Company 3">Insurance Company 3</option>'+
-                '<option value="N/A">None</option>'+
-            '</select>'+
-        '</form>'+
-    '</div>';
-// set sign up form content.
-var signupinfo_form = 
-    '<div class="container">'+
-        '<h3 style="text-align: center;">Sign Up</h3>'+
-        '<form class="signup-form" action="./main.php/signup">'+
-            '<div class="input-field">'+
-                '<input id="signup-email" type="email">' +
-                '<label for="signup-email">Email</label>'+
-            '</div>'+
-            '<div class="input-field">'+
-                '<input id="signup-username" type="text">' +
-                '<label for="signup-username">Username</label>'+
-            '</div>'+
-            '<div class="input-field">'+
-                '<input id="signup-password" type="password">' +
-                '<label for="signup-password">Password</label>'+
-            '</div>'+
-            '<div class="input-field">'+
-                '<input id="signup-cPassword" type="password">' +
-                '<label for="signup-cPassword">Confirm Password</label>'+
-            '</div>'+
-        '</form>'+
-    '</div>';
-
-
-// PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
-personalinfoModal.setContent(personalinfo_form);
-personalinfoModal.addFooterBtn('Exit', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
-    personalinfoModal.close();
-});
-personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
-    // send user data to server for authentication.
-    _firstname = $('#firstname').val();
-    _lastname = $('#lastname').val();
-    _dob = $('#dob').val();
-    _address = $('#address').val();
-    _phone = $('#phone').val();
-    _insurance = $("#insurance-list").val();
-    _secondphone = $("#second-phone").val();
-    console.log(_insurance);
-
-    // switch modals.
-    personalinfoModal.close()
-    signupModal.open();
-
-});
-// SIGNUP FORM //
-signupModal.setContent(signupinfo_form);
-signupModal.addFooterBtn('Back', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
-    signupModal.close();
-    personalinfoModal.open();
-});
-signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
-    // get username, password and email values.
-    var _email = $("#signup-email").val();
-    var _username = $("#signup-username").val();
-    if ($("#signup-password").val() == $("#signup-cPassword").val()) {
-        var _password = $("#signup-password").val();
-    } else {
-        return;
-    }
-
-
-    if (_firstname !="" && _lastname != "" ) {
-        //ajax call. 
-        console.log($(".signup-form").attr('action'))
-        $.ajax({
-            url:$(".signup-form").attr('action'),
-            data: {
-                'firstname'     :   _firstname, 
-                'lastname'      :   _lastname, 
-                'dob'           :   _dob,
-                'address'       :   _address,
-                'phone'         :   _phone, 
-                'second_phone'  :   _secondphone,
-                'email'         :   _email,
-                'username'      :   _username,
-                'password'      :   _password,
-                'insurance'     :   _insurance
-            },
-            method : "POST",
-            dataType : "JSON"
-        }).done(function(data) {
-        });
-
-    }
-    else {
-        console.log('fill em out!')
-    }
-
-    // do ajax call to back end close modals. 
-    signupModal.close();
-
-
-});
-
-
-
-
-
+//FUNCTIONS//
 $(document).ready(function() {
     $('.parallax').parallax();
 
@@ -174,15 +35,14 @@ $(document).ready(function() {
     $('.collapsible').collapsible();
 });
 
-// open loginModal to allow user to login.
 $('.login').on('click', function() {
     loginModal.open();
 });
-// open personalinfoModal on navbar signup click. 
-// the personalinfoModal carries over to the signupModal.
 $('.signup').on('click', function() {
     personalinfoModal.open();
 });
+
+
 
 
 

@@ -1,6 +1,23 @@
 var _USER_CODE = "";
 var _LOGIN_CODE = "";
 
+var logininfo_form = 
+    '<div class="container">'+
+        '<h3 style="text-align: center;">Login</h3>' +
+        '<form class ="login-form" action="./main.php/login">'+
+            '<div class="input-field">'+
+                '<input id="login-username" type="text" autocomplete="off" autocorrect="off"/>' +
+                '<label for="login-username">Username</label>'+
+            '</div>'+
+            '<div class="input-field">'+
+                '<input id="login-password" type="password" autocomplete="off" autocorrect="off"/>' +
+                '<label for="login-password">Password</label>'+
+            '</div>'+
+        '</form>'+
+        '<p hidden class="warning" style="color: red">wrong username or password</p>'+
+    '</div>';
+    
+
 
 
 // requests access to user dashboard to the server.
