@@ -1,7 +1,9 @@
+
+//GLOBALS/////////////////////////////////////////////////////////////////////////////////////////////
 var _USER_CODE = "";
 var _LOGIN_CODE = "";
 
-// instanciate new loginModal
+// instantiate new loginModal
 var loginModal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -25,6 +27,8 @@ var logininfo_form =
         '</form>'+
         '<p hidden class="warning" style="color: red">wrong username or password</p>'+
     '</div>';
+/////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
 
 
 // create login modal.

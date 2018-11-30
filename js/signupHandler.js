@@ -1,5 +1,5 @@
-var _firstname, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
-// instanciate new signupModal
+//GLOBALS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// instantiate new signupModals
 var personalinfoModal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -61,8 +61,13 @@ var signupinfo_form =
             '</div>'+
         '</form>'+
     '</div>';
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+// more modal setters and event listeners for modals////////////////////////////////////////////////////////////////////////////
 // PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
 personalinfoModal.setContent(personalinfo_form);
 personalinfoModal.addFooterBtn('Exit', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
@@ -185,4 +190,5 @@ function verifySecondInput(e, un, p, cp)
         return true;
     }
 }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

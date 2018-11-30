@@ -1,32 +1,9 @@
-//GLOBALS//
+//GLOBALS///////////////////////////////////////////////////////
 // user information.
 var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
-
-// instantiate new loginModal
-var loginModal = new tingle.modal({
-    footer: true,
-    stickyFooter: false,
-    closeMethods: ['overlay', 'escape'],
-    closeLabel: "Close",
-    cssClass: ['custom-class-1', 'custom-class-2']
-});
-// instantiate new signupModals
-var personalinfoModal = new tingle.modal({
-    footer: true,
-    stickyFooter: false,
-    closeMethods: ['overlay', 'escape'],
-    closeLabel: "Close",
-    cssClass: ['custom-class-1', 'custom-class-2']
-});
-var signupModal = new tingle.modal({
-    footer: true,
-    stickyFooter: false,
-    closeMethods: ['overlay', 'escape'],
-    closeLabel: "Close",
-    cssClass: ['custom-class-1', 'custom-class-2']
-});
 ////////////////////////////////////////////////////////////////
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 var logininfo_form = 
@@ -261,6 +238,9 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
 =======
 //FUNCTIONS//
 >>>>>>> made signupHandler.js file. used to be under source.js now its own file.
+=======
+//event listeners///////////////////////////////////////////////
+>>>>>>> code restructuring
 $(document).ready(function() {
     $('.parallax').parallax();
 
@@ -274,14 +254,5 @@ $('.login').on('click', function() {
 $('.signup').on('click', function() {
     personalinfoModal.open();
 });
-
-
-
-
-
-
-
-
-
-
+///////////////////////////////////////////////////////////////
 
