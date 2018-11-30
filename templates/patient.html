@@ -26,17 +26,21 @@ MyClinic
 <ul id="slide-out" class="sidenav">
     <li><div class="user-view">
       <div class="background">
+        <img src="../../../images/landing.jpg" alt="">
       </div>
-      <a href="#name"><span class="white-text name">John Doe</span></a>
-      <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+      <a href="#name"><span class="white-text name">{{first_name}} {{last_name}}</span></a>
+      <a href="#email"><span class="white-text email">{{email}}</span></a>
     </div></li>
-    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-    <li><a href="#!">Second Link</a></li>
+    <li><a class="waves-effect" href="#">Overview</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="subheader">Subheader</a></li>
-    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    <li><a class="waves-effect">Bills</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="waves-effect" href="#!">Appointments</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="logout waves-effect" href="#!">Log Out</a></li>
+
   </ul>
-<a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">chevron_right</i></a>
+<a href="#" data-target="slide-out" class="dashboard-side-trigger sidenav-trigger"><i class="material-icons">chevron_right</i></a>
 
 
 <script

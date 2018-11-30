@@ -1,16 +1,5 @@
-//GLOBALS//
-// user information.
-var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
-
-// instantiate new loginModal
-var loginModal = new tingle.modal({
-    footer: true,
-    stickyFooter: false,
-    closeMethods: ['overlay', 'escape'],
-    closeLabel: "Close",
-    cssClass: ['custom-class-1', 'custom-class-2']
-});
-// instantiate new signupModals
+var _firstname, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
+// instanciate new signupModal
 var personalinfoModal = new tingle.modal({
     footer: true,
     stickyFooter: false,
@@ -25,63 +14,7 @@ var signupModal = new tingle.modal({
     closeLabel: "Close",
     cssClass: ['custom-class-1', 'custom-class-2']
 });
-////////////////////////////////////////////////////////////////
 
-<<<<<<< HEAD
-
-var logininfo_form = 
-<<<<<<< HEAD
-    '<h1>Login</h1>' +
-    '<form class ="login-form" action="./main.php/login">'+
-        '<input id="login-username" type="text" placeholder="Username">' +
-        '<input id="login-password" type="password" placeholder="Password">' +
-    '</form>'+
-    '<p hidden class="warning" style="color: red">wrong username or password</p>';
-
-var personalinfo_form = 
-    '<h1>Sign Up</h1>' +
-    '<form class ="personal-form">'+
-        // first and last name
-        '<div class="row">'+
-            '<div class="input-field col s6"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
-            '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div></div>' +
-        // date of birth selection
-        '<div class="row">' +
-            '<div class="input-field col s12"><input id ="dob" type="date" value=getDate() min="1930-01-01 max="2017-12-31">' +
-            '<label for="dob">Date of Birth</label></input>' +
-        '</div>' +
-        // Address, phone, and second phone
-        '<div class="row"><div class="input-field col s12"><input id="address" type="text"><label for="address">Address</label></div></div>' +
-        '<div class="row"><div class="input-field col s12"><input id="phone" type="text"><label for="phone">Phone Number</label></div></div>'+
-        '<div class="row"><div class="input-field col s12"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div></div>'+
-        // insurance selection
-        '<div class="row">' +
-        '<select id = "insurance-list">'+
-            '<option value="">Select Insurance Provider</option>'+
-            '<option value="Company 1">Insurance Company 1</option>'+
-            '<option value="Company 2">Insurance Company 2</option>'+
-            '<option value="Company 3">Insurance Company 3</option>'+
-            '<option value="N/A">None</option>'+
-        '</select>'+
-        '</div>' +
-    '</form>';
-
-=======
-    '<div class="container">'+
-        '<h3 style="text-align: center;">Login</h3>' +
-        '<form class ="login-form" action="./main.php/login">'+
-            '<div class="input-field">'+
-                '<input id="login-username" type="text" autocomplete="off" autocorrect="off"/>' +
-                '<label for="login-username">Username</label>'+
-            '</div>'+
-            '<div class="input-field">'+
-                '<input id="login-password" type="password" autocomplete="off" autocorrect="off"/>' +
-                '<label for="login-password">Password</label>'+
-            '</div>'+
-        '</form>'+
-        '<p hidden class="warning" style="color: red">wrong username or password</p>'+
-    '</div>';
-    
 // set sign up form content
 var personalinfo_form = 
     
@@ -105,7 +38,6 @@ var personalinfo_form =
             '</select>'+
         '</form>'+
     '</div>';
->>>>>>> restyled modals
 // set sign up form content.
 var signupinfo_form = 
     '<div class="container">'+
@@ -130,37 +62,7 @@ var signupinfo_form =
         '</form>'+
     '</div>';
 
-// verify first sign up form
-function verifyInput(fn, ln, dob, add, ph, ins, sph)
-{
-    var alpha = /^[A-Za-z]+$/;
-    var alphanum = /^[a-z A-Z0-9.,]+$/;
 
-    // verify all fields are filled
-    if(fn=="" || ln=="" || dob=="" || add=="" || ph=="" || ins=="" || sph==""){
-        alert("Please fill in all fields");
-        return false;
-    }
-    // verify first and last name are alpha
-    else if(!alpha.test(fn) || !alpha.test(ln)){
-        alert("Please verify first and last name fields");
-        return false;
-    }
-    //verify address is alphanumeric
-    else if(!alphanum.test(add)){
-        alert("Please verify address field");
-        return false;
-    }
-    // verify phone numbers are numeric
-    else if(isNaN(ph) || isNaN(sph) || ph.length > 10 || sph.length > 10
-                      || ph.length < 10 || sph.length < 10){
-        alert("Please verify phone number fields");
-        return false;
-    }
-    else{
-        return true;
-    }
-}
 // PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
 personalinfoModal.setContent(personalinfo_form);
 personalinfoModal.addFooterBtn('Exit', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
@@ -185,32 +87,9 @@ personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn-
     }
     console.log(_insurance);
 });
-
-// verify second sign up form
-function verifySecondInput(e, un, p, cp)
-{
-     // verify all fields are filled
-     if(e=="" || un=="" || p=="" || cp==""){
-        alert("Please fill in all fields");
-        return false;
-    }
-    // verify password inputs
-    else if(p != cp){
-        alert("Verify password fields");
-        return false;   
-    }
-    else{
-        return true;
-    }
-}
 // SIGNUP FORM //
-<<<<<<< HEAD
-signupModal.setContent(signupinfo_form);3
-signupModal.addFooterBtn('Back', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
-=======
 signupModal.setContent(signupinfo_form);
 signupModal.addFooterBtn('Back', 'btn btn-danger waves-effect waves-light tingle-btn--pull-left', function() {
->>>>>>> restyled modals
     signupModal.close();
     personalinfoModal.open();
 });
@@ -258,30 +137,52 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
     }*/
 });
 
-=======
-//FUNCTIONS//
->>>>>>> made signupHandler.js file. used to be under source.js now its own file.
-$(document).ready(function() {
-    $('.parallax').parallax();
+// verify first sign up form
+function verifyInput(fn, ln, dob, add, ph, ins, sph)
+{
+    var alpha = /^[A-Za-z]+$/;
+    var alphanum = /^[a-z A-Z0-9.,]+$/;
 
-    $('.sidenav').sidenav();
-    $('.collapsible').collapsible();
-});
-
-$('.login').on('click', function() {
-    loginModal.open();
-});
-$('.signup').on('click', function() {
-    personalinfoModal.open();
-});
-
-
-
-
-
-
-
-
-
-
+    // verify all fields are filled
+    if(fn=="" || ln=="" || dob=="" || add=="" || ph=="" || ins=="" || sph==""){
+        alert("Please fill in all fields");
+        return false;
+    }
+    // verify first and last name are alpha
+    else if(!alpha.test(fn) || !alpha.test(ln)){
+        alert("Please verify first and last name fields");
+        return false;
+    }
+    //verify address is alphanumeric
+    else if(!alphanum.test(add)){
+        alert("Please verify address field");
+        return false;
+    }
+    // verify phone numbers are numeric
+    else if(isNaN(ph) || isNaN(sph) || ph.length > 10 || sph.length > 10
+                      || ph.length < 10 || sph.length < 10){
+        alert("Please verify phone number fields");
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+// verify second sign up form
+function verifySecondInput(e, un, p, cp)
+{
+     // verify all fields are filled
+     if(e=="" || un=="" || p=="" || cp==""){
+        alert("Please fill in all fields");
+        return false;
+    }
+    // verify password inputs
+    else if(p != cp){
+        alert("Verify password fields");
+        return false;   
+    }
+    else{
+        return true;
+    }
+}
 

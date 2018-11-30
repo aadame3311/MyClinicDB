@@ -25,7 +25,8 @@
         <div class="sticky-nav nav-wrapper">
             <div class="container">
                 <a href="#" class="brand-logo">MyClinic</a>
-                <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                {% block mobilemenu %}
+                {% endblock %}
                 <ul class="right hide-on-med-and-down">
                 {% block navTabs %}
                 {% endblock %}

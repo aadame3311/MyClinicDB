@@ -1,25 +1,31 @@
 var _USER_CODE = "";
 var _LOGIN_CODE = "";
 
+// instanciate new loginModal
+var loginModal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2']
+});
 
+var logininfo_form = 
+    '<div class="container">'+
+        '<h3 style="text-align: center;">Login</h3>' +
+        '<form class ="login-form" action="./main.php/login">'+
+            '<div class="input-field">'+
+                '<input id="login-username" type="text" autocomplete="off" autocorrect="off"/>' +
+                '<label for="login-username">Username</label>'+
+            '</div>'+
+            '<div class="input-field">'+
+                '<input id="login-password" type="password" autocomplete="off" autocorrect="off"/>' +
+                '<label for="login-password">Password</label>'+
+            '</div>'+
+        '</form>'+
+        '<p hidden class="warning" style="color: red">wrong username or password</p>'+
+    '</div>';
 
-// requests access to user dashboard to the server.
-function AccessDashboard(user, code, user_code) {
-    // valid code is 1. otherwise, 0 means invalid login.
-    if (code == 1) {
-        // send ajax call to server for dashboard access. 
-        $.ajax({
-            url: './main.php/dashboard/'+user_code,
-            method: "GET",
-        }).done(function(data) {
-            console.log('dashboard loaded!');
-            // load url to dashboard.
-            var target_url = window.location.pathname+"/dashboard/"+user_code;
-            window.location.href = target_url;
-
-        });
-    }
-}
 
 // create login modal.
 loginModal.setContent(logininfo_form);
@@ -75,3 +81,23 @@ $(".logout").on('click', function() {
         window.location.href = target_url;
     })
 })
+
+    
+
+// requests access to user dashboard to the server.
+function AccessDashboard(user, code, user_code) {
+    // valid code is 1. otherwise, 0 means invalid login.
+    if (code == 1) {
+        // send ajax call to server for dashboard access. 
+        $.ajax({
+            url: './main.php/dashboard/'+user_code,
+            method: "GET",
+        }).done(function(data) {
+            console.log('dashboard loaded!');
+            // load url to dashboard.
+            var target_url = window.location.pathname+"/dashboard/"+user_code;
+            window.location.href = target_url;
+
+        });
+    }
+}
