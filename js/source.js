@@ -242,8 +242,8 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
 //event listeners///////////////////////////////////////////////
 >>>>>>> code restructuring
 $(document).ready(function() {
+    // materialize js initializers.
     $('.parallax').parallax();
-
     $('.sidenav').sidenav();
     $('.collapsible').collapsible();
 });

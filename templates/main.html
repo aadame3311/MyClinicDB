@@ -5,55 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"> <!--font-->
 
 
-    {% block header %}
-
-
-    {% endblock %}
+    {% block header %}{% endblock %} 
+    {% block pageTitle %}{% endblock %}
 </head>
 <body> 
+              
 
     <!--NAVBAR-->
     <nav>
 
         <div class="sticky-nav nav-wrapper">
             <div class="container">
-                <a href="#" class="brand-logo">MyClinic</a>
-                {% block mobilemenu %}
-                {% endblock %}
+                <a href="#" class="brand-logo">MyClinic</a> 
+                {% block mobilemenu %}{% endblock %}
                 <ul class="right hide-on-med-and-down">
-                {% block navTabs %}
-                {% endblock %}
+                {% block navTabs %}{% endblock %}
                 </ul>
             </div>
         </div>
     </nav> 
-    <ul class="sidenav" id="mobile-demo">
-    {% block navTabsMobile %}
-    {% endblock %}
-    </ul>
-    <!------->
-              
+    {% block navTabsMobile %}{% endblock %}
 
-    {% block pageTitle %}
-    {% endblock %}
+
     <div class="main-content">
-            {% block content %}
-            {% endblock %}
+        {% block currentSelect %}{% endblock %}
+        {% block content %}{% endblock %}
     </div>
-
-
 
 </body>
 
-
-
-
-
+{% block scripts %}{% endblock %}
 </html>

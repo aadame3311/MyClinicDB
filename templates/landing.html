@@ -7,10 +7,8 @@
 <title>MyClinic</title>
 {% endblock %}
 
-
-{% block pageTitle %}
-
-{% endblock %}
+<!--HEADER-->
+{% block pageTitle %}MyClinic{% endblock %}
 {% block mobilemenu %}
 <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 {% endblock %}
@@ -20,10 +18,15 @@
 <li><a class="signup" href="#">Sign Up</a></li>
 {% endblock %}
 {% block navTabsMobile %}
-<li><a class="login" href="#">Login</a></li>
-<li><a class="signup" href="#">Sign Up</a></li>
+<ul class="sidenav" id="mobile-demo">
+    <li><a class="login" href="#">Login</a></li>
+    <li><a class="signup" href="#">Sign Up</a></li>
+</ul>
 {% endblock %}
 
+
+
+<!--BODY-->
 {% block content %}
 <div class="parallax-container">
     <div class="parallax">
@@ -61,20 +64,13 @@
     </div>
 
 </div>
-<!--
-<div class="parallax-container">
-    <div class="parallax">
-        <img src="../images/landing2.jpg" alt="landing image 2">
-    </div>
-    
-</div>
-<div class="section">
-        <div class="row container">
-            
-        </div>
-    
-</div> -->
+{% endblock %}
 
+
+
+
+<!--SCRIPTS-->
+{% block scripts %}
 <script
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="

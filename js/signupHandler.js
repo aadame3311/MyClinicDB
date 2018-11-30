@@ -108,15 +108,9 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
         _password = $('#signup-password').val();
         // display submission confirmation
         alert("Submission successful!");
-        // do ajax call to back end close modals. 
         signupModal.close(); 
-    }
- 
-    /*
-     * VERIFY THIS INFORMATION
-     */
-    /*if (_firstname !="" && _lastname != "" ) {
-        //ajax call. 
+
+        //ajax call to server to register user. 
         console.log($(".signup-form").attr('action'))
         $.ajax({
             url:$(".signup-form").attr('action'),
@@ -136,10 +130,8 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
             dataType : "JSON"
         }).done(function(data) {
         });
+        
     }
-    else {
-        console.log('fill em out!')
-    }*/
 });
 
 // verify first sign up form

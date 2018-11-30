@@ -1,27 +1,19 @@
 {% extends 'main.html' %}
 
-{% block title %}
-MyClinic
-{% endblock %}
+<!--HEADER-->
+{% block title %}MyClinic{% endblock %}
+{% block currentSelect %}<span class="current-select">Overview</span>{% endblock %}
 
-
-{% block pageTitle %}
+{% block header %}
 <link rel="stylesheet" href="../../../css/dashboard.css">
 <link rel="stylesheet" href="../../../css/tingle.css">
-
-<title>MyClinic Dashboard</title>
 {% endblock %}
 
+{% block pageTitle %}<title>MyClinic Dashboard</title>{% endblock %}
 
-{% block navTabs %}
-<li><a class="logout" href="#">Log out</a></li>
-{% endblock %}
-{% block navTabsMobile %}
-<li><a class="login" href="#">Overview</a></li>
-<li><a class="login" href="#">Bills</a></li>
-<li><a class="logout" href="#">Log out</a></li>
-{% endblock %}
 
+
+<!--BODY-->
 {% block content %} 
 <ul id="slide-out" class="sidenav">
     <li><div class="user-view">
@@ -38,11 +30,14 @@ MyClinic
     <li><a class="waves-effect" href="#!">Appointments</a></li>
     <li><div class="divider"></div></li>
     <li><a class="logout waves-effect" href="#!">Log Out</a></li>
-
-  </ul>
+</ul>
 <a href="#" data-target="slide-out" class="dashboard-side-trigger sidenav-trigger"><i class="material-icons">chevron_right</i></a>
+{% endblock %}
 
 
+
+<!--SCRIPTS-->
+{% block scripts %}
 <script
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -50,4 +45,5 @@ MyClinic
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="../../../js/tingle.js"></script>         
 <script src="../../../js/source.js"></script> 
+<script src="../../../js/loginHandler.js"></script> 
 {% endblock %}
