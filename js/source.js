@@ -42,24 +42,26 @@ var personalinfo_form =
         // first and last name
         '<div class="row">'+
             '<div class="input-field col s6"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
-            '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
+            '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div></div>' +
         // date of birth selection
-        '<div class="row"' +
-            '<div class="input-field col s6"><label for="dob">Date of Birth</label></input>' +
-            '<input id ="dob" type="date" value="2018-07-22" min="1930-01-01 max="2017-12-31">' +
+        '<div class="row">' +
+            '<div class="input-field col s12"><input id ="dob" type="date" value=getDate() min="1930-01-01 max="2017-12-31">' +
+            '<label for="dob">Date of Birth</label></input>' +
         '</div>' +
         // Address, phone, and second phone
         '<div class="row"><div class="input-field col s12"><input id="address" type="text"><label for="address">Address</label></div></div>' +
         '<div class="row"><div class="input-field col s12"><input id="phone" type="text"><label for="phone">Phone Number</label></div></div>'+
         '<div class="row"><div class="input-field col s12"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div></div>'+
         // insurance selection
-        '<select id="insurance-list">'+
-            '<option value="" disabled selected>Select Insurance Provider</option>'+
+        '<div class="row">' +
+        '<select id = "insurance-list">'+
+            '<option value="">Select Insurance Provider</option>'+
             '<option value="Company 1">Insurance Company 1</option>'+
             '<option value="Company 2">Insurance Company 2</option>'+
             '<option value="Company 3">Insurance Company 3</option>'+
             '<option value="N/A">None</option>'+
         '</select>'+
+        '</div>' +
     '</form>';
 
 // set sign up form content.
@@ -84,34 +86,53 @@ var signupinfo_form =
         '</div>'+
     '</form>';
 
+function verifyInput(fn, ln, dob, add, ph, ins, sph)
+{
+    if(fn=="" || ln=="" || dob=="" || add=="" || ph=="" || ins=="" || sph==""){
+        alert("Please fill in all fields");
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
 // PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
 personalinfoModal.setContent(personalinfo_form);
 personalinfoModal.addFooterBtn('Exit', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
     personalinfoModal.close();
 });
 personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
-    // send user data to server for authentication.
-    if((/[^a-zA-Z]/i.test('#firstname')))
+    // verify fields are filled
+    if(verifyInput($('#firstname').val(),$('#lastname').val(),$('#dob').val(),
+        $('#address').val(),$('#phone').val(),$("#insurance-list").val(),$("#second-phone").val()))
     {
-       
-
-    }
-    
-    _lastname = $('#lastname').val();
+        // send user data to server for authentication.
+        _firstname = $('#firstname').val();
+        _lastname = $('#lastname').val(); 
+        _dob = $('#dob').val();
+        _address = $('#address').val();
+        _phone = $('#phone').val();
+        _insurance = $("#insurance-list").val();
+        _secondphone = $("#second-phone").val();
+        // switch modals.
+        personalinfoModal.close()
+        signupModal.open();
+    } 
+    /*
+    // send user data to server for authentication.
+    _firstname = $('#firstname').val();
+    _lastname = $('#lastname').val(); 
     _dob = $('#dob').val();
     _address = $('#address').val();
     _phone = $('#phone').val();
     _insurance = $("#insurance-list").val();
-    _secondphone = $("#second-phone").val();
+    _secondphone = $("#second-phone").val();*/
     console.log(_insurance);
-
-    // switch modals.
-    personalinfoModal.close()
-    signupModal.open();
-
 });
 // SIGNUP FORM //
-signupModal.setContent(signupinfo_form);
+signupModal.setContent(signupinfo_form);3
 signupModal.addFooterBtn('Back', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
     signupModal.close();
     personalinfoModal.open();
