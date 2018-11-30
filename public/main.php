@@ -28,7 +28,7 @@ $app->get('/', function($request, $response, $args) {
     
     return $this->view->render($response, 'landing.html');
 });
-$app->post('/login', function($request, $response, $args) {
+$app->post('/login', function($request, $response) {
     $username = $request->getParam('username');
     $password = $request->getParam('password');
 
@@ -67,7 +67,7 @@ $app->post('/login', function($request, $response, $args) {
 
 
 });
-$app->post('/logout', function($request, $response, $args) {
+$app->post('/logout', function($request, $response) {
     session_id('s-'.$request->getParam('user_code'));
     session_start();
     session_destroy();
@@ -79,7 +79,7 @@ $app->post('/logout', function($request, $response, $args) {
     exit();
 
 });
-$app->post('/signup', function($request, $response, $args) {
+$app->post('/signup', function($request, $response) {
 
     // get user data from request.
     // we assume that this data is alreay formatted by the client.
@@ -140,17 +140,18 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
 
         // retrieve patient info from db.
         $patient_username = (string)$_SESSION['username'];
-        echo $patient_username;
         $patient = PatientQuery::create()->filterByUsername($patient_username)->findOne();
         $first_name = $patient->getFirstName();
         $last_name = $patient->getLastName();
         $email = $patient->getEmail();
+        $address = $patient->getAddress();
 
         return $this->view->render($response, 'patient.html', [
             'username'=>$patient_username,
             'first_name'=>$first_name, 
             'last_name'=>$last_name,
-            'email'=>$email
+            'email'=>$email,
+            'address'=>$address
         ]);
     }
     else {

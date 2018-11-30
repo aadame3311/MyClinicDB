@@ -3,6 +3,9 @@
 var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
 ////////////////////////////////////////////////////////////////
 
+
+
+
 //event listeners///////////////////////////////////////////////
 $(document).ready(function() {
     // materialize js initializers.
