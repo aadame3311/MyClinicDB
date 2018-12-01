@@ -29,21 +29,54 @@
     <li><div class="divider"></div></li>
     <li><a class="logout waves-effect" href="#!">Log Out</a></li>
 </ul>
-<a href="#" data-target="slide-out" class="dashboard-side-trigger sidenav-trigger"><i class="material-icons">chevron_right</i></a>
+<a href="#" data-target="slide-out" class="dashboard-side-trigger sidenav-trigger"><i class="material-icons pull-menu-icon">chevron_right</i></a>
 
 <!--MODULE-->
 <div class="container">
   <div class="Overview-module module">
-      <div class="row info-module">
-          <div class="col s12 ">
+      <div class="row">
+          <div class="col m6 s12 upcoming-module">
               <div class="card-panel">
-              <h4 class="info-title">My Info</h4>
+              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">star</i> Upcoming Appointments</h4>
               <div class="divider"></div>
               <div class="row">
-                  <p class="info col s3">First Name: <span style="color: coral;">{{first_name}}</span></p>
-                  <p class="info col s3">Last Name: <span style="color: coral;">{{last_name}}</span></p>    
-                  <p class="info col s3">Email: <span style="color: coral;">{{email}}</span></p>    
-                  <p class="info col s3">Address: <span style="color: coral;">{{address}}</span></p>    
+                
+              </div>
+  
+              </div>
+          </div>
+          <div class="col m6 s12 upcoming-module">
+              <div class="card-panel">
+              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">history</i> My Health History</h4>
+              <div class="divider"></div>
+              <div class="row">
+                
+              </div>
+  
+              </div>
+          </div>
+      </div>
+      
+      <div class="row">
+          <div class="col s12 info-module">
+              <div class="card-panel">
+              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">info</i> My Info</h4>
+              <div class="divider"></div>
+              <div class="row">
+                <div class="col m4 s12">
+                    <p class="info">First Name: <span style="color: coral;">{{first_name}}</span></p>
+                    <p class="info">Last Name: <span style="color: coral;">{{last_name}}</span></p>    
+                    
+                </div>
+                <div class="col m4 s12">
+                    <p class="info">Email: <span style="color: coral;">{{email}}</span></p>    
+                    <p class="info">Address: <span style="color: coral;">{{address}}</span></p>    
+                </div>
+                <div class="col m4 s12">
+                    <p class="info">Phone: <span style="color: coral;">{{main_phone}}</span></p>
+                    <p class="info">Insurance: <span style="color: coral;">{{insurance}}</span></p>
+                </div>
+                
               </div>
   
               </div>

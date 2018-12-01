@@ -146,13 +146,18 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         $last_name = $patient->getLastName();
         $email = $patient->getEmail();
         $address = $patient->getAddress();
+        $insurance = $patient->getInsurance();
+        $main_phone = PatientphoneQuery::create()->filterByPatientId($patient->getID())->findOne()->getPhoneNumber();
 
+        // return patient info to patient dashboard.
         return $this->view->render($response, 'patient.html', [
             'username'=>$patient_username,
             'first_name'=>$first_name, 
             'last_name'=>$last_name,
             'email'=>$email,
-            'address'=>$address
+            'address'=>$address,
+            'insurance'=>$insurance,
+            'main_phone'=>$main_phone,
         ]);
     }
     else {
