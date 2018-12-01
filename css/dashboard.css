@@ -58,18 +58,20 @@ nav {
 }
 /****************************************************************/
 /*material-icons*/
-.material-icons {
+.pull-menu-icon {
     color: #A8DCD1;
 }
+
+/*******************************************************************/
 .dashboard-side-trigger {
-    position: absolute;
+    position: fixed;
     top: 50%;
     background: #475C58;
     padding: 10px;
     padding-left: 5px;
     border-radius: 0 10px 10px 0;
-    box-shadow: 0px 0px 10px gray;
-left: 0;
+    box-shadow: 2px 0px 2px #475C58;
+    left: 0;
     animation: 0.2s slideback;
 }
 .sidenav-trigger:hover {
@@ -80,7 +82,7 @@ left: 0;
     text-align: center;
 }
 .info {
-    text-align: center;
+    text-align: left;
 }
 .card-panel {
     background-color: #DCE2C8;
