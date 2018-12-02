@@ -86,18 +86,37 @@ var signupinfo_form =
         '</div>'+
     '</form>';
 
+// verify first sign up form
 function verifyInput(fn, ln, dob, add, ph, ins, sph)
 {
+    var alpha = /^[A-Za-z]+$/;
+    var alphanum = /^[a-z A-Z0-9.,]+$/;
+
+    // verify all fields are filled
     if(fn=="" || ln=="" || dob=="" || add=="" || ph=="" || ins=="" || sph==""){
         alert("Please fill in all fields");
         return false;
     }
-    else
-    {
+    // verify first and last name are alpha
+    else if(!alpha.test(fn) || !alpha.test(ln)){
+        alert("Please verify first and last name fields");
+        return false;
+    }
+    //verify address is alphanumeric
+    else if(!alphanum.test(add)){
+        alert("Please verify address field");
+        return false;
+    }
+    // verify phone numbers are numeric
+    else if(isNaN(ph) || isNaN(sph) || ph.length > 10 || sph.length > 10
+                      || ph.length < 10 || sph.length < 10){
+        alert("Please verify phone number fields");
+        return false;
+    }
+    else{
         return true;
     }
 }
-
 // PERSONAL INFORMATION THAT IS SENT TO SIGNUP //
 personalinfoModal.setContent(personalinfo_form);
 personalinfoModal.addFooterBtn('Exit', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
@@ -108,7 +127,7 @@ personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn-
     if(verifyInput($('#firstname').val(),$('#lastname').val(),$('#dob').val(),
         $('#address').val(),$('#phone').val(),$("#insurance-list").val(),$("#second-phone").val()))
     {
-        // send user data to server for authentication.
+        // send user data to server
         _firstname = $('#firstname').val();
         _lastname = $('#lastname').val(); 
         _dob = $('#dob').val();
@@ -119,18 +138,27 @@ personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn-
         // switch modals.
         personalinfoModal.close()
         signupModal.open();
-    } 
-    /*
-    // send user data to server for authentication.
-    _firstname = $('#firstname').val();
-    _lastname = $('#lastname').val(); 
-    _dob = $('#dob').val();
-    _address = $('#address').val();
-    _phone = $('#phone').val();
-    _insurance = $("#insurance-list").val();
-    _secondphone = $("#second-phone").val();*/
+    }
     console.log(_insurance);
 });
+
+// verify second sign up form
+function verifySecondInput(e, un, p, cp)
+{
+     // verify all fields are filled
+     if(e=="" || un=="" || p=="" || cp==""){
+        alert("Please fill in all fields");
+        return false;
+    }
+    // verify password inputs
+    else if(p != cp){
+        alert("Verify password fields");
+        return false;   
+    }
+    else{
+        return true;
+    }
+}
 // SIGNUP FORM //
 signupModal.setContent(signupinfo_form);3
 signupModal.addFooterBtn('Back', 'btn waves-effect waves-light tingle-btn--pull-left', function() {
@@ -138,17 +166,23 @@ signupModal.addFooterBtn('Back', 'btn waves-effect waves-light tingle-btn--pull-
     personalinfoModal.open();
 });
 signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
-    // get username, password and email values.
-    var _email = $("#signup-email").val();
-    var _username = $("#signup-username").val();
-    if ($("#signup-password").val() == $("#signup-cPassword").val()) {
-        var _password = $("#signup-password").val();
-    } else {
-        return;
+    
+    if(verifySecondInput($('#signup-email').val(), $('#signup-username').val(), $('#signup-password').val(), $('#signup-cPassword').val()))
+    {
+        // send user data to server
+        _email = $('#signup-email').val();
+        _username = $('#signup-username').val(); 
+        _password = $('#signup-password').val();
+        // display submission confirmation
+        alert("Submission successful!");
+        // do ajax call to back end close modals. 
+        signupModal.close(); 
     }
-
-
-    if (_firstname !="" && _lastname != "" ) {
+ 
+    /*
+     * VERIFY THIS INFORMATION
+     */
+    /*if (_firstname !="" && _lastname != "" ) {
         //ajax call. 
         console.log($(".signup-form").attr('action'))
         $.ajax({
@@ -169,16 +203,10 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
             dataType : "JSON"
         }).done(function(data) {
         });
-
     }
     else {
         console.log('fill em out!')
-    }
-
-    // do ajax call to back end close modals. 
-    signupModal.close();
-
-
+    }*/
 });
 
 $(document).ready(function() {
