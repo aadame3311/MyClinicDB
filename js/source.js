@@ -2,6 +2,7 @@
 // user information.
 var _firstnmae, _lastname, _address, _dob, _phone,_secondphone, _username, _password;
 ////////////////////////////////////////////////////////////////
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -247,6 +248,13 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
 >>>>>>> added overview module
 //event listeners///////////////////////////////////////////////
 >>>>>>> code restructuring
+=======
+
+
+
+
+//event listeners///////////////////////////////////////////////
+>>>>>>> f3256de6c003cd5a0e929ebcbfc435b30ea7030d
 $(document).ready(function() {
     // materialize js initializers.
     $('.parallax').parallax();
