@@ -25,7 +25,8 @@ var personalinfo_form =
                 '<div class="input-field col s6"><input id="firstname" type="text"><label for="firstname">First Name</label></div>' +
                 '<div class="input-field col s6"><input id="lastname" type="text"><label for="lastname">Last Name</label></div>' +
             '</div>'+
-            '<div class="row"><div class="input-field col s12"><input id="dob" type="text"><label for="dob">Date of Birth (MM/DD/YYYY)</label></div></div>' +
+            //'<div class="row"><div class="input-field col s12"><input id="dob" type="text"><label for="dob">Date of Birth (MM/DD/YYYY)</label></div></div>' +
+            '<div class="row"><div class="input-field col s12"><input id ="dob" type="date" value=getDate() min="1930-01-01 max="2017-12-31"><label for="dob">Date of Birth</label></div></div>' +
             '<div class="row"><div class="input-field col s12"><input id="address" type="text"><label for="address">Address</label></div></div>' +
             '<div class="row"><div class="input-field col s12"><input id="phone" type="text"><label for="phone">Phone Number</label></div></div>'+
             '<div class="row"><div class="input-field col s12"><input id="second-phone" type="text"><label for="second-phone">Phone Number</label></div></div>'+
