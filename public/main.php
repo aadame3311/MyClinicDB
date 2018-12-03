@@ -168,4 +168,8 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
 
 });
 
+$app->post("/isAdmin", function($request, $response) {
+
+});
+
 $app->run();

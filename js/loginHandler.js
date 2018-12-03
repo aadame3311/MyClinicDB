@@ -95,7 +95,7 @@ $(".logout").on('click', function() {
 // requests access to user dashboard to the server.
 function AccessDashboard(user, code, user_code) {
     // valid code is 1. otherwise, 0 means invalid login.
-    if (code == 1) {
+    if (code == 1 && !isAdmin()) {
         // send ajax call to server for dashboard access. 
         $.ajax({
             url: './main.php/dashboard/'+user_code,
@@ -108,5 +108,8 @@ function AccessDashboard(user, code, user_code) {
 
         });
     }
+}
+function isAdmin(username) {
+    return false;
 }
 //////////////////////////////////////////////////////////////////////////////
