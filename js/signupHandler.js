@@ -38,6 +38,7 @@ var personalinfo_form =
                 '<option value="N/A">None</option>'+
             '</select>'+
         '</form>'+
+        '<p hidden class="warning invalid-input-warning" style="color: red">Please fill out all the fields.</p>'+
     '</div>';
 // set sign up form content.
 var signupinfo_form = 
@@ -91,7 +92,6 @@ personalinfoModal.addFooterBtn('Next', 'btn waves-effect waves-light tingle-btn-
         personalinfoModal.close()
         signupModal.open();
     }
-    console.log(_insurance);
 });
 // SIGNUP FORM //
 signupModal.setContent(signupinfo_form);
@@ -107,8 +107,6 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
         _email = $('#signup-email').val();
         _username = $('#signup-username').val(); 
         _password = $('#signup-password').val();
-        // display submission confirmation
-        alert("Submission successful!");
         signupModal.close(); 
 
         //ajax call to server to register user. 
@@ -143,26 +141,31 @@ function verifyInput(fn, ln, dob, add, ph, ins, sph)
 
     // verify all fields are filled
     if(fn=="" || ln=="" || dob=="" || add=="" || ph=="" || ins=="" || sph==""){
-        alert("Please fill in all fields");
+        $(".invalid-input-warning").html("Please fill in all the fields.");
+        $(".invalid-input-warning").prop('hidden', false);
         return false;
     }
     // verify first and last name are alpha
     else if(!alpha.test(fn) || !alpha.test(ln)){
-        alert("Please verify first and last name fields");
+        $(".invalid-input-warning").html("Invalid first or last name.");
+        $(".invalid-input-warning").prop('hidden', false);
         return false;
     }
     //verify address is alphanumeric
     else if(!alphanum.test(add)){
-        alert("Please verify address field");
+        $(".invalid-input-warning").html("Invalid address.");
+        $(".invalid-input-warning").prop('hidden', false);
         return false;
     }
     // verify phone numbers are numeric
     else if(isNaN(ph) || isNaN(sph) || ph.length > 10 || sph.length > 10
                       || ph.length < 10 || sph.length < 10){
-        alert("Please verify phone number fields");
+        $(".invalid-input-warning").html("Invalid Phone Number");
+        $(".invalid-input-warning").prop('hidden', false);
         return false;
     }
     else{
+        $(".invalid-input-warning").prop('hidden', true);
         return true;
     }
 }
@@ -171,15 +174,18 @@ function verifySecondInput(e, un, p, cp)
 {
      // verify all fields are filled
      if(e=="" || un=="" || p=="" || cp==""){
-        alert("Please fill in all fields");
+        $(".invalid-input-warning").html("Please fill in all the fields.");
+        $(".invalid-input-warning").prop('hidden', false);
         return false;
     }
     // verify password inputs
     else if(p != cp){
-        alert("Verify password fields");
+        $(".missing-info-warning").html("Passwords do not match.");
+        $(".passwords-dont-match").prop('hidden', false);
         return false;   
     }
     else{
+        $(".passwords-dont-match").prop('hidden', true);
         return true;
     }
 }

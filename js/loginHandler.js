@@ -13,7 +13,7 @@ var loginModal = new tingle.modal({
 
 var logininfo_form = 
     '<div class="container">'+
-        '<h3 style="text-align: center;">Login</h3>' +
+        '<div class="row"><h3 style="text-align: center;">Login</h3><div hidden class="loader"></div>' +
         '<form class ="login-form" action="./main.php/login">'+
             '<div class="input-field">'+
                 '<input id="login-username" type="text" autocomplete="off" autocorrect="off"/>' +
@@ -38,7 +38,11 @@ loginModal.addFooterBtn('Exit', 'btn btn-danger waves-effect waves-light tingle-
     loginModal.close();
 });
 // on submit button press.
-loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
+loginModal.addFooterBtn('</div>Submit<i class="material-icons submit-arrow right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
+    //display loader so user knows page is loading. 
+    $(".loader").prop('hidden', false);
+    $(".submit-arrow").prop('hidden', true);
+
     // send user data to server for authentication.
     var _url = $('form.login-form').attr('action');
     var _username = $('#login-username').val();
@@ -66,7 +70,8 @@ loginModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn w
         }
         else if (data['code'] == 0) {
             // wrong username or password. 
-            console.log('a')
+            $(".loader").prop('hidden', true);
+            $(".submit-arrow").prop('hidden', false)
             $("p.warning").prop('hidden', false);
         }
     });
