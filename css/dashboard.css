@@ -90,3 +90,17 @@ nav {
 .divider {
     background-color: black;
 }
+.l-item p {
+    padding: 5px;
+    color: #DCE2C8;
+}
+.l-item {
+    background-color: #606257;
+    width: 100%;
+    margin: 10px;
+}
+.module-container {
+    margin: 10px;
+    height: 200px;
+    overflow-y: scroll;
+}

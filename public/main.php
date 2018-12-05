@@ -139,15 +139,20 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         session_id("s-".$_COOKIE["user"]);
         session_start();
 
+
         // retrieve patient info from db.
         $patient_username = (string)$_SESSION['username'];
         $patient = PatientQuery::create()->filterByUsername($patient_username)->findOne();
+        $patient_id = $patient->getID();
         $first_name = $patient->getFirstName();
         $last_name = $patient->getLastName();
         $email = $patient->getEmail();
         $address = $patient->getAddress();
         $insurance = $patient->getInsurance();
-        $main_phone = PatientphoneQuery::create()->filterByPatientId($patient->getID())->findOne()->getPhoneNumber();
+        $main_phone = PatientphoneQuery::create()->filterByPatientId($patient_id)->findOne()->getPhoneNumber();
+
+        // retrieve patients health history.
+        $health_history = HealthhistoryQuery::create()->filterByPatientId($patient_id);
 
         // return patient info to patient dashboard.
         return $this->view->render($response, 'patient.html', [
@@ -158,6 +163,7 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
             'address'=>$address,
             'insurance'=>$insurance,
             'main_phone'=>$main_phone,
+            'health_history'=>$health_history
         ]);
     }
     else {

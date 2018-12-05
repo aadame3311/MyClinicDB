@@ -33,8 +33,10 @@
 
 <!--MODULE-->
 <div class="container">
+
   <div class="Overview-module module">
       <div class="row">
+        <!--upcoming.-->
           <div class="col m6 s12 upcoming-module">
               <div class="card-panel">
               <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">star</i> Upcoming Appointments</h4>
@@ -45,18 +47,23 @@
   
               </div>
           </div>
+        <!--health history.-->
           <div class="col m6 s12 history-module">
               <div class="card-panel">
               <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">history</i> My Health History</h4>
               <div class="divider"></div>
-              <div class="row">
-                
+              <div class="row module-container">
+                {% for hh in health_history %}
+                <div class="col s12 l-item">
+                    <p class="l-content">{{ hh.getDiseaseName() }}</p>
+                </div>
+                {% endfor %}
               </div>
   
               </div>
           </div>
       </div>
-      
+      <!--info.-->
       <div class="row">
           <div class="col s12 info-module">
               <div class="card-panel">
