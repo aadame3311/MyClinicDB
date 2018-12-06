@@ -4,7 +4,7 @@
 
 //event handlers/////////////////////////////////////////////
 $(document).ready(function() {
-    LoadModule("Set Appointments");
+    LoadModule("Overview");
     $(".submit-btn").prop('hidden', true);
 });
 $("a.sidenav-elem").on('click', function(e) {
