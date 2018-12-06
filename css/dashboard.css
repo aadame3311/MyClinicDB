@@ -90,6 +90,12 @@ nav {
 .divider {
     background-color: black;
 }
+/* letters under "myInfo"*/
+p.info span {
+    color: #E57248;
+}
+
+/* items listed as a list under certain modules */
 .l-item p {
     padding: 5px;
     color: #DCE2C8;
@@ -98,9 +104,71 @@ nav {
     background-color: #606257;
     width: 100%;
     margin: 10px;
+    border-radius: 2px;
 }
 .module-container {
     margin: 10px;
     height: 200px;
     overflow-y: scroll;
+}
+.search {
+    position: relative;
+}
+input.search-field {
+    text-indent: 30px;
+    height: 36px;
+    border-radius: 2px;
+    border: 0;
+    background: #f7f7f7;
+    transition: background-color 0.2s;
+
+
+} input.search-field:hover { background-color: #ebebeb; }
+
+.search-icon {
+    z-index: 10;
+    position: absolute;
+    top: 6px;
+    left: 20px;
+    color: rgba(0, 0, 0, 0.54);
+}
+.sort {
+    position: relative;
+}
+.sort .sort-btn {
+    background-color: #606257; 
+    border-radius: 2px;
+    height: 36px;
+
+    color: #DCE2C8;
+    padding: 8px;
+
+    text-indent: 30px;
+
+    transition: background-color 0.2s;
+} .sort .sort-btn:hover { background-color: #474840; cursor: pointer;}
+
+.sort .sort-icon {
+    z-index: 10;
+    position: absolute;
+    top: 6px;
+    left: 20px;
+    color: #DCE2C8;
+
+}
+.headers {padding-left: 50px;padding-right: 50px;}
+.results {
+    height: 40vh;
+    overflow-y: scroll;
+    transition: background-color 0.2s;
+} .app-item:hover {background-color: #474840; cursor: pointer;}
+.app-selected {
+    background-color: #816694;
+    transition: background-color 0.2s;
+} .app-selected:hover {background-color: #6B547A;}
+
+/* screen sizes */
+@media only screen and (max-width: 600px) {
+    .sort-btn { margin-top: 10px; }
+    .sort .sort-icon { top: 15px; }
 }

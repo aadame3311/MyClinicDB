@@ -25,7 +25,7 @@
     <li><div class="divider"></div></li>
     <li><a class="sidenav-elem waves-effect">Bills</a></li>
     <li><div class="divider"></div></li>
-    <li><a class="sidenav-elem waves-effect" href="#!">Appointments</a></li>
+    <li><a class="sidenav-elem waves-effect" href="#!">Set Appointments</a></li>
     <li><div class="divider"></div></li>
     <li><a class="logout waves-effect" href="#!">Log Out</a></li>
 </ul>
@@ -34,31 +34,31 @@
 <!--MODULE-->
 <div class="container">
 
-  <div class="Overview-module module">
+  <div class="overview-module module">
       <div class="row">
         <!--upcoming.-->
           <div class="col m6 s12 upcoming-module">
               <div class="card-panel">
-              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">star</i> Upcoming Appointments</h4>
-              <div class="divider"></div>
-              <div class="row">
-                
-              </div>
+                <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">star</i> Upcoming Appointments</h4>
+                <div class="divider"></div>
+                <div class="row">
+                    
+                </div>
   
               </div>
           </div>
         <!--health history.-->
           <div class="col m6 s12 history-module">
               <div class="card-panel">
-              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">history</i> My Health History</h4>
-              <div class="divider"></div>
-              <div class="row module-container">
-                {% for hh in health_history %}
-                <div class="col s12 l-item">
-                    <p class="l-content">{{ hh.getDiseaseName() }}</p>
+                <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">history</i> My Health History</h4>
+                <div class="divider"></div>
+                <div class="row module-container">
+                    {% for hh in health_history %}
+                    <div class="col s12 l-item">
+                        <p class="l-content">{{ hh.getDiseaseName() }}</p>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-              </div>
   
               </div>
           </div>
@@ -71,17 +71,17 @@
               <div class="divider"></div>
               <div class="row">
                 <div class="col m4 s12">
-                    <p class="info">First Name: <span style="color: coral;">{{first_name}}</span></p>
-                    <p class="info">Last Name: <span style="color: coral;">{{last_name}}</span></p>    
+                    <p class="info">First Name: <span>{{first_name}}</span></p>
+                    <p class="info">Last Name: <span>{{last_name}}</span></p>    
                     
                 </div>
                 <div class="col m4 s12">
-                    <p class="info">Email: <span style="color: coral;">{{email}}</span></p>    
-                    <p class="info">Address: <span style="color: coral;">{{address}}</span></p>    
+                    <p class="info">Email: <span>{{email}}</span></p>    
+                    <p class="info">Address: <span>{{address}}</span></p>    
                 </div>
                 <div class="col m4 s12">
-                    <p class="info">Phone: <span style="color: coral;">{{main_phone}}</span></p>
-                    <p class="info">Insurance: <span style="color: coral;">{{insurance}}</span></p>
+                    <p class="info">Phone: <span>{{main_phone}}</span></p>
+                    <p class="info">Insurance: <span>{{insurance}}</span></p>
                 </div>
                 
               </div>
@@ -89,6 +89,47 @@
               </div>
           </div>
       </div>
+  </div>
+  <div hidden class="set-appointments-module module">
+    <div class="col s12 card-panel">
+        <div class="row">
+            <!-- container for the search bar.-->
+            <div class="search col s12 m10">
+                <form action="" class="browser-default">
+                    <input type="text" class="col s12 search-input browser-default search-field" placeholder="Search">
+                    <label for="search-input"><i class="material-icons search-icon">search</i></label> 
+                </form>
+            </div>
+            <div class="sort col s12 m2">
+                <i class="material-icons sort-icon">sort</i>
+                <div class="sort-btn">Sort: <span id="current-sort">Time</span></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="headers col s12">
+                <span class="left">Name:</span><span class="right">Time:</span>
+            </div>
+            
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+            <div class="results col s12">
+                <!--display everyone with an available time slow.-->
+                {% for time in time_slots %}
+                <div class="app-item l-item col s12">
+                    <p class="l-content">
+                        <span class="employe-name">{{ time.getEmployee().getFirstName() }} {{time.getEmployee().getLastName()}} <span class="right">{{time.getStartTime}} - {{time.getEndTime}}</span> </span>
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+            <div hidden class="submit-btn col s12">
+                <a hidden class="waves-effect waves-light btn">Schedule Appointment</a>
+            </div>
+        </div>
+    </div>
   </div>
 
 </div>

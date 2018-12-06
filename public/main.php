@@ -154,6 +154,11 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         // retrieve patients health history.
         $health_history = HealthhistoryQuery::create()->filterByPatientId($patient_id);
 
+        // retrieve all of the available time slots.
+        $available_time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime()->find();
+        // find all employees.
+        $employees = EmployeeQuery::create()->find();
+
         // return patient info to patient dashboard.
         return $this->view->render($response, 'patient.html', [
             'username'=>$patient_username,
@@ -163,7 +168,9 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
             'address'=>$address,
             'insurance'=>$insurance,
             'main_phone'=>$main_phone,
-            'health_history'=>$health_history
+            'health_history'=>$health_history,
+            'employees'=>$employees,
+            'time_slots'=>$available_time_slots
         ]);
     }
     else {
