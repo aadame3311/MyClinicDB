@@ -1,5 +1,7 @@
 
 
+var app_template = $(".app-template").clone();
+var sort_type = 0;
 
 
 //event handlers/////////////////////////////////////////////
@@ -13,19 +15,22 @@ $("a.sidenav-elem").on('click', function(e) {
     $(".current-select h2").html(module_title);
     LoadModule(module_title);
 });
-$(".app-item").on('click', function() {
-    // toggles the currently selected one.
-    if ($(this).hasClass('app-selected')) {
-        $(this).removeClass('app-selected');
-        DisplaySubmit(false);
-    } else {
-        // ensure only one appointment can be selected at a time.
-        $(".app-item").removeClass('app-selected');
-        $(this).addClass('app-selected');
-        DisplaySubmit(true);
+$(".sort-btn").on('click', function(e) {
+    e.preventDefault();
+    if (sort_type == 0 ) {
+        GetApps(1);
+        sort_type = 1;
+        $("#current-sort").text("Latest");
+    }
+    else {
+        GetApps(0);
+        sort_type = 0;
+        $("#current-sort").text("Earliest");
+
     }
 
 });
+
 /////////////////////////////////////////////////////////////
 
 
@@ -40,11 +45,51 @@ function LoadModule(name) {
     }
     else if (name == "Set Appointments") {
         module_name = 'set-appointments';
+        // initial default sort.
+        GetApps(sort_type);
     }
-    
-    console.log(module_name);
     $("."+module_name+"-module").prop('hidden', false);
 }
+
+function GetApps(sort) {
+    $(".app-item").remove();
+    $.ajax({
+        url:'../../main.php/dashboard/getApps',
+        data: {
+            'sort':sort
+        },
+        method: "POST",
+        dataType: "JSON"
+    }).done(function(data) {
+        $.each(data, function(key, value) {
+            var new_app = app_template.clone();
+            new_app.removeClass('app-template');
+            new_app.prop('hidden', false);
+            new_app.find('.l-content').html(
+                '<span class="employee-name">'+value['first_name']+" "+value['last_name']+'</span>'+
+                '<span class="time-range right">'+value['start_time']+'-'+value['end_time']+'</span>'
+            );
+            $('.results').append(new_app);
+        });
+
+        // set event listener for appointment selection.
+        $(".app-item").on('click', function() {
+            console.log('clicked');
+            // toggles the currently selected one.
+            if ($(this).hasClass('app-selected')) {
+                $(this).removeClass('app-selected');
+                DisplaySubmit(false);
+            } else {
+                // ensure only one appointment can be selected at a time.
+                $(".app-item").removeClass('app-selected');
+                $(this).addClass('app-selected');
+                DisplaySubmit(true);
+            }
+        
+        });
+    })
+}
+
 function DisplaySubmit(is_activate) {
     if (is_activate) {
         $(".submit-btn").prop('hidden', false);

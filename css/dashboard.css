@@ -161,7 +161,10 @@ input.search-field {
     height: 40vh;
     overflow-y: scroll;
     transition: background-color 0.2s;
-} .app-item:hover {background-color: #474840; cursor: pointer;}
+} 
+.app-item {
+    border-radius: 2px;
+}.app-item:hover {background-color: #474840; cursor: pointer;}
 .app-selected {
     background-color: #816694;
     transition: background-color 0.2s;

@@ -102,7 +102,7 @@
             </div>
             <div class="sort col s12 m2">
                 <i class="material-icons sort-icon">sort</i>
-                <div class="sort-btn">Sort: <span id="current-sort">Time</span></div>
+                <div class="sort-btn">Sort: <span id="current-sort">Earliest</span></div>
             </div>
         </div>
         <div class="row">
@@ -114,14 +114,13 @@
         <div class="divider"></div>
         <div class="row">
             <div class="results col s12">
-                <!--display everyone with an available time slow.-->
-                {% for time in time_slots %}
-                <div class="app-item l-item col s12">
+
+                <!--display everyone with an available time slot.-->
+                <div hidden class="app-item app-template l-item col s12">
                     <p class="l-content">
-                        <span class="employe-name">{{ time.getEmployee().getFirstName() }} {{time.getEmployee().getLastName()}} <span class="right">{{time.getStartTime}} - {{time.getEndTime}}</span> </span>
                     </p>
                 </div>
-                {% endfor %}
+
             </div>
         </div>
         <div class="row">

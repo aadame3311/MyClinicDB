@@ -154,11 +154,6 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         // retrieve patients health history.
         $health_history = HealthhistoryQuery::create()->filterByPatientId($patient_id);
 
-        // retrieve all of the available time slots.
-        $available_time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime()->find();
-        // find all employees.
-        $employees = EmployeeQuery::create()->find();
-
         // return patient info to patient dashboard.
         return $this->view->render($response, 'patient.html', [
             'username'=>$patient_username,
@@ -169,8 +164,6 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
             'insurance'=>$insurance,
             'main_phone'=>$main_phone,
             'health_history'=>$health_history,
-            'employees'=>$employees,
-            'time_slots'=>$available_time_slots
         ]);
     }
     else {
@@ -179,6 +172,35 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         exit();
     }
 
+});
+
+$app->post("/dashboard/getApps", function($request, $response) {
+    $sort = $request->getParam('sort');
+    $time_slots = array();
+    if ($sort == 0) {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime()->find();
+    }
+    else if ($sort == 1) {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime('desc')->find();
+    }
+    
+
+    // construct json object. 
+    $schedules = array();
+    $obj = array();
+    foreach($time_slots as $t) {
+        $emp = $t->getEmployee();
+        $obj = [
+            'first_name'=>$emp->getFirstName(),
+            'last_name'=>$emp->getLastName(),
+            'start_time'=>$t->getStartTime(),
+            'end_time'=>$t->getEndTime()
+        ];
+
+        array_push($schedules, $obj);
+    }
+
+    return $response->withJson($schedules);
 });
 
 $app->post("/isAdmin", function($request, $response) {
