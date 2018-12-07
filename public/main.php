@@ -4,6 +4,13 @@ require "../vendor/autoload.php";
 require_once '../generated-conf/config.php';
 
 
+function multiexplode ($delimiters,$string) {
+    
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
+}
+
 $settings = ['displayErrorDetails' => true];
 
 $app = new \Slim\App(['settings' => $settings]);
@@ -201,6 +208,55 @@ $app->post("/dashboard/getApps", function($request, $response) {
     }
 
     return $response->withJson($schedules);
+});
+$app->post("/dashboard/searchApp", function($request, $response) {
+    $search_query = $request->getParam('search');
+    if ($search_query != "") {
+        $keywords = multiexplode(array(" ",",",":",".","-"), $search_query);
+        $keywords = array_unique($keywords);
+    
+        $result = array();
+    
+        $emp = null;
+        foreach($keywords as $word) {
+            if ($emp = EmployeeQuery::create()->filterByFirstName($word)->find()) {
+                foreach($emp as $e) {
+                    $obj = array();
+                    $emp_times = TimeslotQuery::create()->filterByEmployeeId($e->getID())->find();
+                    foreach($emp_times as $t) {
+                        $obj = [
+                            'first_name'=>$e->getFirstName(),
+                            'last_name'=>$e->getLastName(),
+                            'start_time'=>$t->getStartTime(),
+                            'end_time'=>$t->getEndTime()
+                        ];
+                        array_push($result, $obj);
+                    }
+                }
+               
+            }
+        }
+    }
+    else {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime()->find();
+
+        // construct json object. 
+        $result = array();
+        $obj = array();
+        foreach($time_slots as $t) {
+            $emp = $t->getEmployee();
+            $obj = [
+                'first_name'=>$emp->getFirstName(),
+                'last_name'=>$emp->getLastName(),
+                'start_time'=>$t->getStartTime(),
+                'end_time'=>$t->getEndTime()
+            ];
+    
+            array_push($result, $obj);
+        }
+    }
+    return $response->withJson($result);
+
 });
 
 $app->post("/isAdmin", function($request, $response) {

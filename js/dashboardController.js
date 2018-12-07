@@ -30,6 +30,46 @@ $(".sort-btn").on('click', function(e) {
     }
 
 });
+$(".search-app").on('submit', function(e) {
+    e.preventDefault();
+    $(".app-item").remove();
+    let search = $(".search-input").val();
+    $.ajax({
+        url:'../../main.php/dashboard/searchApp',
+        data: {
+            'search':search
+        },
+        method: "POST",
+        dataType:"JSON"
+    }).done(function(data) {
+        $.each(data, function(key, value) {
+            var new_app = app_template.clone();
+            new_app.removeClass('app-template');
+            new_app.prop('hidden', false);
+            new_app.find('.l-content').html(
+                '<span class="employee-name">'+value['first_name']+" "+value['last_name']+'</span>'+
+                '<span class="time-range right">'+value['start_time']+'-'+value['end_time']+'</span>'
+            );
+            $('.results').append(new_app);
+        });
+        
+        // set event listener for appointment selection.
+        $(".app-item").on('click', function() {
+            console.log('clicked');
+            // toggles the currently selected one.
+            if ($(this).hasClass('app-selected')) {
+                $(this).removeClass('app-selected');
+                DisplaySubmit(false);
+            } else {
+                // ensure only one appointment can be selected at a time.
+                $(".app-item").removeClass('app-selected');
+                $(this).addClass('app-selected');
+                DisplaySubmit(true);
+            }
+        
+        });
+    });
+});
 
 /////////////////////////////////////////////////////////////
 
@@ -87,7 +127,7 @@ function GetApps(sort) {
             }
         
         });
-    })
+    });
 }
 
 function DisplaySubmit(is_activate) {
