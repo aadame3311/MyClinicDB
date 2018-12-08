@@ -45,6 +45,8 @@ $(".search-app").on('submit', function(e) {
         $.each(data, function(key, value) {
             var new_app = app_template.clone();
             new_app.removeClass('app-template');
+            $(new_app).attr('time-id', value['app_id']);
+            $(new_app).attr('employee-id', value['employee_id']);
             new_app.prop('hidden', false);
             new_app.find('.l-content').html(
                 '<span class="employee-name">'+value['first_name']+" "+value['last_name']+'</span>'+
@@ -70,7 +72,25 @@ $(".search-app").on('submit', function(e) {
         });
     });
 });
-
+$(".schedule-btn").on('click', function(e) {
+    e.preventDefault();
+    let t_id = $(".app-selected").attr('time-id');
+    let employee_id = $(".app-selected").attr('employee-id');
+    console.log(t_id);
+    $.ajax({
+        url: "../../main.php/dashboard/scheduleApp",
+        data: {
+            't_id':t_id,
+            'employee_id':employee_id,
+            'room':0,
+            'cost':1000
+        },
+        method: "POST"
+    }).done(function() {
+        $(".app-selected").remove();
+        console.log('appointment set!');
+    });
+})
 /////////////////////////////////////////////////////////////
 
 
@@ -104,6 +124,8 @@ function GetApps(sort) {
         $.each(data, function(key, value) {
             var new_app = app_template.clone();
             new_app.removeClass('app-template');
+            $(new_app).attr('time-id', value['app_id']);
+            $(new_app).attr('employee-id', value['employee_id']);
             new_app.prop('hidden', false);
             new_app.find('.l-content').html(
                 '<span class="employee-name">'+value['first_name']+" "+value['last_name']+'</span>'+

@@ -180,7 +180,6 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
     }
 
 });
-
 $app->post("/dashboard/getApps", function($request, $response) {
     $sort = $request->getParam('sort');
     $time_slots = array();
@@ -198,10 +197,12 @@ $app->post("/dashboard/getApps", function($request, $response) {
     foreach($time_slots as $t) {
         $emp = $t->getEmployee();
         $obj = [
+            'employee_id'=>$emp->getID(),
             'first_name'=>$emp->getFirstName(),
             'last_name'=>$emp->getLastName(),
             'start_time'=>$t->getStartTime(),
-            'end_time'=>$t->getEndTime()
+            'end_time'=>$t->getEndTime(),
+            'app_id'=>$t->getID()
         ];
 
         array_push($schedules, $obj);
@@ -225,15 +226,16 @@ $app->post("/dashboard/searchApp", function($request, $response) {
                     $emp_times = TimeslotQuery::create()->filterByEmployeeId($e->getID())->find();
                     foreach($emp_times as $t) {
                         $obj = [
+                            'employee_id'=>$e->getID(),
                             'first_name'=>$e->getFirstName(),
                             'last_name'=>$e->getLastName(),
                             'start_time'=>$t->getStartTime(),
-                            'end_time'=>$t->getEndTime()
+                            'end_time'=>$t->getEndTime(),
+                            'app_id'=>$t->getID()
                         ];
                         array_push($result, $obj);
                     }
-                }
-               
+                } 
             }
         }
     }
@@ -246,10 +248,12 @@ $app->post("/dashboard/searchApp", function($request, $response) {
         foreach($time_slots as $t) {
             $emp = $t->getEmployee();
             $obj = [
+                'employee_id'=>$emp->getID(),
                 'first_name'=>$emp->getFirstName(),
                 'last_name'=>$emp->getLastName(),
                 'start_time'=>$t->getStartTime(),
-                'end_time'=>$t->getEndTime()
+                'end_time'=>$t->getEndTime(),
+                'app_id'=>$t->getID()
             ];
     
             array_push($result, $obj);
@@ -257,6 +261,34 @@ $app->post("/dashboard/searchApp", function($request, $response) {
     }
     return $response->withJson($result);
 
+});
+
+$app->post("/dashboard/scheduleApp", function($request, $response) {
+    $t_id = $request->getParam('t_id');
+    $emp_id = $request->getParam('employee_id');
+    $room = $request->getParam('room');
+    $cost = $request->getParam('cost');
+    // find username currently logged in. 
+    $user_hash = $_COOKIE["user"];
+    session_id("s-".$user_hash);
+    session_start();
+    $username = $_SESSION['username'];
+    $user = PatientQuery::create()->filterByUsername($username)->findOne();
+    echo $username;
+
+    // assign appointment to the username. 
+    $appointment = new Appointment();
+    $appointment->setPatientId($user->getID());
+    $appointment->setTimeslotId($t_id);
+    $appointment->setEmployeeId($emp_id);
+    $appointment->setRoom($room);
+    $appointment->setCost($cost);
+    $appointment->save();
+
+    // make the selected timeslot unavailable.
+    $time_slot = TimeslotQuery::create()->findPK($t_id);
+    $time_slot->setAvailability(0);
+    $time_slot->save();
 });
 
 $app->post("/isAdmin", function($request, $response) {
