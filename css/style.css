@@ -2,12 +2,17 @@
 .btn-danger {
     background-color: #E57248;
 }
-.btn-danger:hover {
+.btn-danger:hover, .btn-danger:focus {
     background-color: #FF7F50;
 }
-select#insurance-list {
-    background-color: #475C58;
+/*animations*/
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
+
+
+
 
 /* overall adjustments*/
 body {
@@ -29,6 +34,15 @@ nav {
 }
 
 /* main content of landing page */
+.loader {
+    border: 1.6px solid #f3f3f3; /* Light grey */
+    border-top: 1.6px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
 .main-content {
     padding-top: 55px;
 }

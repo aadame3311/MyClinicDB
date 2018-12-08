@@ -4,6 +4,13 @@ require "../vendor/autoload.php";
 require_once '../generated-conf/config.php';
 
 
+function multiexplode ($delimiters,$string) {
+    
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
+}
+
 $settings = ['displayErrorDetails' => true];
 
 $app = new \Slim\App(['settings' => $settings]);
@@ -28,7 +35,7 @@ $app->get('/', function($request, $response, $args) {
     
     return $this->view->render($response, 'landing.html');
 });
-$app->post('/login', function($request, $response, $args) {
+$app->post('/login', function($request, $response) {
     $username = $request->getParam('username');
     $password = $request->getParam('password');
 
@@ -67,7 +74,7 @@ $app->post('/login', function($request, $response, $args) {
 
 
 });
-$app->post('/logout', function($request, $response, $args) {
+$app->post('/logout', function($request, $response) {
     session_id('s-'.$request->getParam('user_code'));
     session_start();
     session_destroy();
@@ -79,7 +86,7 @@ $app->post('/logout', function($request, $response, $args) {
     exit();
 
 });
-$app->post('/signup', function($request, $response, $args) {
+$app->post('/signup', function($request, $response) {
 
     // get user data from request.
     // we assume that this data is alreay formatted by the client.
@@ -137,8 +144,32 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
     if (isset($_COOKIE["user"]) && $_COOKIE["user"] == $args['user_code']) {
         session_id("s-".$_COOKIE["user"]);
         session_start();
+
+
+        // retrieve patient info from db.
+        $patient_username = (string)$_SESSION['username'];
+        $patient = PatientQuery::create()->filterByUsername($patient_username)->findOne();
+        $patient_id = $patient->getID();
+        $first_name = $patient->getFirstName();
+        $last_name = $patient->getLastName();
+        $email = $patient->getEmail();
+        $address = $patient->getAddress();
+        $insurance = $patient->getInsurance();
+        $main_phone = PatientphoneQuery::create()->filterByPatientId($patient_id)->findOne()->getPhoneNumber();
+
+        // retrieve patients health history.
+        $health_history = HealthhistoryQuery::create()->filterByPatientId($patient_id);
+
+        // return patient info to patient dashboard.
         return $this->view->render($response, 'patient.html', [
-            'username'=>$_SESSION['username']
+            'username'=>$patient_username,
+            'first_name'=>$first_name, 
+            'last_name'=>$last_name,
+            'email'=>$email,
+            'address'=>$address,
+            'insurance'=>$insurance,
+            'main_phone'=>$main_phone,
+            'health_history'=>$health_history,
         ]);
     }
     else {
@@ -146,6 +177,120 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         header("Location: ../../main.php");
         exit();
     }
+
+});
+$app->post("/dashboard/getApps", function($request, $response) {
+    $sort = $request->getParam('sort');
+    $time_slots = array();
+    if ($sort == 0) {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime()->find();
+    }
+    else if ($sort == 1) {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime('desc')->find();
+    }
+    
+
+    // construct json object. 
+    $schedules = array();
+    $obj = array();
+    foreach($time_slots as $t) {
+        $emp = $t->getEmployee();
+        $obj = [
+            'employee_id'=>$emp->getID(),
+            'first_name'=>$emp->getFirstName(),
+            'last_name'=>$emp->getLastName(),
+            'start_time'=>$t->getStartTime(),
+            'end_time'=>$t->getEndTime(),
+            'app_id'=>$t->getID()
+        ];
+
+        array_push($schedules, $obj);
+    }
+
+    return $response->withJson($schedules);
+});
+$app->post("/dashboard/searchApp", function($request, $response) {
+    $search_query = $request->getParam('search');
+    if ($search_query != "") {
+        $keywords = multiexplode(array(" ",",",":",".","-"), $search_query);
+        $keywords = array_unique($keywords);
+    
+        $result = array();
+    
+        $emp = null;
+        foreach($keywords as $word) {
+            if ($emp = EmployeeQuery::create()->filterByFirstName($word)->find()) {
+                foreach($emp as $e) {
+                    $obj = array();
+                    $emp_times = TimeslotQuery::create()->filterByEmployeeId($e->getID())->find();
+                    foreach($emp_times as $t) {
+                        $obj = [
+                            'employee_id'=>$e->getID(),
+                            'first_name'=>$e->getFirstName(),
+                            'last_name'=>$e->getLastName(),
+                            'start_time'=>$t->getStartTime(),
+                            'end_time'=>$t->getEndTime(),
+                            'app_id'=>$t->getID()
+                        ];
+                        array_push($result, $obj);
+                    }
+                } 
+            }
+        }
+    }
+    else {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime()->find();
+
+        // construct json object. 
+        $result = array();
+        $obj = array();
+        foreach($time_slots as $t) {
+            $emp = $t->getEmployee();
+            $obj = [
+                'employee_id'=>$emp->getID(),
+                'first_name'=>$emp->getFirstName(),
+                'last_name'=>$emp->getLastName(),
+                'start_time'=>$t->getStartTime(),
+                'end_time'=>$t->getEndTime(),
+                'app_id'=>$t->getID()
+            ];
+    
+            array_push($result, $obj);
+        }
+    }
+    return $response->withJson($result);
+
+});
+
+$app->post("/dashboard/scheduleApp", function($request, $response) {
+    $t_id = $request->getParam('t_id');
+    $emp_id = $request->getParam('employee_id');
+    $room = $request->getParam('room');
+    $cost = $request->getParam('cost');
+    // find username currently logged in. 
+    $user_hash = $_COOKIE["user"];
+    session_id("s-".$user_hash);
+    session_start();
+    $username = $_SESSION['username'];
+    $user = PatientQuery::create()->filterByUsername($username)->findOne();
+    echo $username;
+
+    // assign appointment to the username. 
+    $appointment = new Appointment();
+    $appointment->setPatientId($user->getID());
+    $appointment->setTimeslotId($t_id);
+    $appointment->setEmployeeId($emp_id);
+    $appointment->setRoom($room);
+    $appointment->setCost($cost);
+    $appointment->save();
+
+    // make the selected timeslot unavailable.
+    $time_slot = TimeslotQuery::create()->findPK($t_id);
+    $time_slot->setAvailability(0);
+    $time_slot->save();
+});
+
+$app->post("/isAdmin", function($request, $response) {
 
 });
 

@@ -8,19 +8,23 @@
 {% endblock %}
 
 
-{% block pageTitle %}
 
+{% block mobilemenu %}
+<a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 {% endblock %}
-
 
 {% block navTabs %}
-<li><a class="login" href="#">Login</a></li>
-<li><a class="signup" href="#">Sign Up</a></li>
+<li><a class="login" href="#" style="color: black;">Login</a></li>
+<li><a class="signup" href="#" style="color: black;">Sign Up</a></li>
 {% endblock %}
 {% block navTabsMobile %}
-<li><a class="login" href="#">Login</a></li>
-<li><a class="signup" href="#">Sign Up</a></li>
+<ul class="sidenav" id="mobile-demo">
+    <li><a class="login" href="#">Login</a></li>
+    <li><a class="signup" href="#">Sign Up</a></li>
+</ul>
 {% endblock %}
+
+
 
 {% block content %}
 <div class="parallax-container">
@@ -33,7 +37,6 @@
 <div class="section">
     <div class="row container">
         <h2>Welcome to MyClinic</h2>
-
     </div>
     
 </div>
@@ -45,26 +48,19 @@
 </div>
 <div class="section footer">
     <div class="row container">
+
         <div class="course-name col s12">CSCI 4333</div>
         <div class="name1 col s6">Antonio Adame</div>
         <div class="name2 col s6">Cristal Coria</div>
+
     </div>
 
 </div>
-<!--
-<div class="parallax-container">
-    <div class="parallax">
-        <img src="../images/landing2.jpg" alt="landing image 2">
-    </div>
-    
-</div>
-<div class="section">
-        <div class="row container">
-            
-        </div>
-    
-</div> -->
+{% endblock %}
 
+
+
+{% block scripts %}
 <script
   src="https://code.jquery.com/jquery-3.3.1.js"
   integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -73,4 +69,5 @@
 <script src="../js/tingle.js"></script>         
 <script src="../js/source.js"></script> 
 <script src="../js/loginHandler.js"></script>
+<script src="../js/signupHandler.js"></script>
 {% endblock %}

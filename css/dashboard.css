@@ -1,0 +1,176 @@
+/* animations */
+@keyframes slideout {
+    from {
+        padding-left: 5px;
+    }
+    to {
+        padding-left: 20px;
+    }
+}
+@keyframes slideback {
+    from {
+        padding-left: 20px;
+    }
+    to {
+        padding-left: 5px;
+    }
+}
+
+/* adjust defaults*/
+.btn-danger {
+    background-color: #E57248;
+}
+.btn-danger:hover {
+    background-color: #FF7F50;
+}
+select#insurance-list {
+    background-color: #475C58;
+}
+.input-field label {
+    color: #475C58;
+}
+ul.sidenav li a.logout:hover {
+    background-color: darkred;
+    color: white;
+
+}
+
+/* overall adjustments*/
+body {
+    background-color: #A8DCD1;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x:hidden;
+}
+
+h1 {
+    color: black;
+}
+nav {
+    background-color: #DCE2C8;
+    margin: 0;
+    position: fixed;
+    top: 1;
+    color: black;
+    z-index: 10;
+}
+.main-content {
+    padding-top: 70px;
+}
+/****************************************************************/
+/*material-icons*/
+.pull-menu-icon {
+    color: #A8DCD1;
+}
+
+/*******************************************************************/
+.dashboard-side-trigger {
+    position: fixed;
+    top: 50%;
+    background: #475C58;
+    padding: 10px;
+    padding-left: 5px;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 2px 0px 2px #475C58;
+    left: 0;
+    animation: 0.2s slideback;
+}
+.sidenav-trigger:hover {
+    animation: 0.2s slideout forwards;
+}
+/*******************************************************************/
+.current-select {
+    text-align: center;
+}
+.info {
+    text-align: left;
+}
+.card-panel {
+    background-color: #DCE2C8;
+}
+.divider {
+    background-color: black;
+}
+/* letters under "myInfo"*/
+p.info span {
+    color: #E57248;
+}
+
+/* items listed as a list under certain modules */
+.l-item p {
+    padding: 5px;
+    color: #DCE2C8;
+}
+.l-item {
+    background-color: #606257;
+    width: 100%;
+    margin: 10px;
+    border-radius: 2px;
+}
+.module-container {
+    margin: 10px;
+    height: 200px;
+    overflow-y: scroll;
+}
+.search {
+    position: relative;
+}
+input.search-field {
+    text-indent: 30px;
+    height: 36px;
+    border-radius: 2px;
+    border: 0;
+    background: #f7f7f7;
+    transition: background-color 0.2s;
+
+
+} input.search-field:hover { background-color: #ebebeb; }
+
+.search-icon {
+    z-index: 10;
+    position: absolute;
+    top: 6px;
+    left: 20px;
+    color: rgba(0, 0, 0, 0.54);
+}
+.sort {
+    position: relative;
+}
+.sort .sort-btn {
+    background-color: #606257; 
+    border-radius: 2px;
+    height: 36px;
+
+    color: #DCE2C8;
+    padding: 8px;
+
+    text-indent: 30px;
+
+    transition: background-color 0.2s;
+} .sort .sort-btn:hover { background-color: #474840; cursor: pointer;}
+
+.sort .sort-icon {
+    z-index: 10;
+    position: absolute;
+    top: 6px;
+    left: 20px;
+    color: #DCE2C8;
+
+}
+.results {
+    height: 40vh;
+    overflow-y: scroll;
+    transition: background-color 0.2s;
+} 
+.app-item {
+    border-radius: 2px;
+}.app-item:hover {background-color: #474840; cursor: pointer;}
+.app-selected {
+    background-color: #816694;
+    transition: background-color 0.2s;
+} .app-selected:hover {background-color: #6B547A;}
+
+/* screen sizes */
+@media only screen and (max-width: 600px) {
+    .sort-btn { margin-top: 10px; }
+    .sort .sort-icon { top: 15px; }
+}

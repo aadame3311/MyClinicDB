@@ -1,0 +1,104 @@
+{% extends 'main.html' %}
+
+{% block title %}MyClinic{% endblock %}
+
+{% block header %}
+<link rel="stylesheet" href="../../../css/dashboard.css">
+<link rel="stylesheet" href="../../../css/tingle.css">
+{% endblock %}
+
+{% block pageTitle %}<title>MyClinic Dashboard</title>{% endblock %}
+
+
+
+{% block currentSelect %}<span class="current-select"><h2>Overview</h2></span>{% endblock %}
+{% block content %} 
+<ul id="slide-out" class="sidenav">
+    <li><div class="user-view">
+      <div class="background">
+        <img src="../../../images/landing.jpg" alt="">
+      </div>
+      <a href="#name"><span class="white-text name">{{first_name}} {{last_name}}</span></a>
+      <a href="#email"><span class="white-text email">{{email}}</span></a>
+    </div></li>
+    <li><a class="sidenav-elem waves-effect" href="#">Overview</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="sidenav-elem waves-effect">Bills</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="sidenav-elem waves-effect" href="#!">Appointments</a></li>
+    <li><div class="divider"></div></li>
+    <li><a class="logout waves-effect" href="#!">Log Out</a></li>
+</ul>
+<a href="#" data-target="slide-out" class="dashboard-side-trigger sidenav-trigger"><i class="material-icons pull-menu-icon">chevron_right</i></a>
+
+<!--MODULE-->
+<div class="container">
+  <div class="Overview-module module">
+      <div class="row">
+          <div class="col m6 s12 upcoming-module">
+              <div class="card-panel">
+              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">star</i> Upcoming Appointments</h4>
+              <div class="divider"></div>
+              <div class="row">
+                
+              </div>
+  
+              </div>
+          </div>
+          <div class="col m6 s12 upcoming-module">
+              <div class="card-panel">
+              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">history</i> My Health History</h4>
+              <div class="divider"></div>
+              <div class="row">
+                
+              </div>
+  
+              </div>
+          </div>
+      </div>
+      
+      <div class="row">
+          <div class="col s12 info-module">
+              <div class="card-panel">
+              <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">info</i> My Info</h4>
+              <div class="divider"></div>
+              <div class="row">
+                <div class="col m4 s12">
+                    <p class="info">First Name: <span style="color: coral;">{{first_name}}</span></p>
+                    <p class="info">Last Name: <span style="color: coral;">{{last_name}}</span></p>    
+                    
+                </div>
+                <div class="col m4 s12">
+                    <p class="info">Email: <span style="color: coral;">{{email}}</span></p>    
+                    <p class="info">Address: <span style="color: coral;">{{address}}</span></p>    
+                </div>
+                <div class="col m4 s12">
+                    <p class="info">Phone: <span style="color: coral;">{{main_phone}}</span></p>
+                    <p class="info">Insurance: <span style="color: coral;">{{insurance}}</span></p>
+                </div>
+                
+              </div>
+  
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+{% block scripts %}
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>        
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="../../../js/tingle.js"></script>         
+<script src="../../../js/source.js"></script> 
+<script src="../../../js/loginHandler.js"></script> 
+<script src="../../../js/dashboardController.js"></script> 
+{% endblock %}
