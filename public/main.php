@@ -158,6 +158,9 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         $insurance = $patient->getInsurance();
         $main_phone = PatientphoneQuery::create()->filterByPatientId($patient_id)->findOne()->getPhoneNumber();
 
+        // retrieve set appointments. 
+        $appointments = AppointmentQuery::create()->filterByPatientId($patient_id)->find();
+
         // retrieve patients health history.
         $health_history = HealthhistoryQuery::create()->filterByPatientId($patient_id);
 
@@ -171,6 +174,7 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
             'insurance'=>$insurance,
             'main_phone'=>$main_phone,
             'health_history'=>$health_history,
+            'appointments'=>$appointments
         ]);
     }
     else {
