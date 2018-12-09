@@ -42,9 +42,9 @@
                 <div class="divider"></div>
                 <div class="row module-container">
                     {% for app in appointments %}
-                    <div class="col s12 l-item remove-app" id={{app.getID()}}>
+                    <div class="col s12 l-item " id={{app.getID()}}>
                         <p class="l-content">
-                            <i class="remove-icon left material-icons">remove_circle</i>{{app.getID()}} {{app.getEmployee().getFirstName()}} {{app.getEmployee().getLastName()}}<span class="right">{{app.getTimeslot().getStartTime()}}-{{app.getTimeslot().getEndTime()}}</span>
+                            <i class="remove-app remove-icon left material-icons">remove_circle</i>{{app.getID()}} {{app.getEmployee().getFirstName()}} {{app.getEmployee().getLastName()}}<span class="right">{{app.getTimeslot().getStartTime()}}-{{app.getTimeslot().getEndTime()}}</span>
                         </p>
                     </div>
                     {% endfor %}

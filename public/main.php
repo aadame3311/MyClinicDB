@@ -125,7 +125,7 @@ $app->post('/signup', function($request, $response) {
     
             if ($_phone != null && $_phone != "") {
                 $patient_phone = new Patientphone();
-                $patient_phone->setPhoneNumber($_phone);
+                $patient_phone->setPhoneNumber((string)$_phone);
                 $patient_phone->setPatientId($patient->getID());
                 $patient_phone->save();
             }

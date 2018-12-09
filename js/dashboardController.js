@@ -96,7 +96,7 @@ $(".remove-app").on('click', function(e) {
     e.preventDefault();
     $(".loader").prop('hidden', false);
     // get id of appointment. 
-    var app_id = $(this).attr('id');
+    var app_id = $(this).parent().parent().attr('id');
     console.log(app_id);
     $.ajax({
         url: '../../main.php/dashboard/removeApp',
