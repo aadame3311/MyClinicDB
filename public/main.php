@@ -293,6 +293,15 @@ $app->post("/dashboard/scheduleApp", function($request, $response) {
     $time_slot->setAvailability(0);
     $time_slot->save();
 });
+$app->post("/dashboard/removeApp", function($request, $response) {
+    $app_id = $request->getParam('app_id');
+    $appointment = AppointmentQuery::create()->findPK($app_id);
+    // reset availability for timeslot. 
+    $timeslot = $appointment->getTimeslot();
+    $timeslot->setAvailability('1');
+    $timeslot->save();
+    $appointment->delete();
+});
 
 $app->post("/isAdmin", function($request, $response) {
 

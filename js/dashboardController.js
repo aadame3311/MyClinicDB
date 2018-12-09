@@ -2,6 +2,7 @@
 
 var app_template = $(".app-template").clone();
 var sort_type = 0;
+var can_select = true;
 
 
 //event handlers/////////////////////////////////////////////
@@ -57,12 +58,11 @@ $(".search-app").on('submit', function(e) {
         
         // set event listener for appointment selection.
         $(".app-item").on('click', function() {
-            console.log('clicked');
             // toggles the currently selected one.
             if ($(this).hasClass('app-selected')) {
                 $(this).removeClass('app-selected');
                 DisplaySubmit(false);
-            } else {
+            } else if ( can_select && !$(this).hasClass('app-selected') ) {
                 // ensure only one appointment can be selected at a time.
                 $(".app-item").removeClass('app-selected');
                 $(this).addClass('app-selected');
@@ -74,6 +74,7 @@ $(".search-app").on('submit', function(e) {
 });
 $(".schedule-btn").on('click', function(e) {
     e.preventDefault();
+    can_select = false;
     let t_id = $(".app-selected").attr('time-id');
     let employee_id = $(".app-selected").attr('employee-id');
     console.log(t_id);
@@ -87,9 +88,26 @@ $(".schedule-btn").on('click', function(e) {
         },
         method: "POST"
     }).done(function() {
+        can_select = true;
         $(".app-selected").remove();
-        console.log('appointment set!');
     });
+});
+$(".remove-app").on('click', function(e) {
+    e.preventDefault();
+    $(".loader").prop('hidden', false);
+    // get id of appointment. 
+    var app_id = $(this).attr('id');
+    console.log(app_id);
+    $.ajax({
+        url: '../../main.php/dashboard/removeApp',
+        data: {
+            'app_id': app_id
+        },
+        method: "POST"
+    }).done(function() {
+        $("#"+app_id).remove();
+        $(".loader").prop('hidden', true);
+    })
 })
 /////////////////////////////////////////////////////////////
 
@@ -141,7 +159,7 @@ function GetApps(sort) {
             if ($(this).hasClass('app-selected')) {
                 $(this).removeClass('app-selected');
                 DisplaySubmit(false);
-            } else {
+            } else if ( can_select && !$(this).hasClass('app-selected') ) {
                 // ensure only one appointment can be selected at a time.
                 $(".app-item").removeClass('app-selected');
                 $(this).addClass('app-selected');

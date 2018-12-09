@@ -38,13 +38,13 @@
         <!--upcoming.-->
           <div class="col m6 s12 upcoming-module">
               <div class="card-panel">
-                <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">star</i>Appointments</h4>
+                <h4 class="info-title"> <i class="large material-icons" style="font-size: 25px;">star</i>Appointments<div hidden class="right loader"></div></h4>
                 <div class="divider"></div>
                 <div class="row module-container">
                     {% for app in appointments %}
-                    <div class="col s12 l-item">
+                    <div class="col s12 l-item remove-app" id={{app.getID()}}>
                         <p class="l-content">
-                            {{app.getID()}} {{app.getEmployee().getFirstName()}} {{app.getEmployee().getLastName()}}<span class="right">{{app.getTimeslot().getStartTime()}}-{{app.getTimeslot().getEndTime()}}</span>
+                            <i class="remove-icon left material-icons">remove_circle</i>{{app.getID()}} {{app.getEmployee().getFirstName()}} {{app.getEmployee().getLastName()}}<span class="right">{{app.getTimeslot().getStartTime()}}-{{app.getTimeslot().getEndTime()}}</span>
                         </p>
                     </div>
                     {% endfor %}
