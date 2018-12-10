@@ -229,7 +229,7 @@ $app->post("/dashboard/searchApp", function($request, $response) {
             if ($emp = EmployeeQuery::create()->filterByFirstName($word)->find()) {
                 foreach($emp as $e) {
                     $obj = array();
-                    $emp_times = TimeslotQuery::create()->filterByEmployeeId($e->getID())->find();
+                    $emp_times = TimeslotQuery::create()->filterByEmployeeId($e->getID())->filterByAvailability(1)->find();
                     foreach($emp_times as $t) {
                         $obj = [
                             'employee_id'=>$e->getID(),
