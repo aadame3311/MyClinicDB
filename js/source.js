@@ -18,12 +18,3 @@ $('.login').on('click', function() {
 $('.signup').on('click', function() {
     personalinfoModal.open();
 });
-
-
-
-
-
-
-
-
-

@@ -27,6 +27,8 @@
     <li><div class="divider"></div></li>
     <li><a class="sidenav-elem waves-effect" href="#!">Set Appointments</a></li>
     <li><div class="divider"></div></li>
+    <li><a class="sidenav-elem waves-effect" href="#!">Prescriptions</a></li>
+    <li><div class="divider"></div></li>
     <li><a class="logout waves-effect" href="#!">Log Out</a></li>
 </ul>
 <a href="#" data-target="slide-out" class="dashboard-side-trigger sidenav-trigger"><i class="material-icons pull-menu-icon">chevron_right</i></a>
@@ -157,6 +159,29 @@
                 <a hidden class="schedule-btn waves-effect waves-light btn">Schedule Appointment</a>
             </div>
         </div>
+    </div>
+  </div>
+  <div hidden class="prescription-module module">
+    <div class="col s12 card-panel">
+        <div class="row prescription-results">
+                <!--display everyone with an available time slot.-->
+                {% for p in pres %}
+                <div class="presc-item l-item col s12" id={{p.getID()}}>
+                    <p class="l-content row">
+                        <i class="right payment-icon material-icons">payment</i>
+                        <i class="left info-icon material-icons">info_outline</i>
+                        <span class="col s6" style="text-align:center;">
+                            Dr. {{p.getEmployee().getFirstName()}} {{p.getEmployee().getLastName()}}
+                        </span>
+                        <span class="col s6" style="text-align:center;">
+                            {{p.getPrescriptionDate()}}
+                        </span>
+                        
+                    </p>
+                </div>
+                {% endfor %}
+        </div>
+
     </div>
   </div>
 
