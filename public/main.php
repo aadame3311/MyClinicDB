@@ -290,8 +290,55 @@ $app->post("/dashboard/scheduleApp", function($request, $response) {
     $time_slot->save();
 });
 
-$app->post("/isAdmin", function($request, $response) {
+$app->post("/dashboard/getBills", function($request, $response) {
+    session_id("s-".$_COOKIE["user"]);
+    session_start();
 
+    // retrieve patient info from db.
+    $patient_username = (string)$_SESSION['username'];
+    $patient = PatientQuery::create()->filterByUsername($username)->findOne();
+
+    $bills = BillQuery::create()->filterByPatientId($patient->getID())->find(); 
+    $bills = $bills->filterByBillPayed(0)->find();
+
+    // construct json object
+    $bills_payed = array();
+
+
+
+    
+        
+
+    /*$sort = $request->getParam('sort');
+    $time_slots = array();
+    if ($sort == 0) {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime()->find();
+    }
+    else if ($sort == 1) {
+        $time_slots = TimeslotQuery::create()->filterByAvailability(1)->orderByStartTime('desc')->find();
+    }
+    
+
+    // construct json object. 
+    $schedules = array();
+    $obj = array();
+    foreach($time_slots as $t) {
+        $emp = $t->getEmployee();
+        $obj = [
+            'employee_id'=>$emp->getID(),
+            'first_name'=>$emp->getFirstName(),
+            'last_name'=>$emp->getLastName(),
+            'start_time'=>$t->getStartTime(),
+            'end_time'=>$t->getEndTime(),
+            'app_id'=>$t->getID()
+        ];
+
+        array_push($schedules, $obj);
+    }
+
+    return $response->withJson($schedules);*/
+
+    
 });
 
 $app->run();
