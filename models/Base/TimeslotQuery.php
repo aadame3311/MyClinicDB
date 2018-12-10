@@ -69,7 +69,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTimeslot findOneByStartTime(int $start_time) Return the first ChildTimeslot filtered by the start_time column
  * @method     ChildTimeslot findOneByEndTime(int $end_time) Return the first ChildTimeslot filtered by the end_time column
  * @method     ChildTimeslot findOneByEmployeeId(int $employee_id) Return the first ChildTimeslot filtered by the employee_id column
- * @method     ChildTimeslot findOneByAvailability(string $availability) Return the first ChildTimeslot filtered by the availability column *
+ * @method     ChildTimeslot findOneByAvailability(int $availability) Return the first ChildTimeslot filtered by the availability column *
 
  * @method     ChildTimeslot requirePk($key, ConnectionInterface $con = null) Return the ChildTimeslot by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTimeslot requireOne(ConnectionInterface $con = null) Return the first ChildTimeslot matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -78,14 +78,14 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTimeslot requireOneByStartTime(int $start_time) Return the first ChildTimeslot filtered by the start_time column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTimeslot requireOneByEndTime(int $end_time) Return the first ChildTimeslot filtered by the end_time column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTimeslot requireOneByEmployeeId(int $employee_id) Return the first ChildTimeslot filtered by the employee_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildTimeslot requireOneByAvailability(string $availability) Return the first ChildTimeslot filtered by the availability column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildTimeslot requireOneByAvailability(int $availability) Return the first ChildTimeslot filtered by the availability column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTimeslot[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildTimeslot objects based on current ModelCriteria
  * @method     ChildTimeslot[]|ObjectCollection findById(int $ID) Return ChildTimeslot objects filtered by the ID column
  * @method     ChildTimeslot[]|ObjectCollection findByStartTime(int $start_time) Return ChildTimeslot objects filtered by the start_time column
  * @method     ChildTimeslot[]|ObjectCollection findByEndTime(int $end_time) Return ChildTimeslot objects filtered by the end_time column
  * @method     ChildTimeslot[]|ObjectCollection findByEmployeeId(int $employee_id) Return ChildTimeslot objects filtered by the employee_id column
- * @method     ChildTimeslot[]|ObjectCollection findByAvailability(string $availability) Return ChildTimeslot objects filtered by the availability column
+ * @method     ChildTimeslot[]|ObjectCollection findByAvailability(int $availability) Return ChildTimeslot objects filtered by the availability column
  * @method     ChildTimeslot[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -445,19 +445,35 @@ abstract class TimeslotQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByAvailability('fooValue');   // WHERE availability = 'fooValue'
-     * $query->filterByAvailability('%fooValue%', Criteria::LIKE); // WHERE availability LIKE '%fooValue%'
+     * $query->filterByAvailability(1234); // WHERE availability = 1234
+     * $query->filterByAvailability(array(12, 34)); // WHERE availability IN (12, 34)
+     * $query->filterByAvailability(array('min' => 12)); // WHERE availability > 12
      * </code>
      *
-     * @param     string $availability The value to use as filter.
+     * @param     mixed $availability The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildTimeslotQuery The current query, for fluid interface
      */
     public function filterByAvailability($availability = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($availability)) {
+        if (is_array($availability)) {
+            $useMinMax = false;
+            if (isset($availability['min'])) {
+                $this->addUsingAlias(TimeslotTableMap::COL_AVAILABILITY, $availability['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($availability['max'])) {
+                $this->addUsingAlias(TimeslotTableMap::COL_AVAILABILITY, $availability['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
         }

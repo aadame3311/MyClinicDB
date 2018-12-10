@@ -5,7 +5,7 @@
     }
     to {
         padding-left: 20px;
-    }
+    }l
 }
 @keyframes slideback {
     from {
@@ -160,7 +160,7 @@ input.search-field {
     color: #DCE2C8;
 
 }
-.results {
+.results, .bill-results {
     height: 40vh;
     overflow-y: scroll;
     transition: background-color 0.2s;
@@ -176,6 +176,12 @@ input.search-field {
     color: darkred;
     cursor: pointer;
 }.remove-icon:hover {color: red;} .remove-icon:active {color:orangered;}
+.payment-icon {
+    position: absolute;
+    margin-right: 20px;
+    color: green;
+    cursor: pointer;
+}.payment-icon:hover{color: greenyellow;} .payment-icon:active{color: greenyellow;}
 .loader {
     border: 1.6px solid #f3f3f3; /* Light grey */
     border-top: 1.6px solid #3498db; /* Blue */

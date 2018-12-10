@@ -10,6 +10,7 @@ use \Patient as ChildPatient;
 use \PatientQuery as ChildPatientQuery;
 use \Payment as ChildPayment;
 use \PaymentQuery as ChildPaymentQuery;
+use \DateTime;
 use \Exception;
 use \PDO;
 use Map\BillTableMap;
@@ -26,6 +27,7 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'bill' table.
@@ -92,7 +94,8 @@ abstract class Bill implements ActiveRecordInterface
     /**
      * The value for the due_date field.
      *
-     * @var        string
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
      */
     protected $due_date;
 
@@ -113,9 +116,16 @@ abstract class Bill implements ActiveRecordInterface
     /**
      * The value for the bill_payed field.
      *
-     * @var        string
+     * @var        int
      */
     protected $bill_payed;
+
+    /**
+     * The value for the appointment_id field.
+     *
+     * @var        int
+     */
+    protected $appointment_id;
 
     /**
      * @var        ChildPatient
@@ -148,10 +158,22 @@ abstract class Bill implements ActiveRecordInterface
     protected $paymentsScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Base\Bill object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -403,13 +425,23 @@ abstract class Bill implements ActiveRecordInterface
     }
 
     /**
-     * Get the [due_date] column value.
+     * Get the [optionally formatted] temporal [due_date] column value.
      *
-     * @return string
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getDueDate()
+    public function getDueDate($format = NULL)
     {
-        return $this->due_date;
+        if ($format === null) {
+            return $this->due_date;
+        } else {
+            return $this->due_date instanceof \DateTimeInterface ? $this->due_date->format($format) : null;
+        }
     }
 
     /**
@@ -435,11 +467,21 @@ abstract class Bill implements ActiveRecordInterface
     /**
      * Get the [bill_payed] column value.
      *
-     * @return string
+     * @return int
      */
     public function getBillPayed()
     {
         return $this->bill_payed;
+    }
+
+    /**
+     * Get the [appointment_id] column value.
+     *
+     * @return int
+     */
+    public function getAppointmentId()
+    {
+        return $this->appointment_id;
     }
 
     /**
@@ -511,21 +553,21 @@ abstract class Bill implements ActiveRecordInterface
     } // setEmployeeId()
 
     /**
-     * Set the value of [due_date] column.
+     * Sets the value of [due_date] column to a normalized version of the date/time value specified.
      *
-     * @param string $v new value
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
      * @return $this|\Bill The current object (for fluent API support)
      */
     public function setDueDate($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->due_date !== $v) {
-            $this->due_date = $v;
-            $this->modifiedColumns[BillTableMap::COL_DUE_DATE] = true;
-        }
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->due_date !== null || $dt !== null) {
+            if ($this->due_date === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->due_date->format("Y-m-d H:i:s.u")) {
+                $this->due_date = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[BillTableMap::COL_DUE_DATE] = true;
+            }
+        } // if either are not null
 
         return $this;
     } // setDueDate()
@@ -573,13 +615,13 @@ abstract class Bill implements ActiveRecordInterface
     /**
      * Set the value of [bill_payed] column.
      *
-     * @param string $v new value
+     * @param int $v new value
      * @return $this|\Bill The current object (for fluent API support)
      */
     public function setBillPayed($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
         if ($this->bill_payed !== $v) {
@@ -589,6 +631,26 @@ abstract class Bill implements ActiveRecordInterface
 
         return $this;
     } // setBillPayed()
+
+    /**
+     * Set the value of [appointment_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\Bill The current object (for fluent API support)
+     */
+    public function setAppointmentId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->appointment_id !== $v) {
+            $this->appointment_id = $v;
+            $this->modifiedColumns[BillTableMap::COL_APPOINTMENT_ID] = true;
+        }
+
+        return $this;
+    } // setAppointmentId()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -636,7 +698,10 @@ abstract class Bill implements ActiveRecordInterface
             $this->employee_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : BillTableMap::translateFieldName('DueDate', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->due_date = (null !== $col) ? (string) $col : null;
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->due_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BillTableMap::translateFieldName('TransactionId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->transaction_id = (null !== $col) ? (int) $col : null;
@@ -645,7 +710,10 @@ abstract class Bill implements ActiveRecordInterface
             $this->cost = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BillTableMap::translateFieldName('BillPayed', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->bill_payed = (null !== $col) ? (string) $col : null;
+            $this->bill_payed = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BillTableMap::translateFieldName('AppointmentId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->appointment_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -654,7 +722,7 @@ abstract class Bill implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = BillTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = BillTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Bill'), 0, $e);
@@ -922,6 +990,9 @@ abstract class Bill implements ActiveRecordInterface
         if ($this->isColumnModified(BillTableMap::COL_BILL_PAYED)) {
             $modifiedColumns[':p' . $index++]  = 'bill_payed';
         }
+        if ($this->isColumnModified(BillTableMap::COL_APPOINTMENT_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'appointment_id';
+        }
 
         $sql = sprintf(
             'INSERT INTO bill (%s) VALUES (%s)',
@@ -943,7 +1014,7 @@ abstract class Bill implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->employee_id, PDO::PARAM_INT);
                         break;
                     case 'due_date':
-                        $stmt->bindValue($identifier, $this->due_date, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->due_date ? $this->due_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                     case 'transaction_id':
                         $stmt->bindValue($identifier, $this->transaction_id, PDO::PARAM_INT);
@@ -952,7 +1023,10 @@ abstract class Bill implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->cost, PDO::PARAM_INT);
                         break;
                     case 'bill_payed':
-                        $stmt->bindValue($identifier, $this->bill_payed, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->bill_payed, PDO::PARAM_INT);
+                        break;
+                    case 'appointment_id':
+                        $stmt->bindValue($identifier, $this->appointment_id, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1037,6 +1111,9 @@ abstract class Bill implements ActiveRecordInterface
             case 6:
                 return $this->getBillPayed();
                 break;
+            case 7:
+                return $this->getAppointmentId();
+                break;
             default:
                 return null;
                 break;
@@ -1074,7 +1151,12 @@ abstract class Bill implements ActiveRecordInterface
             $keys[4] => $this->getTransactionId(),
             $keys[5] => $this->getCost(),
             $keys[6] => $this->getBillPayed(),
+            $keys[7] => $this->getAppointmentId(),
         );
+        if ($result[$keys[3]] instanceof \DateTimeInterface) {
+            $result[$keys[3]] = $result[$keys[3]]->format('c');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -1181,6 +1263,9 @@ abstract class Bill implements ActiveRecordInterface
             case 6:
                 $this->setBillPayed($value);
                 break;
+            case 7:
+                $this->setAppointmentId($value);
+                break;
         } // switch()
 
         return $this;
@@ -1227,6 +1312,9 @@ abstract class Bill implements ActiveRecordInterface
         }
         if (array_key_exists($keys[6], $arr)) {
             $this->setBillPayed($arr[$keys[6]]);
+        }
+        if (array_key_exists($keys[7], $arr)) {
+            $this->setAppointmentId($arr[$keys[7]]);
         }
     }
 
@@ -1289,6 +1377,9 @@ abstract class Bill implements ActiveRecordInterface
         }
         if ($this->isColumnModified(BillTableMap::COL_BILL_PAYED)) {
             $criteria->add(BillTableMap::COL_BILL_PAYED, $this->bill_payed);
+        }
+        if ($this->isColumnModified(BillTableMap::COL_APPOINTMENT_ID)) {
+            $criteria->add(BillTableMap::COL_APPOINTMENT_ID, $this->appointment_id);
         }
 
         return $criteria;
@@ -1382,6 +1473,7 @@ abstract class Bill implements ActiveRecordInterface
         $copyObj->setTransactionId($this->getTransactionId());
         $copyObj->setCost($this->getCost());
         $copyObj->setBillPayed($this->getBillPayed());
+        $copyObj->setAppointmentId($this->getAppointmentId());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1788,8 +1880,10 @@ abstract class Bill implements ActiveRecordInterface
         $this->transaction_id = null;
         $this->cost = null;
         $this->bill_payed = null;
+        $this->appointment_id = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);

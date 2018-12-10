@@ -97,7 +97,7 @@ abstract class Timeslot implements ActiveRecordInterface
     /**
      * The value for the availability field.
      *
-     * @var        string
+     * @var        int
      */
     protected $availability;
 
@@ -394,7 +394,7 @@ abstract class Timeslot implements ActiveRecordInterface
     /**
      * Get the [availability] column value.
      *
-     * @return string
+     * @return int
      */
     public function getAvailability()
     {
@@ -488,13 +488,13 @@ abstract class Timeslot implements ActiveRecordInterface
     /**
      * Set the value of [availability] column.
      *
-     * @param string $v new value
+     * @param int $v new value
      * @return $this|\Timeslot The current object (for fluent API support)
      */
     public function setAvailability($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
         if ($this->availability !== $v) {
@@ -554,7 +554,7 @@ abstract class Timeslot implements ActiveRecordInterface
             $this->employee_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : TimeslotTableMap::translateFieldName('Availability', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->availability = (null !== $col) ? (string) $col : null;
+            $this->availability = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -838,7 +838,7 @@ abstract class Timeslot implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->employee_id, PDO::PARAM_INT);
                         break;
                     case 'availability':
-                        $stmt->bindValue($identifier, $this->availability, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->availability, PDO::PARAM_INT);
                         break;
                 }
             }

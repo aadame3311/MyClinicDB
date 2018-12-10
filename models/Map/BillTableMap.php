@@ -59,7 +59,7 @@ class BillTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class BillTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /**
      * the column name for the ID field
@@ -107,6 +107,11 @@ class BillTableMap extends TableMap
     const COL_BILL_PAYED = 'bill.bill_payed';
 
     /**
+     * the column name for the appointment_id field
+     */
+    const COL_APPOINTMENT_ID = 'bill.appointment_id';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -118,11 +123,11 @@ class BillTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'PatientId', 'EmployeeId', 'DueDate', 'TransactionId', 'Cost', 'BillPayed', ),
-        self::TYPE_CAMELNAME     => array('id', 'patientId', 'employeeId', 'dueDate', 'transactionId', 'cost', 'billPayed', ),
-        self::TYPE_COLNAME       => array(BillTableMap::COL_ID, BillTableMap::COL_PATIENT_ID, BillTableMap::COL_EMPLOYEE_ID, BillTableMap::COL_DUE_DATE, BillTableMap::COL_TRANSACTION_ID, BillTableMap::COL_COST, BillTableMap::COL_BILL_PAYED, ),
-        self::TYPE_FIELDNAME     => array('ID', 'patient_id', 'employee_id', 'due_date', 'transaction_id', 'cost', 'bill_payed', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id', 'PatientId', 'EmployeeId', 'DueDate', 'TransactionId', 'Cost', 'BillPayed', 'AppointmentId', ),
+        self::TYPE_CAMELNAME     => array('id', 'patientId', 'employeeId', 'dueDate', 'transactionId', 'cost', 'billPayed', 'appointmentId', ),
+        self::TYPE_COLNAME       => array(BillTableMap::COL_ID, BillTableMap::COL_PATIENT_ID, BillTableMap::COL_EMPLOYEE_ID, BillTableMap::COL_DUE_DATE, BillTableMap::COL_TRANSACTION_ID, BillTableMap::COL_COST, BillTableMap::COL_BILL_PAYED, BillTableMap::COL_APPOINTMENT_ID, ),
+        self::TYPE_FIELDNAME     => array('ID', 'patient_id', 'employee_id', 'due_date', 'transaction_id', 'cost', 'bill_payed', 'appointment_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -132,11 +137,11 @@ class BillTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'PatientId' => 1, 'EmployeeId' => 2, 'DueDate' => 3, 'TransactionId' => 4, 'Cost' => 5, 'BillPayed' => 6, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'patientId' => 1, 'employeeId' => 2, 'dueDate' => 3, 'transactionId' => 4, 'cost' => 5, 'billPayed' => 6, ),
-        self::TYPE_COLNAME       => array(BillTableMap::COL_ID => 0, BillTableMap::COL_PATIENT_ID => 1, BillTableMap::COL_EMPLOYEE_ID => 2, BillTableMap::COL_DUE_DATE => 3, BillTableMap::COL_TRANSACTION_ID => 4, BillTableMap::COL_COST => 5, BillTableMap::COL_BILL_PAYED => 6, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'patient_id' => 1, 'employee_id' => 2, 'due_date' => 3, 'transaction_id' => 4, 'cost' => 5, 'bill_payed' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'PatientId' => 1, 'EmployeeId' => 2, 'DueDate' => 3, 'TransactionId' => 4, 'Cost' => 5, 'BillPayed' => 6, 'AppointmentId' => 7, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'patientId' => 1, 'employeeId' => 2, 'dueDate' => 3, 'transactionId' => 4, 'cost' => 5, 'billPayed' => 6, 'appointmentId' => 7, ),
+        self::TYPE_COLNAME       => array(BillTableMap::COL_ID => 0, BillTableMap::COL_PATIENT_ID => 1, BillTableMap::COL_EMPLOYEE_ID => 2, BillTableMap::COL_DUE_DATE => 3, BillTableMap::COL_TRANSACTION_ID => 4, BillTableMap::COL_COST => 5, BillTableMap::COL_BILL_PAYED => 6, BillTableMap::COL_APPOINTMENT_ID => 7, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'patient_id' => 1, 'employee_id' => 2, 'due_date' => 3, 'transaction_id' => 4, 'cost' => 5, 'bill_payed' => 6, 'appointment_id' => 7, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -159,10 +164,11 @@ class BillTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('patient_id', 'PatientId', 'INTEGER', 'patient', 'ID', true, null, null);
         $this->addForeignKey('employee_id', 'EmployeeId', 'INTEGER', 'employee', 'ID', true, null, null);
-        $this->addColumn('due_date', 'DueDate', 'VARCHAR', true, 255, null);
+        $this->addColumn('due_date', 'DueDate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addColumn('transaction_id', 'TransactionId', 'INTEGER', true, null, null);
         $this->addColumn('cost', 'Cost', 'INTEGER', true, null, null);
-        $this->addColumn('bill_payed', 'BillPayed', 'VARCHAR', true, 1, null);
+        $this->addColumn('bill_payed', 'BillPayed', 'INTEGER', true, null, null);
+        $this->addColumn('appointment_id', 'AppointmentId', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -341,6 +347,7 @@ class BillTableMap extends TableMap
             $criteria->addSelectColumn(BillTableMap::COL_TRANSACTION_ID);
             $criteria->addSelectColumn(BillTableMap::COL_COST);
             $criteria->addSelectColumn(BillTableMap::COL_BILL_PAYED);
+            $criteria->addSelectColumn(BillTableMap::COL_APPOINTMENT_ID);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.patient_id');
@@ -349,6 +356,7 @@ class BillTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.transaction_id');
             $criteria->addSelectColumn($alias . '.cost');
             $criteria->addSelectColumn($alias . '.bill_payed');
+            $criteria->addSelectColumn($alias . '.appointment_id');
         }
     }
 

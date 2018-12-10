@@ -9,6 +9,7 @@ use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\InstancePoolTrait;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\DataFetcher\DataFetcherInterface;
+use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
@@ -131,7 +132,7 @@ class PatientphoneTableMap extends TableMap
         $this->setPackage('');
         $this->setUseIdGenerator(false);
         // columns
-        $this->addPrimaryKey('phone_number', 'PhoneNumber', 'INTEGER', true, null, null);
+        $this->addColumn('phone_number', 'PhoneNumber', 'VARCHAR', true, 255, null);
         $this->addForeignKey('patient_id', 'PatientId', 'INTEGER', 'patient', 'ID', true, null, null);
     } // initialize()
 
@@ -164,12 +165,7 @@ class PatientphoneTableMap extends TableMap
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        // If the PK cannot be derived from the row, return NULL.
-        if ($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)] === null) {
-            return null;
-        }
-
-        return null === $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)] || is_scalar($row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)]) || is_callable([$row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)], '__toString']) ? (string) $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)] : $row[TableMap::TYPE_NUM == $indexType ? 0 + $offset : static::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)];
+        return null;
     }
 
     /**
@@ -186,11 +182,7 @@ class PatientphoneTableMap extends TableMap
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        return (int) $row[
-            $indexType == TableMap::TYPE_NUM
-                ? 0 + $offset
-                : self::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)
-        ];
+        return '';
     }
 
     /**
@@ -342,11 +334,10 @@ class PatientphoneTableMap extends TableMap
             // rename for clarity
             $criteria = $values;
         } elseif ($values instanceof \Patientphone) { // it's a model object
-            // create criteria based on pk values
-            $criteria = $values->buildPkeyCriteria();
+            // create criteria based on pk value
+            $criteria = $values->buildCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(PatientphoneTableMap::DATABASE_NAME);
-            $criteria->add(PatientphoneTableMap::COL_PHONE_NUMBER, (array) $values, Criteria::IN);
+            throw new LogicException('The Patientphone object has no primary key');
         }
 
         $query = PatientphoneQuery::create()->mergeWith($criteria);

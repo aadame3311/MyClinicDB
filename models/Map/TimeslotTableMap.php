@@ -150,7 +150,7 @@ class TimeslotTableMap extends TableMap
         $this->addColumn('start_time', 'StartTime', 'INTEGER', true, null, null);
         $this->addColumn('end_time', 'EndTime', 'INTEGER', true, null, null);
         $this->addForeignKey('employee_id', 'EmployeeId', 'INTEGER', 'employee', 'ID', true, null, null);
-        $this->addColumn('availability', 'Availability', 'VARCHAR', true, 1, null);
+        $this->addColumn('availability', 'Availability', 'INTEGER', true, null, null);
     } // initialize()
 
     /**

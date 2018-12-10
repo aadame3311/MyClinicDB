@@ -163,6 +163,8 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
         // retrieve patients health history.
         $health_history = HealthhistoryQuery::create()->filterByPatientId($patient_id);
 
+        // retrieve bills. 
+        $bills = BillQuery::create()->filterByPatientId($patient_id)->filterByBillPayed(0)->find();
         // return patient info to patient dashboard.
         return $this->view->render($response, 'patient.html', [
             'username'=>$patient_username,
@@ -173,7 +175,8 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
             'insurance'=>$insurance,
             'main_phone'=>$main_phone,
             'health_history'=>$health_history,
-            'appointments'=>$appointments
+            'appointments'=>$appointments,
+            'bills'=>$bills
         ]);
     }
     else {
@@ -205,7 +208,7 @@ $app->post("/dashboard/getApps", function($request, $response) {
             'last_name'=>$emp->getLastName(),
             'start_time'=>$t->getStartTime(),
             'end_time'=>$t->getEndTime(),
-            'app_id'=>$t->getID()
+            'app_id'=>$t->getID(),
         ];
 
         array_push($schedules, $obj);
@@ -277,11 +280,11 @@ $app->post("/dashboard/scheduleApp", function($request, $response) {
     session_start();
     $username = $_SESSION['username'];
     $user = PatientQuery::create()->filterByUsername($username)->findOne();
-    echo $username;
+    $user_id = $user->getID();
 
     // assign appointment to the username. 
     $appointment = new Appointment();
-    $appointment->setPatientId($user->getID());
+    $appointment->setPatientId($user_id);
     $appointment->setTimeslotId($t_id);
     $appointment->setEmployeeId($emp_id);
     $appointment->setRoom($room);
@@ -292,6 +295,16 @@ $app->post("/dashboard/scheduleApp", function($request, $response) {
     $time_slot = TimeslotQuery::create()->findPK($t_id);
     $time_slot->setAvailability(0);
     $time_slot->save();
+
+    // add bill to patient. 
+    $bill = new Bill();
+    $bill->setPatientId($user_id);
+    $bill->setEmployeeId($emp_id);
+    $bill->setDueDate(date("m/d/Y"));
+    $bill->setCost($cost);
+    $bill->setBillPayed(0);
+    $bill->setAppointmentId($appointment->getID());
+    $bill->save();
 });
 $app->post("/dashboard/removeApp", function($request, $response) {
     $app_id = $request->getParam('app_id');
@@ -301,6 +314,25 @@ $app->post("/dashboard/removeApp", function($request, $response) {
     $timeslot->setAvailability('1');
     $timeslot->save();
     $appointment->delete();
+
+    // remove bill. 
+    $bill = BillQuery::create()->filterByAppointmentId($app_id)->findOne();
+    $bill->delete();
+});
+$app->post("/dashboard/makePayment", function($request, $response) {
+    $bill_id = $request->getParam('bill_id');
+    $payment = $request->getParam('pay');
+    $payment = preg_replace("/[$, ]/", "", $payment); 
+    $bill = BillQuery::create()->findPK($bill_id);
+    $new_cost = $bill->getCost()-$payment;
+    if ($new_cost >= 0) {
+        $bill->setCost($new_cost);
+    }
+    else {
+        $bill->setCost(0);
+        $bill->setBillPayed(1);
+    }
+    $bill->save();
 });
 
 $app->post("/isAdmin", function($request, $response) {

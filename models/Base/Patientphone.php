@@ -64,7 +64,7 @@ abstract class Patientphone implements ActiveRecordInterface
     /**
      * The value for the phone_number field.
      *
-     * @var        int
+     * @var        string
      */
     protected $phone_number;
 
@@ -316,7 +316,7 @@ abstract class Patientphone implements ActiveRecordInterface
     /**
      * Get the [phone_number] column value.
      *
-     * @return int
+     * @return string
      */
     public function getPhoneNumber()
     {
@@ -336,13 +336,13 @@ abstract class Patientphone implements ActiveRecordInterface
     /**
      * Set the value of [phone_number] column.
      *
-     * @param int $v new value
+     * @param string $v new value
      * @return $this|\Patientphone The current object (for fluent API support)
      */
     public function setPhoneNumber($v)
     {
         if ($v !== null) {
-            $v = (int) $v;
+            $v = (string) $v;
         }
 
         if ($this->phone_number !== $v) {
@@ -414,7 +414,7 @@ abstract class Patientphone implements ActiveRecordInterface
         try {
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : PatientphoneTableMap::translateFieldName('PhoneNumber', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->phone_number = (null !== $col) ? (int) $col : null;
+            $this->phone_number = (null !== $col) ? (string) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : PatientphoneTableMap::translateFieldName('PatientId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->patient_id = (null !== $col) ? (int) $col : null;
@@ -657,7 +657,7 @@ abstract class Patientphone implements ActiveRecordInterface
             foreach ($modifiedColumns as $identifier => $columnName) {
                 switch ($columnName) {
                     case 'phone_number':
-                        $stmt->bindValue($identifier, $this->phone_number, PDO::PARAM_INT);
+                        $stmt->bindValue($identifier, $this->phone_number, PDO::PARAM_STR);
                         break;
                     case 'patient_id':
                         $stmt->bindValue($identifier, $this->patient_id, PDO::PARAM_INT);
@@ -912,8 +912,7 @@ abstract class Patientphone implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = ChildPatientphoneQuery::create();
-        $criteria->add(PatientphoneTableMap::COL_PHONE_NUMBER, $this->phone_number);
+        throw new LogicException('The Patientphone object has no primary key');
 
         return $criteria;
     }
@@ -926,7 +925,7 @@ abstract class Patientphone implements ActiveRecordInterface
      */
     public function hashCode()
     {
-        $validPk = null !== $this->getPhoneNumber();
+        $validPk = false;
 
         $validPrimaryKeyFKs = 0;
         $primaryKeyFKs = [];
@@ -941,23 +940,27 @@ abstract class Patientphone implements ActiveRecordInterface
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return int
+     * Returns NULL since this table doesn't have a primary key.
+     * This method exists only for BC and is deprecated!
+     * @return null
      */
     public function getPrimaryKey()
     {
-        return $this->getPhoneNumber();
+        return null;
     }
 
     /**
-     * Generic method to set the primary key (phone_number column).
+     * Dummy primary key setter.
      *
-     * @param       int $key Primary key.
-     * @return void
+     * This function only exists to preserve backwards compatibility.  It is no longer
+     * needed or required by the Persistent interface.  It will be removed in next BC-breaking
+     * release of Propel.
+     *
+     * @deprecated
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($pk)
     {
-        $this->setPhoneNumber($key);
+        // do nothing, because this object doesn't have any primary keys
     }
 
     /**
@@ -966,7 +969,7 @@ abstract class Patientphone implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
-        return null === $this->getPhoneNumber();
+        return ;
     }
 
     /**

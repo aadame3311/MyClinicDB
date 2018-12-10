@@ -43,10 +43,11 @@ CREATE TABLE `bill`
     `ID` INTEGER NOT NULL AUTO_INCREMENT,
     `patient_id` INTEGER NOT NULL,
     `employee_id` INTEGER NOT NULL,
-    `due_date` VARCHAR(255) NOT NULL,
+    `due_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `transaction_id` INTEGER NOT NULL,
     `cost` INTEGER NOT NULL,
-    `bill_payed` bit(1) NOT NULL,
+    `bill_payed` INTEGER NOT NULL,
+    `appointment_id` INTEGER NOT NULL,
     PRIMARY KEY (`ID`),
     INDEX `patient_id` (`patient_id`),
     INDEX `employee_id` (`employee_id`),
@@ -176,9 +177,8 @@ DROP TABLE IF EXISTS `patientphone`;
 
 CREATE TABLE `patientphone`
 (
-    `phone_number` INTEGER NOT NULL,
+    `phone_number` VARCHAR(255) NOT NULL,
     `patient_id` INTEGER NOT NULL,
-    PRIMARY KEY (`phone_number`),
     INDEX `patient_id` (`patient_id`),
     CONSTRAINT `patientphone_ibfk_1`
         FOREIGN KEY (`patient_id`)
@@ -240,7 +240,7 @@ CREATE TABLE `timeslot`
     `start_time` INTEGER NOT NULL,
     `end_time` INTEGER NOT NULL,
     `employee_id` INTEGER NOT NULL,
-    `availability` bit(1) NOT NULL,
+    `availability` INTEGER NOT NULL,
     PRIMARY KEY (`ID`),
     INDEX `employee_id` (`employee_id`),
     CONSTRAINT `timeslot_ibfk_1`

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <database name="default" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
   <table name="appointment" idMethod="native" phpName="Appointment">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
@@ -34,10 +33,11 @@
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="patient_id" phpName="PatientId" type="INTEGER" required="true"/>
     <column name="employee_id" phpName="EmployeeId" type="INTEGER" required="true"/>
-    <column name="due_date" phpName="DueDate" type="VARCHAR" size="255" required="true"/>
+    <column name="due_date" phpName="DueDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="transaction_id" phpName="TransactionId" type="INTEGER" required="true"/>
     <column name="cost" phpName="Cost" type="INTEGER" required="true"/>
-    <column name="bill_payed" phpName="BillPayed" type="VARCHAR" size="1" sqlType="bit(1)" required="true"/>
+    <column name="bill_payed" phpName="BillPayed" type="INTEGER" required="true"/>
+    <column name="appointment_id" phpName="AppointmentId" type="INTEGER" required="true"/>
     <foreign-key foreignTable="patient" name="bill_ibfk_1">
       <reference local="patient_id" foreign="ID"/>
     </foreign-key>
@@ -139,7 +139,7 @@
     </vendor>
   </table>
   <table name="patientphone" idMethod="native" phpName="Patientphone">
-    <column name="phone_number" phpName="PhoneNumber" type="INTEGER" primaryKey="true" required="true"/>
+    <column name="phone_number" phpName="PhoneNumber" type="VARCHAR" size="255" required="true"/>
     <column name="patient_id" phpName="PatientId" type="INTEGER" required="true"/>
     <foreign-key foreignTable="patient" name="patientphone_ibfk_1">
       <reference local="patient_id" foreign="ID"/>
@@ -193,7 +193,7 @@
     <column name="start_time" phpName="StartTime" type="INTEGER" required="true"/>
     <column name="end_time" phpName="EndTime" type="INTEGER" required="true"/>
     <column name="employee_id" phpName="EmployeeId" type="INTEGER" required="true"/>
-    <column name="availability" phpName="Availability" type="VARCHAR" size="1" sqlType="bit(1)" required="true"/>
+    <column name="availability" phpName="Availability" type="INTEGER" required="true"/>
     <foreign-key foreignTable="employee" name="timeslot_ibfk_1">
       <reference local="employee_id" foreign="ID"/>
     </foreign-key>

@@ -5,7 +5,6 @@ namespace Base;
 use \Patientphone as ChildPatientphone;
 use \PatientphoneQuery as ChildPatientphoneQuery;
 use \Exception;
-use \PDO;
 use Map\PatientphoneTableMap;
 use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
@@ -13,6 +12,7 @@ use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveQuery\ModelJoin;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
+use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 
 /**
@@ -49,17 +49,17 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPatientphone findOne(ConnectionInterface $con = null) Return the first ChildPatientphone matching the query
  * @method     ChildPatientphone findOneOrCreate(ConnectionInterface $con = null) Return the first ChildPatientphone matching the query, or a new ChildPatientphone object populated from the query conditions when no match is found
  *
- * @method     ChildPatientphone findOneByPhoneNumber(int $phone_number) Return the first ChildPatientphone filtered by the phone_number column
+ * @method     ChildPatientphone findOneByPhoneNumber(string $phone_number) Return the first ChildPatientphone filtered by the phone_number column
  * @method     ChildPatientphone findOneByPatientId(int $patient_id) Return the first ChildPatientphone filtered by the patient_id column *
 
  * @method     ChildPatientphone requirePk($key, ConnectionInterface $con = null) Return the ChildPatientphone by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPatientphone requireOne(ConnectionInterface $con = null) Return the first ChildPatientphone matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
- * @method     ChildPatientphone requireOneByPhoneNumber(int $phone_number) Return the first ChildPatientphone filtered by the phone_number column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildPatientphone requireOneByPhoneNumber(string $phone_number) Return the first ChildPatientphone filtered by the phone_number column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPatientphone requireOneByPatientId(int $patient_id) Return the first ChildPatientphone filtered by the patient_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPatientphone[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPatientphone objects based on current ModelCriteria
- * @method     ChildPatientphone[]|ObjectCollection findByPhoneNumber(int $phone_number) Return ChildPatientphone objects filtered by the phone_number column
+ * @method     ChildPatientphone[]|ObjectCollection findByPhoneNumber(string $phone_number) Return ChildPatientphone objects filtered by the phone_number column
  * @method     ChildPatientphone[]|ObjectCollection findByPatientId(int $patient_id) Return ChildPatientphone objects filtered by the patient_id column
  * @method     ChildPatientphone[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -120,89 +120,13 @@ abstract class PatientphoneQuery extends ModelCriteria
      */
     public function findPk($key, ConnectionInterface $con = null)
     {
-        if ($key === null) {
-            return null;
-        }
-
-        if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(PatientphoneTableMap::DATABASE_NAME);
-        }
-
-        $this->basePreSelect($con);
-
-        if (
-            $this->formatter || $this->modelAlias || $this->with || $this->select
-            || $this->selectColumns || $this->asColumns || $this->selectModifiers
-            || $this->map || $this->having || $this->joins
-        ) {
-            return $this->findPkComplex($key, $con);
-        }
-
-        if ((null !== ($obj = PatientphoneTableMap::getInstanceFromPool(null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key)))) {
-            // the object is already in the instance pool
-            return $obj;
-        }
-
-        return $this->findPkSimple($key, $con);
-    }
-
-    /**
-     * Find object by primary key using raw SQL to go fast.
-     * Bypass doSelect() and the object formatter by using generated code.
-     *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
-     *
-     * @throws \Propel\Runtime\Exception\PropelException
-     *
-     * @return ChildPatientphone A model object, or null if the key is not found
-     */
-    protected function findPkSimple($key, ConnectionInterface $con)
-    {
-        $sql = 'SELECT phone_number, patient_id FROM patientphone WHERE phone_number = :p0';
-        try {
-            $stmt = $con->prepare($sql);
-            $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
-            $stmt->execute();
-        } catch (Exception $e) {
-            Propel::log($e->getMessage(), Propel::LOG_ERR);
-            throw new PropelException(sprintf('Unable to execute SELECT statement [%s]', $sql), 0, $e);
-        }
-        $obj = null;
-        if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            /** @var ChildPatientphone $obj */
-            $obj = new ChildPatientphone();
-            $obj->hydrate($row);
-            PatientphoneTableMap::addInstanceToPool($obj, null === $key || is_scalar($key) || is_callable([$key, '__toString']) ? (string) $key : $key);
-        }
-        $stmt->closeCursor();
-
-        return $obj;
-    }
-
-    /**
-     * Find object by primary key.
-     *
-     * @param     mixed $key Primary key to use for the query
-     * @param     ConnectionInterface $con A connection object
-     *
-     * @return ChildPatientphone|array|mixed the result, formatted by the current formatter
-     */
-    protected function findPkComplex($key, ConnectionInterface $con)
-    {
-        // As the query uses a PK condition, no limit(1) is necessary.
-        $criteria = $this->isKeepQuery() ? clone $this : $this;
-        $dataFetcher = $criteria
-            ->filterByPrimaryKey($key)
-            ->doSelect($con);
-
-        return $criteria->getFormatter()->init($criteria)->formatOne($dataFetcher);
+        throw new LogicException('The Patientphone object has no primary key');
     }
 
     /**
      * Find objects by primary key
      * <code>
-     * $objs = $c->findPks(array(12, 56, 832), $con);
+     * $objs = $c->findPks(array(array(12, 56), array(832, 123), array(123, 456)), $con);
      * </code>
      * @param     array $keys Primary keys to use for the query
      * @param     ConnectionInterface $con an optional connection object
@@ -211,16 +135,7 @@ abstract class PatientphoneQuery extends ModelCriteria
      */
     public function findPks($keys, ConnectionInterface $con = null)
     {
-        if (null === $con) {
-            $con = Propel::getServiceContainer()->getReadConnection($this->getDbName());
-        }
-        $this->basePreSelect($con);
-        $criteria = $this->isKeepQuery() ? clone $this : $this;
-        $dataFetcher = $criteria
-            ->filterByPrimaryKeys($keys)
-            ->doSelect($con);
-
-        return $criteria->getFormatter()->init($criteria)->format($dataFetcher);
+        throw new LogicException('The Patientphone object has no primary key');
     }
 
     /**
@@ -232,8 +147,7 @@ abstract class PatientphoneQuery extends ModelCriteria
      */
     public function filterByPrimaryKey($key)
     {
-
-        return $this->addUsingAlias(PatientphoneTableMap::COL_PHONE_NUMBER, $key, Criteria::EQUAL);
+        throw new LogicException('The Patientphone object has no primary key');
     }
 
     /**
@@ -245,8 +159,7 @@ abstract class PatientphoneQuery extends ModelCriteria
      */
     public function filterByPrimaryKeys($keys)
     {
-
-        return $this->addUsingAlias(PatientphoneTableMap::COL_PHONE_NUMBER, $keys, Criteria::IN);
+        throw new LogicException('The Patientphone object has no primary key');
     }
 
     /**
@@ -254,35 +167,19 @@ abstract class PatientphoneQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByPhoneNumber(1234); // WHERE phone_number = 1234
-     * $query->filterByPhoneNumber(array(12, 34)); // WHERE phone_number IN (12, 34)
-     * $query->filterByPhoneNumber(array('min' => 12)); // WHERE phone_number > 12
+     * $query->filterByPhoneNumber('fooValue');   // WHERE phone_number = 'fooValue'
+     * $query->filterByPhoneNumber('%fooValue%', Criteria::LIKE); // WHERE phone_number LIKE '%fooValue%'
      * </code>
      *
-     * @param     mixed $phoneNumber The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $phoneNumber The value to use as filter.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildPatientphoneQuery The current query, for fluid interface
      */
     public function filterByPhoneNumber($phoneNumber = null, $comparison = null)
     {
-        if (is_array($phoneNumber)) {
-            $useMinMax = false;
-            if (isset($phoneNumber['min'])) {
-                $this->addUsingAlias(PatientphoneTableMap::COL_PHONE_NUMBER, $phoneNumber['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($phoneNumber['max'])) {
-                $this->addUsingAlias(PatientphoneTableMap::COL_PHONE_NUMBER, $phoneNumber['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
+        if (null === $comparison) {
+            if (is_array($phoneNumber)) {
                 $comparison = Criteria::IN;
             }
         }
@@ -420,7 +317,8 @@ abstract class PatientphoneQuery extends ModelCriteria
     public function prune($patientphone = null)
     {
         if ($patientphone) {
-            $this->addUsingAlias(PatientphoneTableMap::COL_PHONE_NUMBER, $patientphone->getPhoneNumber(), Criteria::NOT_EQUAL);
+            throw new LogicException('Patientphone object has no primary key');
+
         }
 
         return $this;
