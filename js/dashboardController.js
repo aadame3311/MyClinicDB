@@ -5,6 +5,7 @@ var sort_type = 0;
 var can_select = true;
 
 var bill_id = 0;
+var user_id;
 
 var confirmModal = new tingle.modal({
     footer: false,
@@ -15,6 +16,13 @@ var confirmModal = new tingle.modal({
 });
 var payModal = new tingle.modal({
     footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'escape'],
+    //closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2']
+});
+var medModal = new tingle.modal({
+    footer: false,
     stickyFooter: false,
     closeMethods: ['overlay', 'escape'],
     //closeLabel: "Close",
@@ -160,6 +168,29 @@ $(".payment-icon").on('click', function() {
     bill_id = $(this).parent().parent().attr('id');
     payModal.open();
 })
+$(".info-icon").on('click', function() {
+    // get medicine info for prescription. 
+    medModal.open();
+    var id = $(this).parent().parent().attr('id');
+    medModal.setContent('<div class="loader"></div>');
+    $.ajax({
+        url:'../../main.php/dashboard/getMed',
+        data: {
+            'pres': id
+        },
+        method: "POST", 
+        dataType:"JSON"
+    }).done(function(data){
+        var res = "<h3>Medicines</h3>";
+
+        console.log(data['med']);
+        $.each(data['med'], function(i, v) {
+            res+="<p>"+(i+1)+": "+v+"</p>";
+        });
+        console.log(res);
+        medModal.setContent(res);
+    });
+});
 /////////////////////////////////////////////////////////////
 
 
@@ -179,6 +210,9 @@ function LoadModule(name) {
     }
     else if (name == "Bills") {
         module_name = 'bills';
+    }
+    else if (name == "Prescriptions") {
+        module_name = 'prescription';
     }
     $("."+module_name+"-module").prop('hidden', false);
 }

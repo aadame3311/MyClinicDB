@@ -43,7 +43,7 @@ var personalinfo_form =
 // set sign up form content.
 var signupinfo_form = 
     '<div class="container">'+
-        '<h3 style="text-align: center;">Sign Up</h3>'+
+        '<h3 style="text-align: center;">Sign Up</h3><div hidden class="loader"></div>'+
         '<form class="signup-form" action="./main.php/signup">'+
             '<div class="input-field">'+
                 '<input id="signup-email" type="email">' +
@@ -62,6 +62,7 @@ var signupinfo_form =
                 '<label for="signup-cPassword">Confirm Password</label>'+
             '</div>'+
         '</form>'+
+        '<p hidden class="warning invalid-input-warning" style="color: red">Please fill out all the fields.</p>'+
     '</div>';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -103,11 +104,11 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
     
     if(verifySecondInput($('#signup-email').val(), $('#signup-username').val(), $('#signup-password').val(), $('#signup-cPassword').val()))
     {
+        $(".loader").prop('hidden', false);
         // send user data to server
         _email = $('#signup-email').val();
         _username = $('#signup-username').val(); 
         _password = $('#signup-password').val();
-        signupModal.close(); 
 
         //ajax call to server to register user. 
         console.log($(".signup-form").attr('action'))
@@ -128,6 +129,16 @@ signupModal.addFooterBtn('Submit<i class="material-icons right">send</i>', 'btn 
             method : "POST",
             dataType : "JSON"
         }).done(function(data) {
+            $(".loader").prop('hidden', true);
+            if (data['code'] == 1) {
+                $(".invalid-input-warning").html("Username is already taken.");
+                $(".invalid-input-warning").prop('hidden', false);
+                return;
+            }
+            else if (data['code'] == 0) {
+                $(".invalid-input-warning").prop('hidden', true);
+                signupModal.close(); 
+            }
         });
         
     }
@@ -190,4 +201,3 @@ function verifySecondInput(e, un, p, cp)
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-

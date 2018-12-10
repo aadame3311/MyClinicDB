@@ -160,7 +160,7 @@ input.search-field {
     color: #DCE2C8;
 
 }
-.results, .bill-results {
+.results, .bill-results, .prescription-results {
     height: 40vh;
     overflow-y: scroll;
     transition: background-color 0.2s;
@@ -176,6 +176,12 @@ input.search-field {
     color: darkred;
     cursor: pointer;
 }.remove-icon:hover {color: red;} .remove-icon:active {color:orangered;}
+.info-icon {
+    position: absolute;
+    margin-left: 60px;
+    color: black;
+    cursor: pointer;
+}.info-icon:hover{color:white;}.info-icon:active{color:gray;}
 .payment-icon {
     position: absolute;
     margin-right: 20px;

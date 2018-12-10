@@ -130,9 +130,16 @@ $app->post('/signup', function($request, $response) {
                 $patient_phone->save();
             }
         }
+        $result = [
+            'code'=>0
+        ];
+        return $response->withJson($result);
     }
     else {
-        return $response->withStatus(400);
+        $result = [
+            'code'=>1
+        ];
+        return $response->withJson($result);
     }
 
 
@@ -165,6 +172,10 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
 
         // retrieve bills. 
         $bills = BillQuery::create()->filterByPatientId($patient_id)->filterByBillPayed(0)->find();
+
+        //retrieve prescriptions. 
+        $prescriptions = PrescriptionQuery::create()->filterByPatientId($patient_id)->find();
+
         // return patient info to patient dashboard.
         return $this->view->render($response, 'patient.html', [
             'username'=>$patient_username,
@@ -176,7 +187,8 @@ $app->get('/dashboard/{user_code}', function($request, $response, $args) {
             'main_phone'=>$main_phone,
             'health_history'=>$health_history,
             'appointments'=>$appointments,
-            'bills'=>$bills
+            'bills'=>$bills,
+            'pres'=>$prescriptions
         ]);
     }
     else {
@@ -333,6 +345,24 @@ $app->post("/dashboard/makePayment", function($request, $response) {
         $bill->setBillPayed(1);
     }
     $bill->save();
+
+    // add info to payment table. 
+    $pay = new Payment();
+    $pay->setBillId($bill_id);
+    $pay->setAmount($payment);
+    $pay->setType("appointment");
+    $pay->save();
+});
+$app->post("/dashboard/getMed", function($request, $response) {
+    $pres_id = $request->getParam('pres');
+    $med = MedicineQuery::create()->filterByPrescriptionId($pres_id)->find();
+    $med_info = array();
+    foreach($med as $m) {
+        array_push($med_info, $m->getMedicineName());
+    }
+    return $response->withJson([
+        'med'=>$med_info
+    ]);
 });
 
 $app->post("/isAdmin", function($request, $response) {
