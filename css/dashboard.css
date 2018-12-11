@@ -5,7 +5,7 @@
     }
     to {
         padding-left: 20px;
-    }l
+    }
 }
 @keyframes slideback {
     from {
@@ -178,11 +178,11 @@ input.search-field {
 }.remove-icon:hover {color: red;} .remove-icon:active {color:orangered;}
 .info-icon {
     position: absolute;
-    margin-left: 60px;
+    margin-left: 40px;
     color: black;
     cursor: pointer;
 }.info-icon:hover{color:white;}.info-icon:active{color:gray;}
-.payment-icon {
+.payment-icon{
     position: absolute;
     margin-right: 20px;
     color: green;

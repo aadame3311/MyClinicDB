@@ -59,7 +59,7 @@ class PrescriptionTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 5;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -69,7 +69,7 @@ class PrescriptionTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 5;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the ID field
@@ -92,11 +92,6 @@ class PrescriptionTableMap extends TableMap
     const COL_EMPLOYEE_ID = 'prescription.employee_id';
 
     /**
-     * the column name for the cost field
-     */
-    const COL_COST = 'prescription.cost';
-
-    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -108,11 +103,11 @@ class PrescriptionTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'PatientId', 'PrescriptionDate', 'EmployeeId', 'Cost', ),
-        self::TYPE_CAMELNAME     => array('id', 'patientId', 'prescriptionDate', 'employeeId', 'cost', ),
-        self::TYPE_COLNAME       => array(PrescriptionTableMap::COL_ID, PrescriptionTableMap::COL_PATIENT_ID, PrescriptionTableMap::COL_PRESCRIPTION_DATE, PrescriptionTableMap::COL_EMPLOYEE_ID, PrescriptionTableMap::COL_COST, ),
-        self::TYPE_FIELDNAME     => array('ID', 'patient_id', 'prescription_date', 'employee_id', 'cost', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id', 'PatientId', 'PrescriptionDate', 'EmployeeId', ),
+        self::TYPE_CAMELNAME     => array('id', 'patientId', 'prescriptionDate', 'employeeId', ),
+        self::TYPE_COLNAME       => array(PrescriptionTableMap::COL_ID, PrescriptionTableMap::COL_PATIENT_ID, PrescriptionTableMap::COL_PRESCRIPTION_DATE, PrescriptionTableMap::COL_EMPLOYEE_ID, ),
+        self::TYPE_FIELDNAME     => array('ID', 'patient_id', 'prescription_date', 'employee_id', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -122,11 +117,11 @@ class PrescriptionTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'PatientId' => 1, 'PrescriptionDate' => 2, 'EmployeeId' => 3, 'Cost' => 4, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'patientId' => 1, 'prescriptionDate' => 2, 'employeeId' => 3, 'cost' => 4, ),
-        self::TYPE_COLNAME       => array(PrescriptionTableMap::COL_ID => 0, PrescriptionTableMap::COL_PATIENT_ID => 1, PrescriptionTableMap::COL_PRESCRIPTION_DATE => 2, PrescriptionTableMap::COL_EMPLOYEE_ID => 3, PrescriptionTableMap::COL_COST => 4, ),
-        self::TYPE_FIELDNAME     => array('ID' => 0, 'patient_id' => 1, 'prescription_date' => 2, 'employee_id' => 3, 'cost' => 4, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'PatientId' => 1, 'PrescriptionDate' => 2, 'EmployeeId' => 3, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'patientId' => 1, 'prescriptionDate' => 2, 'employeeId' => 3, ),
+        self::TYPE_COLNAME       => array(PrescriptionTableMap::COL_ID => 0, PrescriptionTableMap::COL_PATIENT_ID => 1, PrescriptionTableMap::COL_PRESCRIPTION_DATE => 2, PrescriptionTableMap::COL_EMPLOYEE_ID => 3, ),
+        self::TYPE_FIELDNAME     => array('ID' => 0, 'patient_id' => 1, 'prescription_date' => 2, 'employee_id' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -148,9 +143,8 @@ class PrescriptionTableMap extends TableMap
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('patient_id', 'PatientId', 'INTEGER', 'patient', 'ID', true, null, null);
-        $this->addColumn('prescription_date', 'PrescriptionDate', 'VARCHAR', true, 255, null);
+        $this->addColumn('prescription_date', 'PrescriptionDate', 'TIMESTAMP', true, null, 'CURRENT_TIMESTAMP');
         $this->addForeignKey('employee_id', 'EmployeeId', 'INTEGER', 'employee', 'ID', true, null, null);
-        $this->addColumn('cost', 'Cost', 'INTEGER', true, null, null);
     } // initialize()
 
     /**
@@ -326,13 +320,11 @@ class PrescriptionTableMap extends TableMap
             $criteria->addSelectColumn(PrescriptionTableMap::COL_PATIENT_ID);
             $criteria->addSelectColumn(PrescriptionTableMap::COL_PRESCRIPTION_DATE);
             $criteria->addSelectColumn(PrescriptionTableMap::COL_EMPLOYEE_ID);
-            $criteria->addSelectColumn(PrescriptionTableMap::COL_COST);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.patient_id');
             $criteria->addSelectColumn($alias . '.prescription_date');
             $criteria->addSelectColumn($alias . '.employee_id');
-            $criteria->addSelectColumn($alias . '.cost');
         }
     }
 

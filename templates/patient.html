@@ -140,13 +140,16 @@
                 <div class="bill-item l-item col s12" id={{bill.getID()}}>
                     <p class="l-content row">
                         <i class="right payment-icon material-icons">payment</i>
-                        <span class="col s4" style="text-align:center;">
+                        <span class="col s3" style="text-align:center;">
                             Dr. {{bill.getEmployee().getFirstName()}} {{bill.getEmployee().getLastName()}}
                         </span>
-                        <span class="col s4" style="text-align:center;">
+                        <span class="col s3" style="text-align:center;">
                             {{bill.getDueDate().format("M/Y")}}
                         </span>
-                        <span class="col s4" style="text-align:center;">
+                        <span class="col s3" style="text-align:center;">
+                            {{bill.getType()}}
+                        </span>
+                        <span class="col s3" style="text-align:center;">
                             ${{bill.getCost()}}
                         </span>
                         
@@ -168,13 +171,12 @@
                 {% for p in pres %}
                 <div class="presc-item l-item col s12" id={{p.getID()}}>
                     <p class="l-content row">
-                        <i class="right payment-icon material-icons">payment</i>
                         <i class="left info-icon material-icons">info_outline</i>
                         <span class="col s6" style="text-align:center;">
                             Dr. {{p.getEmployee().getFirstName()}} {{p.getEmployee().getLastName()}}
                         </span>
-                        <span class="col s6" style="text-align:center;">
-                            {{p.getPrescriptionDate()}}
+                        <span class="right col s6" style="text-align:center;">
+                            {{p.getPrescriptionDate().format("M/Y")}}
                         </span>
                         
                     </p>

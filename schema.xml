@@ -34,10 +34,10 @@
     <column name="patient_id" phpName="PatientId" type="INTEGER" required="true"/>
     <column name="employee_id" phpName="EmployeeId" type="INTEGER" required="true"/>
     <column name="due_date" phpName="DueDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
-    <column name="transaction_id" phpName="TransactionId" type="INTEGER" required="true"/>
     <column name="cost" phpName="Cost" type="INTEGER" required="true"/>
     <column name="bill_payed" phpName="BillPayed" type="INTEGER" required="true"/>
     <column name="appointment_id" phpName="AppointmentId" type="INTEGER" required="true"/>
+    <column name="type" phpName="Type" type="VARCHAR" size="255" required="true"/>
     <foreign-key foreignTable="patient" name="bill_ibfk_1">
       <reference local="patient_id" foreign="ID"/>
     </foreign-key>
@@ -169,9 +169,8 @@
   <table name="prescription" idMethod="native" phpName="Prescription">
     <column name="ID" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="patient_id" phpName="PatientId" type="INTEGER" required="true"/>
-    <column name="prescription_date" phpName="PrescriptionDate" type="VARCHAR" size="255" required="true"/>
+    <column name="prescription_date" phpName="PrescriptionDate" type="TIMESTAMP" required="true" defaultExpr="CURRENT_TIMESTAMP"/>
     <column name="employee_id" phpName="EmployeeId" type="INTEGER" required="true"/>
-    <column name="cost" phpName="Cost" type="INTEGER" required="true"/>
     <foreign-key foreignTable="patient" name="prescription_ibfk_1">
       <reference local="patient_id" foreign="ID"/>
     </foreign-key>

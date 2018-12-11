@@ -316,6 +316,7 @@ $app->post("/dashboard/scheduleApp", function($request, $response) {
     $bill->setCost($cost);
     $bill->setBillPayed(0);
     $bill->setAppointmentId($appointment->getID());
+    $bill->setType("appointment");
     $bill->save();
 });
 $app->post("/dashboard/removeApp", function($request, $response) {

@@ -24,13 +24,11 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPrescriptionQuery orderByPatientId($order = Criteria::ASC) Order by the patient_id column
  * @method     ChildPrescriptionQuery orderByPrescriptionDate($order = Criteria::ASC) Order by the prescription_date column
  * @method     ChildPrescriptionQuery orderByEmployeeId($order = Criteria::ASC) Order by the employee_id column
- * @method     ChildPrescriptionQuery orderByCost($order = Criteria::ASC) Order by the cost column
  *
  * @method     ChildPrescriptionQuery groupById() Group by the ID column
  * @method     ChildPrescriptionQuery groupByPatientId() Group by the patient_id column
  * @method     ChildPrescriptionQuery groupByPrescriptionDate() Group by the prescription_date column
  * @method     ChildPrescriptionQuery groupByEmployeeId() Group by the employee_id column
- * @method     ChildPrescriptionQuery groupByCost() Group by the cost column
  *
  * @method     ChildPrescriptionQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildPrescriptionQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -78,8 +76,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPrescription findOneById(int $ID) Return the first ChildPrescription filtered by the ID column
  * @method     ChildPrescription findOneByPatientId(int $patient_id) Return the first ChildPrescription filtered by the patient_id column
  * @method     ChildPrescription findOneByPrescriptionDate(string $prescription_date) Return the first ChildPrescription filtered by the prescription_date column
- * @method     ChildPrescription findOneByEmployeeId(int $employee_id) Return the first ChildPrescription filtered by the employee_id column
- * @method     ChildPrescription findOneByCost(int $cost) Return the first ChildPrescription filtered by the cost column *
+ * @method     ChildPrescription findOneByEmployeeId(int $employee_id) Return the first ChildPrescription filtered by the employee_id column *
 
  * @method     ChildPrescription requirePk($key, ConnectionInterface $con = null) Return the ChildPrescription by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPrescription requireOne(ConnectionInterface $con = null) Return the first ChildPrescription matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -88,14 +85,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildPrescription requireOneByPatientId(int $patient_id) Return the first ChildPrescription filtered by the patient_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPrescription requireOneByPrescriptionDate(string $prescription_date) Return the first ChildPrescription filtered by the prescription_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildPrescription requireOneByEmployeeId(int $employee_id) Return the first ChildPrescription filtered by the employee_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildPrescription requireOneByCost(int $cost) Return the first ChildPrescription filtered by the cost column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildPrescription[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildPrescription objects based on current ModelCriteria
  * @method     ChildPrescription[]|ObjectCollection findById(int $ID) Return ChildPrescription objects filtered by the ID column
  * @method     ChildPrescription[]|ObjectCollection findByPatientId(int $patient_id) Return ChildPrescription objects filtered by the patient_id column
  * @method     ChildPrescription[]|ObjectCollection findByPrescriptionDate(string $prescription_date) Return ChildPrescription objects filtered by the prescription_date column
  * @method     ChildPrescription[]|ObjectCollection findByEmployeeId(int $employee_id) Return ChildPrescription objects filtered by the employee_id column
- * @method     ChildPrescription[]|ObjectCollection findByCost(int $cost) Return ChildPrescription objects filtered by the cost column
  * @method     ChildPrescription[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -194,7 +189,7 @@ abstract class PrescriptionQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, patient_id, prescription_date, employee_id, cost FROM prescription WHERE ID = :p0';
+        $sql = 'SELECT ID, patient_id, prescription_date, employee_id FROM prescription WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -373,19 +368,37 @@ abstract class PrescriptionQuery extends ModelCriteria
      *
      * Example usage:
      * <code>
-     * $query->filterByPrescriptionDate('fooValue');   // WHERE prescription_date = 'fooValue'
-     * $query->filterByPrescriptionDate('%fooValue%', Criteria::LIKE); // WHERE prescription_date LIKE '%fooValue%'
+     * $query->filterByPrescriptionDate('2011-03-14'); // WHERE prescription_date = '2011-03-14'
+     * $query->filterByPrescriptionDate('now'); // WHERE prescription_date = '2011-03-14'
+     * $query->filterByPrescriptionDate(array('max' => 'yesterday')); // WHERE prescription_date > '2011-03-13'
      * </code>
      *
-     * @param     string $prescriptionDate The value to use as filter.
+     * @param     mixed $prescriptionDate The value to use as filter.
+     *              Values can be integers (unix timestamps), DateTime objects, or strings.
+     *              Empty strings are treated as NULL.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return $this|ChildPrescriptionQuery The current query, for fluid interface
      */
     public function filterByPrescriptionDate($prescriptionDate = null, $comparison = null)
     {
-        if (null === $comparison) {
-            if (is_array($prescriptionDate)) {
+        if (is_array($prescriptionDate)) {
+            $useMinMax = false;
+            if (isset($prescriptionDate['min'])) {
+                $this->addUsingAlias(PrescriptionTableMap::COL_PRESCRIPTION_DATE, $prescriptionDate['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($prescriptionDate['max'])) {
+                $this->addUsingAlias(PrescriptionTableMap::COL_PRESCRIPTION_DATE, $prescriptionDate['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
         }
@@ -434,47 +447,6 @@ abstract class PrescriptionQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(PrescriptionTableMap::COL_EMPLOYEE_ID, $employeeId, $comparison);
-    }
-
-    /**
-     * Filter the query on the cost column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByCost(1234); // WHERE cost = 1234
-     * $query->filterByCost(array(12, 34)); // WHERE cost IN (12, 34)
-     * $query->filterByCost(array('min' => 12)); // WHERE cost > 12
-     * </code>
-     *
-     * @param     mixed $cost The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildPrescriptionQuery The current query, for fluid interface
-     */
-    public function filterByCost($cost = null, $comparison = null)
-    {
-        if (is_array($cost)) {
-            $useMinMax = false;
-            if (isset($cost['min'])) {
-                $this->addUsingAlias(PrescriptionTableMap::COL_COST, $cost['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($cost['max'])) {
-                $this->addUsingAlias(PrescriptionTableMap::COL_COST, $cost['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(PrescriptionTableMap::COL_COST, $cost, $comparison);
     }
 
     /**

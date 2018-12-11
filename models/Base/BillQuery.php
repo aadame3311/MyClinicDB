@@ -24,19 +24,19 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBillQuery orderByPatientId($order = Criteria::ASC) Order by the patient_id column
  * @method     ChildBillQuery orderByEmployeeId($order = Criteria::ASC) Order by the employee_id column
  * @method     ChildBillQuery orderByDueDate($order = Criteria::ASC) Order by the due_date column
- * @method     ChildBillQuery orderByTransactionId($order = Criteria::ASC) Order by the transaction_id column
  * @method     ChildBillQuery orderByCost($order = Criteria::ASC) Order by the cost column
  * @method     ChildBillQuery orderByBillPayed($order = Criteria::ASC) Order by the bill_payed column
  * @method     ChildBillQuery orderByAppointmentId($order = Criteria::ASC) Order by the appointment_id column
+ * @method     ChildBillQuery orderByType($order = Criteria::ASC) Order by the type column
  *
  * @method     ChildBillQuery groupById() Group by the ID column
  * @method     ChildBillQuery groupByPatientId() Group by the patient_id column
  * @method     ChildBillQuery groupByEmployeeId() Group by the employee_id column
  * @method     ChildBillQuery groupByDueDate() Group by the due_date column
- * @method     ChildBillQuery groupByTransactionId() Group by the transaction_id column
  * @method     ChildBillQuery groupByCost() Group by the cost column
  * @method     ChildBillQuery groupByBillPayed() Group by the bill_payed column
  * @method     ChildBillQuery groupByAppointmentId() Group by the appointment_id column
+ * @method     ChildBillQuery groupByType() Group by the type column
  *
  * @method     ChildBillQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildBillQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -85,10 +85,10 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBill findOneByPatientId(int $patient_id) Return the first ChildBill filtered by the patient_id column
  * @method     ChildBill findOneByEmployeeId(int $employee_id) Return the first ChildBill filtered by the employee_id column
  * @method     ChildBill findOneByDueDate(string $due_date) Return the first ChildBill filtered by the due_date column
- * @method     ChildBill findOneByTransactionId(int $transaction_id) Return the first ChildBill filtered by the transaction_id column
  * @method     ChildBill findOneByCost(int $cost) Return the first ChildBill filtered by the cost column
  * @method     ChildBill findOneByBillPayed(int $bill_payed) Return the first ChildBill filtered by the bill_payed column
- * @method     ChildBill findOneByAppointmentId(int $appointment_id) Return the first ChildBill filtered by the appointment_id column *
+ * @method     ChildBill findOneByAppointmentId(int $appointment_id) Return the first ChildBill filtered by the appointment_id column
+ * @method     ChildBill findOneByType(string $type) Return the first ChildBill filtered by the type column *
 
  * @method     ChildBill requirePk($key, ConnectionInterface $con = null) Return the ChildBill by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBill requireOne(ConnectionInterface $con = null) Return the first ChildBill matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -97,20 +97,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBill requireOneByPatientId(int $patient_id) Return the first ChildBill filtered by the patient_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBill requireOneByEmployeeId(int $employee_id) Return the first ChildBill filtered by the employee_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBill requireOneByDueDate(string $due_date) Return the first ChildBill filtered by the due_date column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
- * @method     ChildBill requireOneByTransactionId(int $transaction_id) Return the first ChildBill filtered by the transaction_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBill requireOneByCost(int $cost) Return the first ChildBill filtered by the cost column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBill requireOneByBillPayed(int $bill_payed) Return the first ChildBill filtered by the bill_payed column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBill requireOneByAppointmentId(int $appointment_id) Return the first ChildBill filtered by the appointment_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildBill requireOneByType(string $type) Return the first ChildBill filtered by the type column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildBill[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildBill objects based on current ModelCriteria
  * @method     ChildBill[]|ObjectCollection findById(int $ID) Return ChildBill objects filtered by the ID column
  * @method     ChildBill[]|ObjectCollection findByPatientId(int $patient_id) Return ChildBill objects filtered by the patient_id column
  * @method     ChildBill[]|ObjectCollection findByEmployeeId(int $employee_id) Return ChildBill objects filtered by the employee_id column
  * @method     ChildBill[]|ObjectCollection findByDueDate(string $due_date) Return ChildBill objects filtered by the due_date column
- * @method     ChildBill[]|ObjectCollection findByTransactionId(int $transaction_id) Return ChildBill objects filtered by the transaction_id column
  * @method     ChildBill[]|ObjectCollection findByCost(int $cost) Return ChildBill objects filtered by the cost column
  * @method     ChildBill[]|ObjectCollection findByBillPayed(int $bill_payed) Return ChildBill objects filtered by the bill_payed column
  * @method     ChildBill[]|ObjectCollection findByAppointmentId(int $appointment_id) Return ChildBill objects filtered by the appointment_id column
+ * @method     ChildBill[]|ObjectCollection findByType(string $type) Return ChildBill objects filtered by the type column
  * @method     ChildBill[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -209,7 +209,7 @@ abstract class BillQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT ID, patient_id, employee_id, due_date, transaction_id, cost, bill_payed, appointment_id FROM bill WHERE ID = :p0';
+        $sql = 'SELECT ID, patient_id, employee_id, due_date, cost, bill_payed, appointment_id, type FROM bill WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -470,47 +470,6 @@ abstract class BillQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query on the transaction_id column
-     *
-     * Example usage:
-     * <code>
-     * $query->filterByTransactionId(1234); // WHERE transaction_id = 1234
-     * $query->filterByTransactionId(array(12, 34)); // WHERE transaction_id IN (12, 34)
-     * $query->filterByTransactionId(array('min' => 12)); // WHERE transaction_id > 12
-     * </code>
-     *
-     * @param     mixed $transactionId The value to use as filter.
-     *              Use scalar values for equality.
-     *              Use array values for in_array() equivalent.
-     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return $this|ChildBillQuery The current query, for fluid interface
-     */
-    public function filterByTransactionId($transactionId = null, $comparison = null)
-    {
-        if (is_array($transactionId)) {
-            $useMinMax = false;
-            if (isset($transactionId['min'])) {
-                $this->addUsingAlias(BillTableMap::COL_TRANSACTION_ID, $transactionId['min'], Criteria::GREATER_EQUAL);
-                $useMinMax = true;
-            }
-            if (isset($transactionId['max'])) {
-                $this->addUsingAlias(BillTableMap::COL_TRANSACTION_ID, $transactionId['max'], Criteria::LESS_EQUAL);
-                $useMinMax = true;
-            }
-            if ($useMinMax) {
-                return $this;
-            }
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-        }
-
-        return $this->addUsingAlias(BillTableMap::COL_TRANSACTION_ID, $transactionId, $comparison);
-    }
-
-    /**
      * Filter the query on the cost column
      *
      * Example usage:
@@ -631,6 +590,31 @@ abstract class BillQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(BillTableMap::COL_APPOINTMENT_ID, $appointmentId, $comparison);
+    }
+
+    /**
+     * Filter the query on the type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByType('fooValue');   // WHERE type = 'fooValue'
+     * $query->filterByType('%fooValue%', Criteria::LIKE); // WHERE type LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $type The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildBillQuery The current query, for fluid interface
+     */
+    public function filterByType($type = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($type)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BillTableMap::COL_TYPE, $type, $comparison);
     }
 
     /**
