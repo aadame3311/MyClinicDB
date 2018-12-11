@@ -100,13 +100,6 @@ abstract class Bill implements ActiveRecordInterface
     protected $due_date;
 
     /**
-     * The value for the transaction_id field.
-     *
-     * @var        int
-     */
-    protected $transaction_id;
-
-    /**
      * The value for the cost field.
      *
      * @var        int
@@ -126,6 +119,13 @@ abstract class Bill implements ActiveRecordInterface
      * @var        int
      */
     protected $appointment_id;
+
+    /**
+     * The value for the type field.
+     *
+     * @var        string
+     */
+    protected $type;
 
     /**
      * @var        ChildPatient
@@ -445,16 +445,6 @@ abstract class Bill implements ActiveRecordInterface
     }
 
     /**
-     * Get the [transaction_id] column value.
-     *
-     * @return int
-     */
-    public function getTransactionId()
-    {
-        return $this->transaction_id;
-    }
-
-    /**
      * Get the [cost] column value.
      *
      * @return int
@@ -482,6 +472,16 @@ abstract class Bill implements ActiveRecordInterface
     public function getAppointmentId()
     {
         return $this->appointment_id;
+    }
+
+    /**
+     * Get the [type] column value.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -573,26 +573,6 @@ abstract class Bill implements ActiveRecordInterface
     } // setDueDate()
 
     /**
-     * Set the value of [transaction_id] column.
-     *
-     * @param int $v new value
-     * @return $this|\Bill The current object (for fluent API support)
-     */
-    public function setTransactionId($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->transaction_id !== $v) {
-            $this->transaction_id = $v;
-            $this->modifiedColumns[BillTableMap::COL_TRANSACTION_ID] = true;
-        }
-
-        return $this;
-    } // setTransactionId()
-
-    /**
      * Set the value of [cost] column.
      *
      * @param int $v new value
@@ -653,6 +633,26 @@ abstract class Bill implements ActiveRecordInterface
     } // setAppointmentId()
 
     /**
+     * Set the value of [type] column.
+     *
+     * @param string $v new value
+     * @return $this|\Bill The current object (for fluent API support)
+     */
+    public function setType($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->type !== $v) {
+            $this->type = $v;
+            $this->modifiedColumns[BillTableMap::COL_TYPE] = true;
+        }
+
+        return $this;
+    } // setType()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -703,17 +703,17 @@ abstract class Bill implements ActiveRecordInterface
             }
             $this->due_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BillTableMap::translateFieldName('TransactionId', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->transaction_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BillTableMap::translateFieldName('Cost', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : BillTableMap::translateFieldName('Cost', TableMap::TYPE_PHPNAME, $indexType)];
             $this->cost = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BillTableMap::translateFieldName('BillPayed', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : BillTableMap::translateFieldName('BillPayed', TableMap::TYPE_PHPNAME, $indexType)];
             $this->bill_payed = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BillTableMap::translateFieldName('AppointmentId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : BillTableMap::translateFieldName('AppointmentId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->appointment_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : BillTableMap::translateFieldName('Type', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->type = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -981,9 +981,6 @@ abstract class Bill implements ActiveRecordInterface
         if ($this->isColumnModified(BillTableMap::COL_DUE_DATE)) {
             $modifiedColumns[':p' . $index++]  = 'due_date';
         }
-        if ($this->isColumnModified(BillTableMap::COL_TRANSACTION_ID)) {
-            $modifiedColumns[':p' . $index++]  = 'transaction_id';
-        }
         if ($this->isColumnModified(BillTableMap::COL_COST)) {
             $modifiedColumns[':p' . $index++]  = 'cost';
         }
@@ -992,6 +989,9 @@ abstract class Bill implements ActiveRecordInterface
         }
         if ($this->isColumnModified(BillTableMap::COL_APPOINTMENT_ID)) {
             $modifiedColumns[':p' . $index++]  = 'appointment_id';
+        }
+        if ($this->isColumnModified(BillTableMap::COL_TYPE)) {
+            $modifiedColumns[':p' . $index++]  = 'type';
         }
 
         $sql = sprintf(
@@ -1016,9 +1016,6 @@ abstract class Bill implements ActiveRecordInterface
                     case 'due_date':
                         $stmt->bindValue($identifier, $this->due_date ? $this->due_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
-                    case 'transaction_id':
-                        $stmt->bindValue($identifier, $this->transaction_id, PDO::PARAM_INT);
-                        break;
                     case 'cost':
                         $stmt->bindValue($identifier, $this->cost, PDO::PARAM_INT);
                         break;
@@ -1027,6 +1024,9 @@ abstract class Bill implements ActiveRecordInterface
                         break;
                     case 'appointment_id':
                         $stmt->bindValue($identifier, $this->appointment_id, PDO::PARAM_INT);
+                        break;
+                    case 'type':
+                        $stmt->bindValue($identifier, $this->type, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1103,16 +1103,16 @@ abstract class Bill implements ActiveRecordInterface
                 return $this->getDueDate();
                 break;
             case 4:
-                return $this->getTransactionId();
-                break;
-            case 5:
                 return $this->getCost();
                 break;
-            case 6:
+            case 5:
                 return $this->getBillPayed();
                 break;
-            case 7:
+            case 6:
                 return $this->getAppointmentId();
+                break;
+            case 7:
+                return $this->getType();
                 break;
             default:
                 return null;
@@ -1148,10 +1148,10 @@ abstract class Bill implements ActiveRecordInterface
             $keys[1] => $this->getPatientId(),
             $keys[2] => $this->getEmployeeId(),
             $keys[3] => $this->getDueDate(),
-            $keys[4] => $this->getTransactionId(),
-            $keys[5] => $this->getCost(),
-            $keys[6] => $this->getBillPayed(),
-            $keys[7] => $this->getAppointmentId(),
+            $keys[4] => $this->getCost(),
+            $keys[5] => $this->getBillPayed(),
+            $keys[6] => $this->getAppointmentId(),
+            $keys[7] => $this->getType(),
         );
         if ($result[$keys[3]] instanceof \DateTimeInterface) {
             $result[$keys[3]] = $result[$keys[3]]->format('c');
@@ -1255,16 +1255,16 @@ abstract class Bill implements ActiveRecordInterface
                 $this->setDueDate($value);
                 break;
             case 4:
-                $this->setTransactionId($value);
-                break;
-            case 5:
                 $this->setCost($value);
                 break;
-            case 6:
+            case 5:
                 $this->setBillPayed($value);
                 break;
-            case 7:
+            case 6:
                 $this->setAppointmentId($value);
+                break;
+            case 7:
+                $this->setType($value);
                 break;
         } // switch()
 
@@ -1305,16 +1305,16 @@ abstract class Bill implements ActiveRecordInterface
             $this->setDueDate($arr[$keys[3]]);
         }
         if (array_key_exists($keys[4], $arr)) {
-            $this->setTransactionId($arr[$keys[4]]);
+            $this->setCost($arr[$keys[4]]);
         }
         if (array_key_exists($keys[5], $arr)) {
-            $this->setCost($arr[$keys[5]]);
+            $this->setBillPayed($arr[$keys[5]]);
         }
         if (array_key_exists($keys[6], $arr)) {
-            $this->setBillPayed($arr[$keys[6]]);
+            $this->setAppointmentId($arr[$keys[6]]);
         }
         if (array_key_exists($keys[7], $arr)) {
-            $this->setAppointmentId($arr[$keys[7]]);
+            $this->setType($arr[$keys[7]]);
         }
     }
 
@@ -1369,9 +1369,6 @@ abstract class Bill implements ActiveRecordInterface
         if ($this->isColumnModified(BillTableMap::COL_DUE_DATE)) {
             $criteria->add(BillTableMap::COL_DUE_DATE, $this->due_date);
         }
-        if ($this->isColumnModified(BillTableMap::COL_TRANSACTION_ID)) {
-            $criteria->add(BillTableMap::COL_TRANSACTION_ID, $this->transaction_id);
-        }
         if ($this->isColumnModified(BillTableMap::COL_COST)) {
             $criteria->add(BillTableMap::COL_COST, $this->cost);
         }
@@ -1380,6 +1377,9 @@ abstract class Bill implements ActiveRecordInterface
         }
         if ($this->isColumnModified(BillTableMap::COL_APPOINTMENT_ID)) {
             $criteria->add(BillTableMap::COL_APPOINTMENT_ID, $this->appointment_id);
+        }
+        if ($this->isColumnModified(BillTableMap::COL_TYPE)) {
+            $criteria->add(BillTableMap::COL_TYPE, $this->type);
         }
 
         return $criteria;
@@ -1470,10 +1470,10 @@ abstract class Bill implements ActiveRecordInterface
         $copyObj->setPatientId($this->getPatientId());
         $copyObj->setEmployeeId($this->getEmployeeId());
         $copyObj->setDueDate($this->getDueDate());
-        $copyObj->setTransactionId($this->getTransactionId());
         $copyObj->setCost($this->getCost());
         $copyObj->setBillPayed($this->getBillPayed());
         $copyObj->setAppointmentId($this->getAppointmentId());
+        $copyObj->setType($this->getType());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1877,10 +1877,10 @@ abstract class Bill implements ActiveRecordInterface
         $this->patient_id = null;
         $this->employee_id = null;
         $this->due_date = null;
-        $this->transaction_id = null;
         $this->cost = null;
         $this->bill_payed = null;
         $this->appointment_id = null;
+        $this->type = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->applyDefaultValues();

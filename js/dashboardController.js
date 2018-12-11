@@ -5,6 +5,7 @@ var sort_type = 0;
 var can_select = true;
 
 var bill_id = 0;
+var p_id = 0;
 var user_id;
 
 var confirmModal = new tingle.modal({
@@ -35,6 +36,8 @@ payModal.setContent(
     '</div>');
 payModal.addFooterBtn('</div>Submit<i class="material-icons submit-arrow right">send</i>', 'btn waves-effect waves-light tingle-btn--pull-right', function() {
     let payment = $("#payment-ammount").val();
+    confirmModal.setContent("verifying payment...");
+    confirmModal.open();
     $.ajax({
         url: "../../main.php/dashboard/makePayment",
         data: {
@@ -43,6 +46,10 @@ payModal.addFooterBtn('</div>Submit<i class="material-icons submit-arrow right">
         },
         method: "POST"
     }).done(function() {
+        confirmModal.setContent("<h3 style='color: green'>Payment confirmed!</h3>")
+        setTimeout(function() {
+            confirmModal.close();
+        }, 1000);
         payModal.close();
     });
 });
@@ -167,7 +174,7 @@ $(".remove-app").on('click', function(e) {
 $(".payment-icon").on('click', function() {
     bill_id = $(this).parent().parent().attr('id');
     payModal.open();
-})
+});
 $(".info-icon").on('click', function() {
     // get medicine info for prescription. 
     medModal.open();

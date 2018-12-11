@@ -10,6 +10,7 @@ use \Patient as ChildPatient;
 use \PatientQuery as ChildPatientQuery;
 use \Prescription as ChildPrescription;
 use \PrescriptionQuery as ChildPrescriptionQuery;
+use \DateTime;
 use \Exception;
 use \PDO;
 use Map\MedicineTableMap;
@@ -26,6 +27,7 @@ use Propel\Runtime\Exception\LogicException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use Propel\Runtime\Util\PropelDateTime;
 
 /**
  * Base class that represents a row from the 'prescription' table.
@@ -85,7 +87,8 @@ abstract class Prescription implements ActiveRecordInterface
     /**
      * The value for the prescription_date field.
      *
-     * @var        string
+     * Note: this column has a database default value of: (expression) CURRENT_TIMESTAMP
+     * @var        DateTime
      */
     protected $prescription_date;
 
@@ -95,13 +98,6 @@ abstract class Prescription implements ActiveRecordInterface
      * @var        int
      */
     protected $employee_id;
-
-    /**
-     * The value for the cost field.
-     *
-     * @var        int
-     */
-    protected $cost;
 
     /**
      * @var        ChildPatient
@@ -134,10 +130,22 @@ abstract class Prescription implements ActiveRecordInterface
     protected $medicinesScheduledForDeletion = null;
 
     /**
+     * Applies default values to this object.
+     * This method should be called from the object's constructor (or
+     * equivalent initialization method).
+     * @see __construct()
+     */
+    public function applyDefaultValues()
+    {
+    }
+
+    /**
      * Initializes internal state of Base\Prescription object.
+     * @see applyDefaults()
      */
     public function __construct()
     {
+        $this->applyDefaultValues();
     }
 
     /**
@@ -379,13 +387,23 @@ abstract class Prescription implements ActiveRecordInterface
     }
 
     /**
-     * Get the [prescription_date] column value.
+     * Get the [optionally formatted] temporal [prescription_date] column value.
      *
-     * @return string
+     *
+     * @param      string|null $format The date/time format string (either date()-style or strftime()-style).
+     *                            If format is NULL, then the raw DateTime object will be returned.
+     *
+     * @return string|DateTime Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+     *
+     * @throws PropelException - if unable to parse/validate the date/time value.
      */
-    public function getPrescriptionDate()
+    public function getPrescriptionDate($format = NULL)
     {
-        return $this->prescription_date;
+        if ($format === null) {
+            return $this->prescription_date;
+        } else {
+            return $this->prescription_date instanceof \DateTimeInterface ? $this->prescription_date->format($format) : null;
+        }
     }
 
     /**
@@ -396,16 +414,6 @@ abstract class Prescription implements ActiveRecordInterface
     public function getEmployeeId()
     {
         return $this->employee_id;
-    }
-
-    /**
-     * Get the [cost] column value.
-     *
-     * @return int
-     */
-    public function getCost()
-    {
-        return $this->cost;
     }
 
     /**
@@ -453,21 +461,21 @@ abstract class Prescription implements ActiveRecordInterface
     } // setPatientId()
 
     /**
-     * Set the value of [prescription_date] column.
+     * Sets the value of [prescription_date] column to a normalized version of the date/time value specified.
      *
-     * @param string $v new value
+     * @param  mixed $v string, integer (timestamp), or \DateTimeInterface value.
+     *               Empty strings are treated as NULL.
      * @return $this|\Prescription The current object (for fluent API support)
      */
     public function setPrescriptionDate($v)
     {
-        if ($v !== null) {
-            $v = (string) $v;
-        }
-
-        if ($this->prescription_date !== $v) {
-            $this->prescription_date = $v;
-            $this->modifiedColumns[PrescriptionTableMap::COL_PRESCRIPTION_DATE] = true;
-        }
+        $dt = PropelDateTime::newInstance($v, null, 'DateTime');
+        if ($this->prescription_date !== null || $dt !== null) {
+            if ($this->prescription_date === null || $dt === null || $dt->format("Y-m-d H:i:s.u") !== $this->prescription_date->format("Y-m-d H:i:s.u")) {
+                $this->prescription_date = $dt === null ? null : clone $dt;
+                $this->modifiedColumns[PrescriptionTableMap::COL_PRESCRIPTION_DATE] = true;
+            }
+        } // if either are not null
 
         return $this;
     } // setPrescriptionDate()
@@ -495,26 +503,6 @@ abstract class Prescription implements ActiveRecordInterface
 
         return $this;
     } // setEmployeeId()
-
-    /**
-     * Set the value of [cost] column.
-     *
-     * @param int $v new value
-     * @return $this|\Prescription The current object (for fluent API support)
-     */
-    public function setCost($v)
-    {
-        if ($v !== null) {
-            $v = (int) $v;
-        }
-
-        if ($this->cost !== $v) {
-            $this->cost = $v;
-            $this->modifiedColumns[PrescriptionTableMap::COL_COST] = true;
-        }
-
-        return $this;
-    } // setCost()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -559,13 +547,13 @@ abstract class Prescription implements ActiveRecordInterface
             $this->patient_id = (null !== $col) ? (int) $col : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : PrescriptionTableMap::translateFieldName('PrescriptionDate', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->prescription_date = (null !== $col) ? (string) $col : null;
+            if ($col === '0000-00-00 00:00:00') {
+                $col = null;
+            }
+            $this->prescription_date = (null !== $col) ? PropelDateTime::newInstance($col, null, 'DateTime') : null;
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : PrescriptionTableMap::translateFieldName('EmployeeId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->employee_id = (null !== $col) ? (int) $col : null;
-
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : PrescriptionTableMap::translateFieldName('Cost', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->cost = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -574,7 +562,7 @@ abstract class Prescription implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = PrescriptionTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = PrescriptionTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Prescription'), 0, $e);
@@ -834,9 +822,6 @@ abstract class Prescription implements ActiveRecordInterface
         if ($this->isColumnModified(PrescriptionTableMap::COL_EMPLOYEE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'employee_id';
         }
-        if ($this->isColumnModified(PrescriptionTableMap::COL_COST)) {
-            $modifiedColumns[':p' . $index++]  = 'cost';
-        }
 
         $sql = sprintf(
             'INSERT INTO prescription (%s) VALUES (%s)',
@@ -855,13 +840,10 @@ abstract class Prescription implements ActiveRecordInterface
                         $stmt->bindValue($identifier, $this->patient_id, PDO::PARAM_INT);
                         break;
                     case 'prescription_date':
-                        $stmt->bindValue($identifier, $this->prescription_date, PDO::PARAM_STR);
+                        $stmt->bindValue($identifier, $this->prescription_date ? $this->prescription_date->format("Y-m-d H:i:s.u") : null, PDO::PARAM_STR);
                         break;
                     case 'employee_id':
                         $stmt->bindValue($identifier, $this->employee_id, PDO::PARAM_INT);
-                        break;
-                    case 'cost':
-                        $stmt->bindValue($identifier, $this->cost, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -937,9 +919,6 @@ abstract class Prescription implements ActiveRecordInterface
             case 3:
                 return $this->getEmployeeId();
                 break;
-            case 4:
-                return $this->getCost();
-                break;
             default:
                 return null;
                 break;
@@ -974,8 +953,11 @@ abstract class Prescription implements ActiveRecordInterface
             $keys[1] => $this->getPatientId(),
             $keys[2] => $this->getPrescriptionDate(),
             $keys[3] => $this->getEmployeeId(),
-            $keys[4] => $this->getCost(),
         );
+        if ($result[$keys[2]] instanceof \DateTimeInterface) {
+            $result[$keys[2]] = $result[$keys[2]]->format('c');
+        }
+
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
@@ -1073,9 +1055,6 @@ abstract class Prescription implements ActiveRecordInterface
             case 3:
                 $this->setEmployeeId($value);
                 break;
-            case 4:
-                $this->setCost($value);
-                break;
         } // switch()
 
         return $this;
@@ -1113,9 +1092,6 @@ abstract class Prescription implements ActiveRecordInterface
         }
         if (array_key_exists($keys[3], $arr)) {
             $this->setEmployeeId($arr[$keys[3]]);
-        }
-        if (array_key_exists($keys[4], $arr)) {
-            $this->setCost($arr[$keys[4]]);
         }
     }
 
@@ -1169,9 +1145,6 @@ abstract class Prescription implements ActiveRecordInterface
         }
         if ($this->isColumnModified(PrescriptionTableMap::COL_EMPLOYEE_ID)) {
             $criteria->add(PrescriptionTableMap::COL_EMPLOYEE_ID, $this->employee_id);
-        }
-        if ($this->isColumnModified(PrescriptionTableMap::COL_COST)) {
-            $criteria->add(PrescriptionTableMap::COL_COST, $this->cost);
         }
 
         return $criteria;
@@ -1262,7 +1235,6 @@ abstract class Prescription implements ActiveRecordInterface
         $copyObj->setPatientId($this->getPatientId());
         $copyObj->setPrescriptionDate($this->getPrescriptionDate());
         $copyObj->setEmployeeId($this->getEmployeeId());
-        $copyObj->setCost($this->getCost());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1666,9 +1638,9 @@ abstract class Prescription implements ActiveRecordInterface
         $this->patient_id = null;
         $this->prescription_date = null;
         $this->employee_id = null;
-        $this->cost = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
+        $this->applyDefaultValues();
         $this->resetModified();
         $this->setNew(true);
         $this->setDeleted(false);
